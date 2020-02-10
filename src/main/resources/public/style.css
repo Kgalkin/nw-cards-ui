@@ -1,0 +1,93 @@
+body {
+    background-color: #ddf6fe;
+    width: 1000px;
+    margin: auto;
+}
+
+button {
+    border-radius: 6px;
+    background-color: aquamarine;
+    border: 1px solid black;
+}
+
+.item_box {
+    padding: 5px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.centered{
+    text-align: center;
+}
+
+h3 {
+    margin-top: 10px;
+}
+
+.order_now {
+    margin-top: 10px;
+}
+
+.chart{
+    margin: unset;
+}
+
+.chart>*:first-child{
+    float: right;
+}
+
+.chart_header {
+    margin: auto;
+    background-color: #b5dac6;
+    height: 40px;
+    font-size: 30px;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 1000px;
+}
+
+.sticky + .content {
+    padding-top: 40px;
+}
+
+/*MODAL BLOCK*/
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: black; /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal_content {
+    background-color: white;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid black;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: gray;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
