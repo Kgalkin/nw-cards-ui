@@ -118,19 +118,22 @@ window.onscroll = function () {
   }
 };
 
-var data = getCartData();
-var countResult = 0;
-var priceResult = 0;
+(function () {
+  var data = getCartData();
+  var countResult = 0;
+  var priceResult = 0;
 
-for (var key in data) {
-  if (data.hasOwnProperty(key)) {
-    countResult += data[key][2];
-    priceResult += Number(data[key][1]);
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      countResult += data[key][2];
+      priceResult += Number(data[key][1]);
+    }
   }
-}
 
-chartCoutn.textContent = countResult;
-totalPrice.textContent = priceResult;
+  chartCoutn.textContent = countResult;
+  totalPrice.textContent = priceResult;
+})();
+
 addEvent(d.querySelector(".chart_header"), 'click', function () {
   openCart();
   showModal();

@@ -97,17 +97,19 @@ window.onscroll = function () {
     }
 };
 
-let data = getCartData();
-let countResult = 0;
-let priceResult = 0;
-for (let key in data) {
-    if (data.hasOwnProperty(key)) {
-        countResult += data[key][2];
-        priceResult += Number(data[key][1]);
+(()=> {
+    let data = getCartData();
+    let countResult = 0;
+    let priceResult = 0;
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            countResult += data[key][2];
+            priceResult += Number(data[key][1]);
+        }
     }
-}
-chartCoutn.textContent = countResult;
-totalPrice.textContent = priceResult;
+    chartCoutn.textContent = countResult;
+    totalPrice.textContent = priceResult;
+})();
 
 addEvent(d.querySelector(".chart_header"), 'click', () => {
     openCart();
