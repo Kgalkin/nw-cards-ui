@@ -31,4 +31,6 @@ build/
 .vscode/
 
 ### JS ###
-node_modules
+node_modules/
+/node_modules/
+/node_modules/
