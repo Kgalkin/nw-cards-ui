@@ -3,6 +3,12 @@ import React from 'react';
 import GoodsItem from './components/goodsItem'
 import './styles/styles.scss';
 
+let indents = [];
+for (let i = 0; i < 5; i++) {
+    let title = "Title " + i;
+    let description = "description number " + i;
+    indents.push(<GoodsItem id={i} title={title} description={description} price="15$"/>,)
+}
 ReactDOM.render(
-    <GoodsItem id="1" title = "Title 1" description = "some text here" price = "15$"/>,
+    indents,
     document.querySelector("#root"));

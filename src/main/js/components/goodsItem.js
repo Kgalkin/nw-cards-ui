@@ -1,4 +1,5 @@
 import React from 'react'
+
 class GoodsItem extends React.Component {
     render() {
         const {
@@ -8,11 +9,14 @@ class GoodsItem extends React.Component {
             tags,
             id,
         } = this.props;
+        const imageName = id + '.png';
+        const imageSmallPath = './img/small/' + imageName;
         return <div id={id}>
             <h3>{title}</h3>
-            <img src='.img/small/{id}.png'/>
+            <img width = "200" height="250" src={imageSmallPath} alt={null}/>
             <p>{description}</p>
         </div>
     }
 }
+
 export default GoodsItem
