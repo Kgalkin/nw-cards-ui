@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     entry: './src/main/js/app.js',
     output: {
-        path: path.join(__dirname, 'src/main/resources/static/'),
+        path: path.join(__dirname, 'src/main/resources/static'),
         filename: 'bundle.js'
     },
     module: {
@@ -12,7 +12,15 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
+    },
+    devtool: 'cheap-module-eval-source-map',
+    devServer: {
+        contentBase: path.join(__dirname, 'src/main/resources/static/')
     }
 };
