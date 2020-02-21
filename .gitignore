@@ -20,7 +20,6 @@ target/
 *.ipr
 
 ### NetBeans ###
-/node_modules/
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -30,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### JS ###
+node_modules
