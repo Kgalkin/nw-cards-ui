@@ -16,11 +16,16 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },
     devtool: 'cheap-module-eval-source-map',
     devServer: {
+        //host: "192.168.0.105",
         contentBase: path.join(__dirname, 'src/main/resources/static/')
     }
 };

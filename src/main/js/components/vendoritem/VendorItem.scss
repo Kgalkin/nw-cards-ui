@@ -1,0 +1,40 @@
+.vendorItem {
+  width: 30%;
+  margin-left: 3%;
+
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    width: 95%;
+    font-size: 200%;
+    @media (orientation: landscape) {
+      width: 45%;
+      font-size: 120%;
+    }
+  }
+
+  &_descriptionBlock {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_description {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  & h3 {
+    @media (-webkit-min-device-pixel-ratio: 1.5) {
+      font-size: 175%;
+    }
+    margin-bottom: 2.5%;
+  }
+
+  & img {
+    width: 100%;
+  }
+
+  &_addButton{
+    @media (-webkit-min-device-pixel-ratio: 1.5) {
+      font-size: 100%;
+    }
+  }
+}

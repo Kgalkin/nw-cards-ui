@@ -1,14 +1,33 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import GoodsItem from './components/goodsItem'
+import VendorItem from './components/vendoritem/VendorItem'
+import StickyCartHeader from "./components/stickyheader/StickyCartHeader";
+import Content from "./components/content/Content"
 import './styles/styles.scss';
 
 let indents = [];
-for (let i = 0; i < 5; i++) {
-    let title = "Title " + i;
-    let description = "description number " + i;
-    indents.push(<GoodsItem id={i} title={title} description={description} price="15$"/>,)
+let header = React.createRef();
+let content = React.createRef();
+
+for (let i = 0; i < 20; i++) {
+    let title = "Заголовок " + i;
+    let description = "Описание товара №" + i;
+    indents.push(<VendorItem key={i} id={i} title={title} description={description} price="15$" onClickButton={() => {
+        header.current.updatePrice("10");
+    }}/>,)
 }
+window.onscroll = () => {
+    let scrolledPosition = header.current.scrolledElement.getBoundingClientRect().bottom;
+    let isSticky = scrolledPosition < 0;
+    header.current.setState({isSticky});
+    let style = {
+        paddingTop: isSticky ? `${header.current.stickyElement.getBoundingClientRect().height}px` :"0px"
+    };
+    content.current.setState({style});
+};
 ReactDOM.render(
-    indents,
+    <div className='app'>
+        <StickyCartHeader ref={header}/>
+        <Content children={indents} ref = {content}/>
+    </div>,
     document.querySelector("#root"));
