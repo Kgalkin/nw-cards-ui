@@ -15,14 +15,17 @@ class StickyCartHeader extends Component {
     };
 
     render() {
+        const {
+            stickyContent
+        } = this.props;
         const className = "stickyCartHeader";
         return <div className={className}>
             <img className={`${className}_scrolledLogo`} ref={elem => this.scrolledElement = elem} src="/img/logo.jpg"
-                 alt/>
+                 alt={`none`}/>
             <div className={`${className}_static` + (this.state.isSticky ? " sticky" : "")}
-                 ref={elem => this.stickyElement = elem}>
-                <div className={`${className}_chart`}><span>{`Сумма:${this.state.totalPrice}`}</span><span>Корзина:<span
-                    className={`${className}_chart_items_count`}>0</span></span></div>
+                 ref={elem => this.stickyElement = elem}
+                 style={this.state.isSticky ? {width: `${this.scrolledElement.width}px`} : {}}>
+                {stickyContent}
             </div>
         </div>;
     }

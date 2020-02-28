@@ -25,7 +25,7 @@ module.exports = {
     },
     devtool: 'cheap-module-eval-source-map',
     devServer: {
-        //host: "192.168.0.105",
+       //host: "192.168.0.104",
         contentBase: path.join(__dirname, 'src/main/resources/static/')
     }
 };
