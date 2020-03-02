@@ -20,7 +20,7 @@ class StickyCartHeader extends Component {
         } = this.props;
         const className = "stickyCartHeader";
         return <div className={className}>
-            <img className={`${className}_scrolledLogo`} ref={elem => this.scrolledElement = elem} src="/img/logo.jpg"
+            <img className={`${className}_scrolledLogo`} ref={elem => this.scrolledElement = elem} src="./static/img/logo.jpg"
                  alt={`none`}/>
             <div className={`${className}_static` + (this.state.isSticky ? " sticky" : "")}
                  ref={elem => this.stickyElement = elem}
