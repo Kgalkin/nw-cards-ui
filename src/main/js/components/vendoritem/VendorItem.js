@@ -3,6 +3,7 @@ import './VendorItem.scss';
 import {addToCart} from './../../reducers/actions'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import SmallImage from "../image/SmallImage";
 
 class VendorItem extends React.Component {
     render() {
@@ -17,10 +18,11 @@ class VendorItem extends React.Component {
         const className = "vendorItem";
         return <div id={id} className={className}>
             <h3>{title}</h3>
-            <img src={`./static/img/small/${id}.png`} alt={null}/>
+            <SmallImage id={id}/>
             <div className={`${className}_descriptionBlock`}>
                 <p className={`${className}_description`}>{description}</p>
-                <button className={`${className}_addButton`} onClick={() => onClickButton({id, title, price, count: 1})}>
+                <button className={`${className}_addButton`}
+                        onClick={() => onClickButton({id, title, price, count: 1})}>
                     {`Добавить в корзину - ${price}руб`}
                 </button>
             </div>

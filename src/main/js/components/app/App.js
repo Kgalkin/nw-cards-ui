@@ -1,15 +1,19 @@
 import React, {Component} from 'react'
 import StickyCartHeader from "../stickyheader/StickyCartHeader";
 import './App.scss';
-import Cart from "./../cart/Cart";
 import Content from './../content/Content'
+import Modal from "../modal/Modal";
+import CartInfo from "../cart/CartInfo";
 
 export default class App extends Component {
 
-    render(){
+    render() {
         this.state;
-        return <div className='app'>
-            <StickyCartHeader stickyContent={<Cart/>} mainContent={<Content/>}/>
-        </div>;
+        return <>
+            <div className='app'>
+                <StickyCartHeader stickyContent={<CartInfo/>} mainContent={<Content/>}/>
+            </div>
+            <Modal/>
+        </>;
     }
 }

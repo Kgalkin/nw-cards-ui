@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import './Cart.scss'
+import './CartInfo.scss'
 import {connect} from 'react-redux'
+import {showModal} from "../../reducers/actions";
 
-class Cart extends Component {
+class CartInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,11 +15,12 @@ class Cart extends Component {
     render() {
         const {
             itemsCount,
-            totalPrice
+            totalPrice,
+            showModal
         } = this.props;
-        const className = 'cart';
+        const className = 'cartInfo';
 
-        return <div
+        return <div onClick={showModal}
             className={className}>
             {/* <svg className={`${className}_iconSvg`} width="30" height="30" viewBox="0 0 30 30" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
@@ -44,4 +46,4 @@ const mapStateToProps = state => {
     return {itemsCount, totalPrice}
 };
 
-export default connect(mapStateToProps, null)(Cart)
+export default connect(mapStateToProps, {showModal})(CartInfo)

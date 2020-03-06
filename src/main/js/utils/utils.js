@@ -1,0 +1,1 @@
+export const getSmallImageLink = id => `./static/img/small/${id}.png`;
