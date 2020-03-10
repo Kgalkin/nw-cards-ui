@@ -1,32 +1,52 @@
-.cartContentRow{
+@import '../../styles/colors';
+
+.cartContentRow {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-end;
   font-size: 25px;
-  & div{
+
+  & > div {
     padding: 10px;
-    width: 20%;
     border: 1px solid black;
     flex-grow: 1;
-    & input{
+
+    & input {
       font-size: inherit;
       width: 50%;
     }
   }
-  &_image{
+
+  &_remove {
+    font-weight: bold;
+    width: 1%;
+    & > div {
+      border-radius: 50%;
+      width: 30px;
+      text-align: center;
+      border: 1px solid black;
+      cursor: pointer;
+      &:hover{
+        background-color: $brand-background;
+      }
+    }
+  }
+
+  &_image, &_title, {
+    width: 20%;
+  }
+
+  &_count, &_price, &_total {
+    width: 10%
+  }
+
+  &_image {
     flex-grow: 1;
+
     & img {
       margin-left: 25%;
       width: 50%
     }
-  }
-
-  &_title{
-
-  }
-
-  &_count{
-
   }
 
 }

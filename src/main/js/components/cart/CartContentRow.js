@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './CartContentRow.scss'
 import SmallImage from "../image/SmallImage";
 import {connect} from 'react-redux'
-import {updateCount} from "../../reducers/actions";
+import {removeFromCart, updateCount} from "../../reducers/actions";
 
 
 class CartContentRow extends Component {
@@ -47,8 +47,11 @@ class CartContentRow extends Component {
             </div>
             <div className={`${className}_price`}>{price}</div>
             <div className={`${className}_total`}>{total}</div>
+            <div className={`${className}_remove`}>
+                {Number(count) ? <div onClick={(e) => this.props.removeFromCart(id)}>&times;</div>  : null}
+            </div>
         </div>;
     }
 }
 
-export default connect(null, {updateCount})(CartContentRow)
+export default connect(null, {updateCount, removeFromCart})(CartContentRow)

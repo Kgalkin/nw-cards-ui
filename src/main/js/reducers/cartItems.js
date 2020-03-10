@@ -1,4 +1,4 @@
-import {ADD_TO_CART, CLEAR_CART, UPDATE_COUNT} from './actions'
+import {ADD_TO_CART, CLEAR_CART, REMOVE_FROM_CART, UPDATE_COUNT} from './actions'
 
 function getFromLocalStorage() {
     return JSON.parse(localStorage.getItem('cart')) || {};
@@ -36,6 +36,10 @@ function cartItemsInner(state, action) {
                     count: action.payload.count,
                 }
             };
+        case REMOVE_FROM_CART:
+            const newState = {...state};
+            delete (newState[`${action.payload.id}`]);
+            return newState;
         case CLEAR_CART:
             return {};
         default:
