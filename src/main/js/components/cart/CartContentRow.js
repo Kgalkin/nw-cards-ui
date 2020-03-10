@@ -43,12 +43,17 @@ class CartContentRow extends Component {
                         }
                         this.setState({inEditing: false})
                     }}
-                           onChange={this.handleCountChange}/> : count}
+                           onChange={this.handleCountChange}
+                           onKeyDown={e => {
+                               if (e.keyCode === 13) {
+                                   e.target.blur();
+                               }
+                           }}/> : count}
             </div>
             <div className={`${className}_price`}>{price}</div>
             <div className={`${className}_total`}>{total}</div>
             <div className={`${className}_remove`}>
-                {Number(count) ? <div onClick={(e) => this.props.removeFromCart(id)}>&times;</div>  : null}
+                {Number(count) ? <div onClick={() => this.props.removeFromCart(id)}>&times;</div> : null}
             </div>
         </div>;
     }
