@@ -1,4 +1,4 @@
-import {ADD_TO_CART, CLEAR_CART} from './actions'
+import {ADD_TO_CART, CLEAR_CART, UPDATE_COUNT} from './actions'
 
 function getFromLocalStorage() {
     return JSON.parse(localStorage.getItem('cart')) || {};
@@ -26,6 +26,14 @@ function cartItemsInner(state, action) {
                     title: action.payload.title,
                     count,
                     price: action.payload.price
+                }
+            };
+        case UPDATE_COUNT:
+            return {
+                ...state,
+                [action.payload.id]: {
+                    ...state[action.payload.id],
+                    count: action.payload.count,
                 }
             };
         case CLEAR_CART:

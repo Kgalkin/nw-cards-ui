@@ -1,14 +1,31 @@
 import React, {Component} from 'react'
 import './CartContentRow.scss'
 import SmallImage from "../image/SmallImage";
+import {connect} from 'react-redux'
+import {updateCount} from "../../reducers/actions";
 
-export default class CartContentRow extends Component {
+
+class CartContentRow extends Component {
+    constructor() {
+        super();
+        this.handleCountChange = this.handleCountChange.bind(this);
+        //this.handleCountOnBlur = this.handleCountOnBlur.bind(this);
+        this.state = {
+            countInputValue: 0,
+            inEditing: false
+        }
+    }
+
+    handleCountChange(e) {
+        this.setState({countInputValue: e.target.value, inEditing: true});
+    }
+
     render() {
         const {
             id,
             title,
             count,
-            price,
+            price
         } = this.props.item;
         const total = this.props.item.total || count * price;
         const className = 'cartContentRow';
@@ -17,9 +34,21 @@ export default class CartContentRow extends Component {
                 {id ? <SmallImage id={id}/> : null}
             </div>
             <div className={`${className}_title`}>{title}</div>
-            <div className={`${className}_count`}>{count}</div>
+            <div className={`${className}_count`}>
+                {Number(count) ?
+                    <input value={this.state.inEditing ? this.state.countInputValue : count} onBlur={(e) => {
+                        const newCount = Number(e.target.value);
+                        if (newCount) {
+                            this.props.updateCount({id, count: newCount});
+                        }
+                        this.setState({inEditing: false})
+                    }}
+                           onChange={this.handleCountChange}/> : count}
+            </div>
             <div className={`${className}_price`}>{price}</div>
             <div className={`${className}_total`}>{total}</div>
-        </div>
+        </div>;
     }
 }
+
+export default connect(null, {updateCount})(CartContentRow)

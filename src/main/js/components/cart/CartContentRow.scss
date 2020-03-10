@@ -8,6 +8,10 @@
     width: 20%;
     border: 1px solid black;
     flex-grow: 1;
+    & input{
+      font-size: inherit;
+      width: 50%;
+    }
   }
   &_image{
     flex-grow: 1;
