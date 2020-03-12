@@ -4,6 +4,8 @@ export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
+export const SHOW_CART_FORM = 'SHOW_CART_FORM';
+export const SHOW_ORDER_FORM = 'SHOW_ORDER_FORM';
 
 
 export const addToCart = payload => ({type: ADD_TO_CART, payload});
@@ -13,3 +15,4 @@ export const clearCart = () =>({type: CLEAR_CART});
 
 export const showModal = () => ({type: SHOW_MODAL});
 export const hideModal = () => ({type: HIDE_MODAL});
+export const showOrderForm = () => ({type: SHOW_ORDER_FORM});

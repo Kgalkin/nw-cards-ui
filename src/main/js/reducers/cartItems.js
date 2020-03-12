@@ -25,7 +25,8 @@ function cartItemsInner(state, action) {
                 [action.payload.id]: {
                     title: action.payload.title,
                     count,
-                    price: action.payload.price
+                    price: action.payload.price,
+                    inStock: action.payload.inStock
                 }
             };
         case UPDATE_COUNT:

@@ -15,12 +15,15 @@ export default class Content extends Component {
             .then(response => response.json())
             .catch(() => {
                 let children = [];
+                let tags = [];
+                const price = 15;
+                const inStock = 10;
                 for (let i = 0; i < 20; i++) {
-                    let id = i;
-                    let title = "Заголовок " + i;
-                    let description = "Описание товара №" + i;
-                    let price = 15;
-                    children.push({id, data: {title, description, price}});
+                    const id = i;
+                    const title = "Заголовок " + i;
+                    const description = "Описание товара №" + i;
+                    tags.push(`${i}_tag`);
+                    children.push({id, data: {title, description}, price, inStock, tags});
                 }
                 return children;
             })
@@ -29,11 +32,10 @@ export default class Content extends Component {
                 json.forEach(i => {
                         const {
                             title,
-                            description,
-                            price
+                            description
                         } = i.data;
                         children.push(<VendorItem key={i.id} id={i.id} title={title} description={description}
-                                                  price={`${price}`}/>)
+                                                  price={`${i.price}`} inStock = {i.inStock}/>)
                     }
                 );
                 this.setState({children});

@@ -1,0 +1,23 @@
+@mixin text {
+  @include font(16)
+}
+
+@mixin subHeader {
+  font-weight: bold;
+  @include font(20)
+}
+
+@mixin header {
+  font-weight: bold;
+  @include font(25)
+}
+
+@mixin font($val) {
+  font-size: $val + px;
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    font-size: $val*2 + px;
+    @media (orientation: landscape) {
+      font-size: $val*1.2 + px
+    }
+  }
+}

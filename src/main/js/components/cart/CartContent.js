@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
 import "./CartContent.scss"
-import {clearCart, hideModal} from "../../reducers/actions";
+import {clearCart, hideModal, showOrderForm} from "../../reducers/actions";
 import CartContentRow from "./CartContentRow";
 
 class CartContent extends Component {
@@ -14,7 +14,8 @@ class CartContent extends Component {
         const {
             cartContent,
             clearCart,
-            hideModal
+            hideModal,
+            showOrderForm
         } = this.props;
         const content = [];
         const createItem = item => {
@@ -48,9 +49,24 @@ class CartContent extends Component {
                     hideModal();
                 }}>Очистить корзину
                 </button>
+                <button onClick={showOrderForm}>Оформить заказ</button>
             </div>
         </div>
     }
+
+    createOrder(cartContent) {
+        let order = {items: []};
+        Object.entries(cartContent).forEach((v) => order.items.push({count: v[1].count, id: Number(v[0])}))
+        fetch("http://localhost:8001/api/createOrder", {
+            method: 'POST',
+            body: JSON.stringify(order)
+        })
+            .then(response => response.text(), error => error.text())
+            .then(text => {
+                window.location.reload();
+                alert(text)
+            })
+    }
 }
 
-export default connect(state => ({cartContent: state.cartItems}), {clearCart, hideModal})(CartContent);
+export default connect(state => ({cartContent: state.cartItems}), {clearCart, hideModal, showOrderForm})(CartContent);

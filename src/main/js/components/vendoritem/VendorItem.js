@@ -1,7 +1,6 @@
 import React from 'react'
 import './VendorItem.scss';
 import {addToCart} from './../../reducers/actions'
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SmallImage from "../image/SmallImage";
 
@@ -11,29 +10,27 @@ class VendorItem extends React.Component {
             title,
             price,
             description,
-            tags,
+            inStock,
             id,
-            onClickButton
+            addToCart
         } = this.props;
         const className = "vendorItem";
         return <div id={id} className={className}>
             <h3>{title}</h3>
             <SmallImage id={id}/>
             <div className={`${className}_descriptionBlock`}>
-                <p className={`${className}_description`}>{description}</p>
+                <div>
+                    <p className={`${className}_description`}>{description}</p>
+                    <p className={`${className}_inStock`}>{`В наличии: ${inStock}`}</p>
+                </div>
                 <button className={`${className}_addButton`}
-                        onClick={() => onClickButton({id, title, price, count: 1})}>
+                        onClick={() => addToCart({id, title, price, count: 1, inStock})}>
                     {`Добавить в корзину - ${price}руб`}
                 </button>
+
             </div>
         </div>
     }
-
-
 }
 
-const mapDispatchToProps = dippatch => ({
-    onClickButton: bindActionCreators(addToCart, dippatch)
-});
-
-export default connect(null, mapDispatchToProps)(VendorItem)
+export default connect(null, {addToCart})(VendorItem)

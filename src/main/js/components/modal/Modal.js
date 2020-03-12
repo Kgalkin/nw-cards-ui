@@ -18,10 +18,10 @@ class Modal extends Component {
             }
         }}>
             <div className={`${className}_window`}>
-                <CartContent/>
+                {content}
             </div>
         </div>
     }
 }
 
-export default connect(state => ({showModal: state.modal.showModal}), {hideModal})(Modal)
+export default connect(state => ({showModal: state.modal.showModal, content: state.modal.content}), {hideModal})(Modal)

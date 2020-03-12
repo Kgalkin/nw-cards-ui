@@ -1,0 +1,13 @@
+@import "../../styles/_fonts.scss";
+
+.orderForm {
+  & > div:not(:first-of-type){
+    margin-top: 20px;
+  }
+  & div {
+    & * {
+      width: 80%;
+      @include text;
+    }
+  }
+}
