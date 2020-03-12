@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import './OrderForm.scss'
+import {connect} from "react-redux";
 
-export default class OrderForm extends Component {
+class OrderForm extends Component {
     render() {
         const className = 'orderForm';
         return <div className={className}>
@@ -23,6 +24,23 @@ export default class OrderForm extends Component {
                     <input placeholder={'Индекс'}/>
                 </div>
             </div>
+            <button onClick={this.createOrder}>Оформить заказ</button>
         </div>;
     }
+
+    createOrder(email, address, index) {
+        let order = {email, address, index, items: []};
+        Object.entries(cartContent).forEach((v) => order.items.push({count: v[1].count, id: Number(v[0])}))
+        fetch("http://localhost:8001/api/createOrder", {
+            method: 'POST',
+            body: JSON.stringify(order)
+        })
+            .then(response => response.text(), error => error.text())
+            .then(text => {
+                window.location.reload();
+                alert(text)
+            });
+    }
 }
+
+export default connect(state => ({cartItems: state.cartItems}), null)(OrderForm)

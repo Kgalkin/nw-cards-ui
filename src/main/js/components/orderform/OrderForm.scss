@@ -10,4 +10,8 @@
       @include text;
     }
   }
+  & button {
+    @include text;
+    margin-top:20px;
+  }
 }

@@ -1,3 +1,4 @@
+@import "../../styles/_fonts.scss";
 .сartContent {
   &_grid {
     border: 1px solid black;
@@ -10,8 +11,7 @@
     justify-content: space-between;
 
     & button {
-      font-size: 25px;
+      @include text
     }
-
   }
 }

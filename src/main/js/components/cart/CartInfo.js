@@ -20,8 +20,10 @@ class CartInfo extends Component {
         } = this.props;
         const className = 'cartInfo';
 
-        return <div onClick={showModal}
-            className={className}>
+        return <div onClick={() => {
+            if (itemsCount) showModal();
+        }}
+                    className={className}>
             {/* <svg className={`${className}_iconSvg`} width="30" height="30" viewBox="0 0 30 30" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
                 <path
