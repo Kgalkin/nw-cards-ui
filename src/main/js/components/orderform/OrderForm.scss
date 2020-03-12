@@ -14,4 +14,7 @@
     @include text;
     margin-top:20px;
   }
+  & .error{
+    border: 2px solid red;
+  }
 }

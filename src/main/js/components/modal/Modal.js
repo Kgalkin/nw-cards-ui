@@ -12,7 +12,7 @@ class Modal extends Component {
             hideModal
         } = this.props;
         const className = 'modal';
-        return <div className={className} style={{display: showModal ? "block" : "none"}} onClick={e => {
+        return <div className={className} style={{display: showModal ? "block" : "none"}} onMouseDown={e => {
             if (e.target.className === className) {
                 hideModal();
             }

@@ -2,8 +2,9 @@ import {HIDE_MODAL, SHOW_MODAL, SHOW_ORDER_FORM} from "./actions"
 import CartContent from "../components/cart/CartContent"
 import OrderForm from "../components/orderform/OrderForm"
 import React from 'react'
-
-export default function modal(state = {content: <CartContent/>}, action) {
+const cartContent = <CartContent/>;
+const orderForm = <OrderForm/>;
+export default function modal(state = {content: cartContent}, action) {
     switch (action.type) {
         case SHOW_MODAL:
             return {
@@ -13,13 +14,13 @@ export default function modal(state = {content: <CartContent/>}, action) {
         case HIDE_MODAL:
             return {
                 ...state,
-                content: <CartContent/>,
+                content: cartContent,
                 showModal: false
             };
         case SHOW_ORDER_FORM:
             return {
                 ...state,
-                content: <OrderForm/>
+                content: orderForm
             };
         default:
             return state;
