@@ -3,53 +3,120 @@ import './OrderForm.scss'
 import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
 
+const simplePrice = 50;
+const orderedPrice = 80;
+const firstClassPrice = 120;
+const className = 'orderForm';
+const errorClass = 'error';
+
 class OrderForm extends Component {
     constructor() {
         super();
         this.validateForm = this.validateForm.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDeliveryOptionSelect = this.handleDeliveryOptionSelect.bind(this);
         this.state = {
+            name: localStorage.getItem('name') || '',
             email: localStorage.getItem('email') || '',
             address: localStorage.getItem('address') || '',
             index: localStorage.getItem('index') || '',
             validationActive: false,
+            country: '',
+            deliveryOption: null,
+            //contactOption: null
         }
     }
 
     render() {
-        const className = 'orderForm';
-        const errorClass = 'error';
         return <div className={className}>
-            <div className={`${className}_email`}>
-                <label>Электронная почта</label>
-                <div>
-                    <input className={`${this.state.validationActive && !this.validateEmail() ? errorClass : ''}`}
-                           placeholder={'Email'} value={this.state.email}
-                           onChange={e => this.handleChange(e, 'email')}/>
+            <div className={`${className}_info`}>
+                <span className={`${className}_infoHeader`}>Информация по заказу</span>
+                <div className={`${className}_name`}>
+                    <label>Фамилия Имя Отчество</label>
+                    <div>
+                        <input className={`${this.state.validationActive && !this.state.name ? errorClass : ''}`}
+                               placeholder={'ФИО'} value={this.state.name}
+                               onChange={e => this.handleChange(e, 'name')}/>
+                    </div>
                 </div>
-            </div>
-            <div className={`${className}_address`}>
-                <label>Адрес</label>
-                <div>
+                <div className={`${className}_email`}>
+                    <label>Электронная почта</label>
+                    <div>
+                        <input className={`${this.state.validationActive && !this.validateEmail() ? errorClass : ''}`}
+                               placeholder={'Email'} value={this.state.email}
+                               onChange={e => this.handleChange(e, 'email')}/>
+                    </div>
+                </div>
+                <div className={`${className}_address`}>
+                    <label>Адрес</label>
+                    <div>
                     <textarea className={`${this.state.validationActive && !this.state.address ? errorClass : ''}`}
                               placeholder={'Адрес'} value={this.state.address}
                               onChange={e => this.handleChange(e, 'address')}/>
+                    </div>
                 </div>
-            </div>
-            <div className={`${className}_index`}>
-                <label>Индекс</label>
-                <div>
-                    <input className={`${this.state.validationActive && !this.state.index ? errorClass : ''}`}
-                           placeholder={'Индекс'} value={this.state.index}
-                           onChange={e => this.handleChange(e, 'index')}/>
+                <div className={`${className}_index`}>
+                    <label>Индекс</label>
+                    <div>
+                        <input className={`${this.state.validationActive && !this.state.index ? errorClass : ''}`}
+                               placeholder={'Индекс'} value={this.state.index}
+                               onChange={e => this.handleChange(e, 'index')}/>
+                    </div>
                 </div>
+
             </div>
-            <button onClick={() => {
+            <div className={`${className}_delivery`}>
+                <span className={`${className}_deliveryHeader`}>Доставка</span>
+                <div className={`${className}_deliverySelectCountry`}>
+                    <label>Укажите страну: </label>
+                    <select className={`${this.state.validationActive && !this.state.country ? errorClass : ''}`}
+                            value={this.state.country}
+                            onChange={e => this.setState({country: e.target.value})}>
+                        <option value='' style={{display: 'none'}}/>
+                        <option value="RU">Россия</option>
+                        <option value="OTHER">Другая</option>
+                    </select>
+                </div>
+                {this.handleCountry(className, errorClass)}
+            </div>
+            <button disabled={this.state.orderLoading} onClick={() => {
                 if (this.validateForm()) this.createOrder(this.state.email, this.state.address, this.state.index, this.props.cartItems);
             }}>Оформить заказ
             </button>
         </div>;
+    }
+
+    handleCountry() {
+        switch (this.state.country) {
+            case 'RU':
+                return <>
+                    {this.radioInput(`Простое письмо без трекера по РФ, до 10 открыток - ${simplePrice}₽`, simplePrice)}
+                    {this.radioInput(`Заказная бандероль по РФ - ${orderedPrice}₽`, orderedPrice)}
+                    {this.radioInput(`Заказная бандероль по РФ 1класс ${firstClassPrice}₽`, firstClassPrice)}
+                </>;
+            case 'OTHER':
+                return <div className={`${className}_deliveryChoice`}>
+                    Доставка за границу рассчитывается индивидуально, пожалуйста укажите предпочтительный способсвязи
+                    <div>
+                        <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
+                    </div>
+                </div>;
+            default :
+                return null
+
+        }
+    }
+
+    radioInput(label, value) {
+        return <div className={`${className}_deliveryChoice`}>
+            <label
+                className={`${this.state.validationActive && !this.state.deliveryOption ? errorClass : ''}`}>
+                <input type="radio" name="delivery" value={value}
+                       checked={this.state.deliveryOption == value}
+                       onChange={this.handleDeliveryOptionSelect}/>{label}
+            </label>
+        </div>
     }
 
     handleChange(event, what) {
@@ -77,7 +144,18 @@ class OrderForm extends Component {
 
     validateForm() {
         this.setState({validationActive: true});
-        return this.validateEmail() && this.state.address && this.state.index;
+        return this.state.name &&
+            this.validateEmail() &&
+            this.state.address &&
+            this.state.index &&
+            this.state.country &&
+            this.state.deliveryOption;
+    }
+
+    handleDeliveryOptionSelect(e) {
+        if (e.target.checked) {
+            this.setState({deliveryOption: e.target.value})
+        }
     }
 
     validateEmail() {

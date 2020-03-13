@@ -3,6 +3,10 @@ export const UPDATE_COUNT = 'UPDATE_COUNT';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';
 
+export const CREATE_ORDER = "CREATE_ORDER";
+export const ORDER_FAILED = "ORDER_FAILED";
+export const ORDER_SUCCEED = "ORDER_SUCCEED";
+
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const SHOW_CART_FORM = 'SHOW_CART_FORM';

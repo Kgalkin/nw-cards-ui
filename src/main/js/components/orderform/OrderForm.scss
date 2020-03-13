@@ -1,20 +1,37 @@
 @import "../../styles/_fonts.scss";
 
 .orderForm {
-  & > div:not(:first-of-type){
-    margin-top: 20px;
+  &_infoHeader {
+    @include header;
   }
-  & div {
-    & * {
-      width: 80%;
-      @include text;
+
+  &_delivery {
+    margin-top: 40px;
+
+    &Header {
+      @include header;
+    }
+
+    &Choice{
+      margin-top: 20px;
     }
   }
+
+  input:not([type=radio]), textarea{
+    width: 80%;
+    @include text;
+  }
+
+  &_name, &_email, &_address, &_index {
+    margin-top: 20px;
+  }
+
   & button {
     @include text;
-    margin-top:20px;
+    margin-top: 20px;
   }
-  & .error{
+
+  & .error {
     border: 2px solid red;
   }
 }

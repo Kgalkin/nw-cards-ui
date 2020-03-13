@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import "./CartContent.scss"
 import {clearCart, hideModal, showOrderForm} from "../../reducers/actions";
 import CartContentRow from "./CartContentRow";
+import {isEmptyObj} from "../../utils/utils";
 
 class CartContent extends Component {
     constructor() {
@@ -26,6 +27,8 @@ class CartContent extends Component {
                 price: item[1].price
             };
         };
+        if (isEmptyObj(cartContent))
+            hideModal();
         let totalPrice = 0;
         content.push(<CartContentRow key={content.length}
                                      item={{
