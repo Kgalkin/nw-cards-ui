@@ -1,4 +1,4 @@
-import {ADD_TO_CART, CLEAR_CART, CREATE_ORDER, REMOVE_FROM_CART, UPDATE_COUNT} from './actions'
+import {ADD_TO_CART, CLEAR_CART, REMOVE_FROM_CART, UPDATE_COUNT} from './actions'
 
 function getFromLocalStorage() {
     return JSON.parse(localStorage.getItem('cart')) || {};

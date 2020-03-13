@@ -24,6 +24,7 @@ class OrderForm extends Component {
             validationActive: false,
             country: '',
             deliveryOption: null,
+            loading: false
             //contactOption: null
         }
     }
@@ -80,8 +81,9 @@ class OrderForm extends Component {
                 </div>
                 {this.handleCountry(className, errorClass)}
             </div>
-            <button disabled={this.state.orderLoading} onClick={() => {
-                if (this.validateForm()) this.createOrder(this.state.email, this.state.address, this.state.index, this.props.cartItems);
+            <button disabled={this.state.loading} onClick={() => {
+                if (this.validateForm())
+                    this.newOrder(this.state.email, this.state.address, this.state.index, this.props.cartItems);
             }}>Оформить заказ
             </button>
         </div>;
@@ -97,10 +99,10 @@ class OrderForm extends Component {
                 </>;
             case 'OTHER':
                 return <div className={`${className}_deliveryChoice`}>
-                    Доставка за границу рассчитывается индивидуально, пожалуйста укажите предпочтительный способсвязи
-                    <div>
+                    Доставка за границу рассчитывается индивидуально. Итоговая стоимость доставки будет отправлена вам на почту вместе с реквизитами.
+                 {/*   <div>
                         <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
-                    </div>
+                    </div>*/}
                 </div>;
             default :
                 return null
@@ -113,7 +115,7 @@ class OrderForm extends Component {
             <label
                 className={`${this.state.validationActive && !this.state.deliveryOption ? errorClass : ''}`}>
                 <input type="radio" name="delivery" value={value}
-                       checked={this.state.deliveryOption == value}
+                       checked={Number(this.state.deliveryOption) === value}
                        onChange={this.handleDeliveryOptionSelect}/>{label}
             </label>
         </div>
@@ -124,9 +126,10 @@ class OrderForm extends Component {
         this.setState({[what]: event.target.value})
     }
 
-    createOrder(email, address, index, cartItems, clearCart) {
+    newOrder(email, address, index, cartItems, clearCart) {
         let order = {email, address, index, items: []};
         Object.entries(cartItems).forEach((v) => order.items.push({count: v[1].count, id: Number(v[0])}));
+        this.setState({loading: true});
         fetch("http://localhost:8001/api/createOrder", {
             method: 'POST',
             body: JSON.stringify(order)
@@ -136,7 +139,10 @@ class OrderForm extends Component {
                     window.location.reload();
                     response.text();
                 },
-                error => error)
+                error => {
+                    this.setState({loading: false});
+                    return error;
+                })
             .then(text => {
                 alert(text)
             });
@@ -149,7 +155,7 @@ class OrderForm extends Component {
             this.state.address &&
             this.state.index &&
             this.state.country &&
-            this.state.deliveryOption;
+            (this.state.deliveryOption ||this.state.country === 'OTHER');
     }
 
     handleDeliveryOptionSelect(e) {

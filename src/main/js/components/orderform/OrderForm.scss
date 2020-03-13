@@ -12,26 +12,31 @@
       @include header;
     }
 
-    &Choice{
+    &Choice {
       margin-top: 20px;
     }
   }
 
-  input:not([type=radio]), textarea{
-    width: 80%;
-    @include text;
-  }
+  & label, & select, & option{
+    @include text
+}
 
-  &_name, &_email, &_address, &_index {
-    margin-top: 20px;
-  }
+input:not([type=radio]), textarea {
+  width: 80%;
+  @include text;
+}
 
-  & button {
-    @include text;
-    margin-top: 20px;
-  }
+&_name, &_email, &_address, &_index {
+  margin-top: 20px;
+}
 
-  & .error {
-    border: 2px solid red;
-  }
+& button {
+  @include text;
+  margin-top: 20px;
+}
+
+& .error {
+  border: 2px solid red;
+}
+
 }

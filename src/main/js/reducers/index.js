@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux'
 import cartItems from './cartItems'
 import modal from './modal'
 
