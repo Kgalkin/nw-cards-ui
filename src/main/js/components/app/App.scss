@@ -2,9 +2,5 @@
 
 body {
   background-color: $brand-background;
-}
-
-h3 {
-  font-size: 25px;
-  color: $blue-color;
+  -webkit-text-size-adjust: none;
 }
