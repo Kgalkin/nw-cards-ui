@@ -12,6 +12,7 @@ const errorClass = 'error';
 class OrderForm extends Component {
     constructor() {
         super();
+        this.newOrder = this.newOrder.bind(this);
         this.validateForm = this.validateForm.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -99,8 +100,9 @@ class OrderForm extends Component {
                 </>;
             case 'OTHER':
                 return <div className={`${className}_deliveryChoice`}>
-                    Доставка за границу рассчитывается индивидуально. Итоговая стоимость доставки будет отправлена вам на почту вместе с реквизитами.
-                 {/*   <div>
+                    Доставка за границу рассчитывается индивидуально. Итоговая стоимость доставки будет отправлена вам
+                    на почту вместе с реквизитами.
+                    {/*   <div>
                         <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
                     </div>*/}
                 </div>;
@@ -126,18 +128,21 @@ class OrderForm extends Component {
         this.setState({[what]: event.target.value})
     }
 
-    newOrder(email, address, index, cartItems, clearCart) {
-        let order = {email, address, index, items: []};
-        Object.entries(cartItems).forEach((v) => order.items.push({count: v[1].count, id: Number(v[0])}));
+    newOrder() {
+        const {
+            name, email, address, index, deliveryOption
+        } = this.state;
+        let order = {data: {name, email, address, index, deliveryOption, items: []}};
+        Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({count: v[1].count, id: Number(v[0])}));
         this.setState({loading: true});
         fetch("http://localhost:8001/api/createOrder", {
             method: 'POST',
             body: JSON.stringify(order)
         })
             .then(response => {
-                    clearCart();
+                    this.props.clearCart();
                     window.location.reload();
-                    response.text();
+                    return response.text();
                 },
                 error => {
                     this.setState({loading: false});
@@ -155,7 +160,7 @@ class OrderForm extends Component {
             this.state.address &&
             this.state.index &&
             this.state.country &&
-            (this.state.deliveryOption ||this.state.country === 'OTHER');
+            (this.state.deliveryOption || this.state.country === 'OTHER');
     }
 
     handleDeliveryOptionSelect(e) {
