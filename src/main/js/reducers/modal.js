@@ -9,12 +9,12 @@ export default function modal(state = {content: cartContent}, action) {
         case SHOW_MODAL:
             return {
                 ...state,
+                content: cartContent,
                 showModal: true
             };
         case HIDE_MODAL:
             return {
                 ...state,
-                content: cartContent,
                 showModal: false
             };
         case SHOW_ORDER_FORM:

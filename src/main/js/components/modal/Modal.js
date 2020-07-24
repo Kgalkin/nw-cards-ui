@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import './Modal.scss'
 import {hideModal} from "../../reducers/actions";
-import CartContent from "../cart/CartContent";
 
 class Modal extends Component {
     render() {
@@ -12,7 +11,7 @@ class Modal extends Component {
             hideModal
         } = this.props;
         const className = 'modal';
-        return <div className={className} style={{display: showModal ? "block" : "none"}} onMouseDown={e => {
+        return <div className={className} style={{display: showModal ? "block" : "none"}} onClick={e => {
             if (e.target.className === className) {
                 hideModal();
             }
