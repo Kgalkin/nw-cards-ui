@@ -11,14 +11,19 @@
     "babel-preset-react-app": "^3.1.2",
     "core-js": "^2.6.11",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.2.0",
+    "react-select": "^3.1.1",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
-    "babel-loader": "^8.0.6",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^3.4.2",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
@@ -27,12 +32,12 @@
     "style-loader": "^1.1.3",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.1"
   },
   "scripts": {
     "start": "webpack --mode=development",
     "build": "webpack --mode=production",
-    "dev-server": "webpack-dev-server --hot",
+    "dev-server": "webpack-dev-server --open --hot --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -4,16 +4,29 @@ import './App.scss';
 import Content from './../content/Content'
 import Modal from "../modal/Modal";
 import CartInfo from "../cart/CartInfo";
+import CreateItem from "../createitem/CreateItem";
+import {Route, Switch, withRouter} from "react-router-dom"
 
-export default class App extends Component {
+
+class App extends Component {
 
     render() {
         this.state;
         return <>
             <div className='app'>
-                <StickyCartHeader stickyContent={<CartInfo/>} mainContent={<Content/>}/>
+                <Switch>
+                    <Route path='/admin'>
+                        <CreateItem/>
+                    </Route>
+                    <Route path='/'>
+                        <StickyCartHeader stickyContent={<CartInfo/>} mainContent={
+                            <Content/>}/>
+                    </Route>
+                </Switch>
             </div>
             <Modal/>
         </>;
     }
 }
+
+export default withRouter(App)

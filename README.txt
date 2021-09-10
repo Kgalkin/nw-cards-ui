@@ -1,6 +1,6 @@
 npx babel src/main/js --out-dir src/main/resources/public
 npm start //dev
-npm build //prod
+npm build //prodc
 npm run dev-server
 
 pg_ctl -D C:\PostgressDB\data -l C:\PostgressDB\log start //run db

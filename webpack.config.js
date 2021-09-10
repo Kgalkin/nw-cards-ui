@@ -1,8 +1,9 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/main/js/index.js',
+    entry: ['babel-polyfill', './src/main/js/index.js'],
     output: {
+        publicPath: '/',
         path: path.join(__dirname, 'src/main/resources/static/js'),
         filename: 'bundle.js'
     },
@@ -26,6 +27,7 @@ module.exports = {
     devtool: 'cheap-module-eval-source-map',
     devServer: {
         //host: "192.168.0.101",
-        contentBase: path.join(__dirname, 'src/main/resources/static/')
+        contentBase: path.join(__dirname, 'src/main/resources/static/'),
+        port: 9090,
     }
 };

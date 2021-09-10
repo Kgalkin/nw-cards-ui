@@ -6,10 +6,6 @@ import {showModal} from "../../reducers/actions";
 class CartInfo extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            itemsCount: 0,
-            totalPrice: 0
-        }
     }
 
     render() {
@@ -31,7 +27,10 @@ class CartInfo extends Component {
                     fill="#1C1D1E"/>
             </svg>*/}
             <span
-                className={`${className}_state`}>{`В корзине ${itemsCount} товаров, на сумму ${totalPrice}руб.`}</span>
+                className={`${className}_state`}
+                style={itemsCount ? {cursor: 'pointer'} : {}}>
+                {`В корзине ${itemsCount} товаров, на сумму ${totalPrice}руб.`}
+            </span>
         </div>
     }
 

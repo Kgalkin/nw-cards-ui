@@ -17,7 +17,9 @@ class VendorItem extends React.Component {
         const className = "vendorItem";
         return <div id={id} className={className}>
             <h3>{title}</h3>
-            <SmallImage id={id}/>
+            <div className={`${className}_imageContainer`}>
+                <SmallImage id={id}/>
+            </div>
             <div className={`${className}_descriptionBlock`}>
                 <div>
                     <p className={`${className}_description`}>{description}</p>

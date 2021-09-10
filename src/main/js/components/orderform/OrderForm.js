@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './OrderForm.scss'
 import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
+import {HOST_AND_PORT} from "../../utils/utils";
 
 const simplePrice = 50;
 const orderedPrice = 80;
@@ -135,7 +136,7 @@ class OrderForm extends Component {
         let order = {data: {name, email, address, index, deliveryOption, items: []}};
         Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({count: v[1].count, id: Number(v[0])}));
         this.setState({loading: true});
-        fetch("http://localhost:8001/api/createOrder", {
+        fetch(`${HOST_AND_PORT}/api/createOrder`, {
             method: 'POST',
             body: JSON.stringify(order)
         })

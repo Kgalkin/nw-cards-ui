@@ -1,4 +1,5 @@
-export const getSmallImageLink = id => `./static/img/small/${id}.png`;
+export const HOST_AND_PORT = 'http://localhost:8081';
+export const getSmallImageLink = id => `${HOST_AND_PORT}/static/img/${id}/${id}_cover.jpg`;
 
 export function isEmptyObj(o){
     for (var key in o){
