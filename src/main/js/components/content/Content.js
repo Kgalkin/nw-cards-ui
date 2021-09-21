@@ -45,6 +45,4 @@ class Content extends Component {
     }
 }
 
-export default connect(state => {
-    return {storeItems: state.storeItems}
-}, null)(Content)
+export default connect(state => ({storeItems: state.storeItems}), null)(Content)
