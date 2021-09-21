@@ -1,9 +1,12 @@
 import {HOST_AND_PORT} from "../../utils/utils";
 import store from "../../reducers";
-import {LOADING, updateTags} from "../../reducers/actions";
+import {LOADING, loadItems, updateTags} from "../../reducers/actions";
 
-export const loadItems = () => {
-    return fetch(`${HOST_AND_PORT}/api/items`)
+export const PAGE_SIZE = 20;
+
+export const loadItemsPage = (pageNumber) => {
+    store.dispatch(loadItems({state: LOADING}));
+    return fetch(`${HOST_AND_PORT}/api/items?offset=${pageNumber*PAGE_SIZE}&size=${PAGE_SIZE}`)
         .then(response => response.json())
         .catch(() => {
             let children = [];
@@ -18,6 +21,8 @@ export const loadItems = () => {
                 children.push({id, data: {title, description}, price, inStock, tags});
             }
             return children;
+        }).then(r=> {
+            store.dispatch(loadItems({state:null, items: r}))
         });
 };
 

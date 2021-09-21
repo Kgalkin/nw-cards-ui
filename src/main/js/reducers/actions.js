@@ -17,7 +17,7 @@ export const removeFromCart = id => ({type: REMOVE_FROM_CART, payload: {id}});
 export const updateCount = payload => ({type: UPDATE_COUNT, payload});
 export const clearCart = () => ({type: CLEAR_CART});
 
-export const loadItems = payload => ({type: LOAD_STORE_ITEMS, });
+export const loadItems = payload => ({type: LOAD_STORE_ITEMS, payload});
 export const addItems = payload => ({});
 
 export const updateTags = payload => ({type: UPDATE_TAGS, payload});

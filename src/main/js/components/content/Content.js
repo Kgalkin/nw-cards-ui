@@ -1,39 +1,50 @@
 import React, {Component} from 'react';
 import "./Content.scss"
 import VendorItem from "../vendoritem/VendorItem";
-import {loadItems} from './contentUtils.js';
+import {loadItemsPage} from "./contentUtils";
+import {connect} from "react-redux";
+import {LOADING} from "../../reducers/actions";
 
-export default class Content extends Component {
+class Content extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            children: <h1>Loading...</h1>,
-        }
     }
 
     render() {
+        const {
+            storeItems
+        } = this.props;
         const className = "content";
-        return <div className={className} style={this.state.style}>
+        return <div className={className}>
             <div className={`${className}_itemContainer`}>
-                {this.state.children}
+                {this.constructItems(storeItems)}
             </div>
         </div>
     }
 
     componentDidMount() {
-        loadItems()
-            .then(json => {
-                let children = [];
-                json.forEach(i => {
-                        const {
-                            title,
-                            description
-                        } = i.data;
-                        children.push(<VendorItem key={i.id} id={i.id} title={title} description={description}
-                                                  price={`${i.price}`} inStock = {i.inStock}/>)
-                    }
-                );
-                this.setState({children});
-            });
+        loadItemsPage(0);
+    }
+
+    constructItems = storeItems => {
+            let children = [];
+            storeItems.items.forEach(i => {
+                    const {
+                        title,
+                        description
+                    } = i.data;
+                    children.push(<VendorItem key={i.id} id={i.id} title={title} description={description}
+                                              price={`${i.price}`} inStock={i.inStock}/>)
+                }
+            );
+            if (storeItems.state === LOADING){
+                children.push(<h1>Loading...</h1>)
+            }
+            return children;
+
     }
 }
+
+export default connect(state => {
+    return {storeItems: state.storeItems}
+}, null)(Content)
