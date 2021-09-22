@@ -5,7 +5,6 @@ import {LOADING, loadItems, updateTags} from "../../reducers/actions";
 export const PAGE_SIZE = 20;
 
 export const loadItemsPage = (pageNumber) => {
-    store.dispatch(loadItems({state: LOADING}));
     return fetch(`${HOST_AND_PORT}/api/items?offset=${pageNumber*PAGE_SIZE}&size=${PAGE_SIZE}`)
         .then(response => response.json())
         .catch(() => {
@@ -21,8 +20,6 @@ export const loadItemsPage = (pageNumber) => {
                 children.push({id, data: {title, description}, price, inStock, tags});
             }
             return children;
-        }).then(r=> {
-            store.dispatch(loadItems({state:null, items: r}))
         });
 };
 
@@ -32,4 +29,14 @@ export const loadAllTags = () => {
         .then(response => response.json(), err => alert(err))
         .then(r => store.dispatch(updateTags(
             {state: null, values: r.map(i => ({value: i, label: i}))})));
+};
+
+export const debounce = (func, delay) => {
+    let clearTimer;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(clearTimer);
+        clearTimer = setTimeout(() => func.apply(context, args), delay);
+    }
 };

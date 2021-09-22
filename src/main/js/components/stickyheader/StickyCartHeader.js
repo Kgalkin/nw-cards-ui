@@ -15,13 +15,15 @@ class StickyCartHeader extends Component {
     };
 
     componentDidMount() {
-        window.onscroll = () => {
-            this.setState({isSticky: this.scrolledElement.getBoundingClientRect().bottom < 0});
-        };
+        window.addEventListener('scroll', this.sticky);
     }
 
+    sticky = () => {
+        this.setState({isSticky: this.scrolledElement.getBoundingClientRect().bottom < 0});
+    };
+
     componentWillUnmount() {
-        window.onscroll = null;
+        window.removeEventListener('scroll', this.sticky)
     }
 
     render() {

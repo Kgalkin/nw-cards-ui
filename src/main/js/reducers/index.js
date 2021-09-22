@@ -2,10 +2,8 @@ import {combineReducers, createStore} from 'redux'
 import cartItems from './cartItems'
 import modal from './modal'
 import tags from "./tags";
-import storeItems from "./storeItems";
 
 const rootReducer = combineReducers({
-    storeItems,
     cartItems,
     modal,
     tags
