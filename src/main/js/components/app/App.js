@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import StickyCartHeader from "../stickyheader/StickyCartHeader";
 import './App.scss';
-import Content from './../content/Content'
+import {Content} from './../content/Content'
 import Modal from "../modal/Modal";
 import CartInfo from "../cart/CartInfo";
 import {Route, Switch, withRouter} from "react-router-dom"
