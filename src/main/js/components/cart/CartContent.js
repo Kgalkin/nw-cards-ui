@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
 import "./CartContent.scss"
-import {clearCart, hideModal, showOrderForm} from "../../reducers/actions";
+import {clearCart, hideModal, showModal} from "../../reducers/actions";
 import CartContentRow from "./CartContentRow";
 import {isEmptyObj} from "../../utils/utils";
+import {ORDER_FORM_MODAL} from "../../reducers/modal";
 
 class CartContent extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.className = "сartContent";
     }
 
@@ -16,7 +17,7 @@ class CartContent extends Component {
             cartContent,
             clearCart,
             hideModal,
-            showOrderForm
+            showModal
         } = this.props;
         const content = [];
         const createItem = item => {
@@ -52,10 +53,10 @@ class CartContent extends Component {
                     hideModal();
                 }}>Очистить корзину
                 </button>
-                <button onClick={showOrderForm}>Перейти к оформлению</button>
+                <button onClick={() => showModal({modalType: ORDER_FORM_MODAL})}>Перейти к оформлению</button>
             </div>
         </div>
     }
 }
 
-export default connect(state => ({cartContent: state.cartItems}), {clearCart, hideModal, showOrderForm})(CartContent);
+export default connect(state => ({cartContent: state.cartItems}), {clearCart, hideModal, showModal})(CartContent);

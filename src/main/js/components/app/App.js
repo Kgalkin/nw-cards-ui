@@ -4,8 +4,8 @@ import './App.scss';
 import Content from './../content/Content'
 import Modal from "../modal/Modal";
 import CartInfo from "../cart/CartInfo";
-import CreateItem from "../createitem/CreateItem";
 import {Route, Switch, withRouter} from "react-router-dom"
+import StoreItems from "../admin/storeitems/StoreItems";
 
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
             <div className='app'>
                 <Switch>
                     <Route path='/admin'>
-                        <CreateItem/>
+                        <StoreItems/>
                     </Route>
                     <Route path='/'>
                         <StickyCartHeader stickyContent={<CartInfo/>} mainContent={

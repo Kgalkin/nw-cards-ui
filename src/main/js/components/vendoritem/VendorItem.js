@@ -5,6 +5,11 @@ import {connect} from "react-redux";
 import SmallImage from "../image/SmallImage";
 
 class VendorItem extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.className = "item";
+    }
     render() {
         const {
             title,
@@ -14,18 +19,17 @@ class VendorItem extends React.Component {
             id,
             addToCart
         } = this.props;
-        const className = "vendorItem";
-        return <div id={id} className={className}>
+        return <div id={id} className={this.className}>
             <h3>{title}</h3>
-            <div className={`${className}_imageContainer`}>
+            <div className={`${this.className}_imageContainer`}>
                 <SmallImage id={id}/>
             </div>
-            <div className={`${className}_descriptionBlock`}>
+            <div className={`${this.className}_descriptionBlock`}>
                 <div>
-                    <p className={`${className}_description`}>{description}</p>
-                    <p className={`${className}_inStock`}>{`В наличии: ${inStock}`}</p>
+                    <p className={`${this.className}_description`}>{description}</p>
+                    <p className={`${this.className}_inStock`}>{`В наличии: ${inStock}`}</p>
                 </div>
-                <button className={`${className}_addButton`}
+                <button className={`${this.className}_addButton`}
                         onClick={() => addToCart({id, title, price, count: 1, inStock})}>
                     {`Добавить в корзину - ${price}руб`}
                 </button>

@@ -1,26 +1,22 @@
-import {HIDE_MODAL, SHOW_MODAL, SHOW_ORDER_FORM} from "./actions"
-import CartContent from "../components/cart/CartContent"
-import OrderForm from "../components/orderform/OrderForm"
+import {HIDE_MODAL, SHOW_MODAL} from "./actions"
 import React from 'react'
-const cartContent = <CartContent/>;
-const orderForm = <OrderForm/>;
-export default function modal(state = {content: cartContent}, action) {
+
+export const CART_MODAL = "CART_MODAL";
+export const ORDER_FORM_MODAL = "ORDER_FORM_MODAL";
+export const CREATE_ITEM_MODAL = "CREATE_ITEM_MODAL";
+
+export default function modal(state = {}, action) {
     switch (action.type) {
         case SHOW_MODAL:
             return {
                 ...state,
-                content: cartContent,
+                modalType: action.payload.modalType,
                 showModal: true
             };
         case HIDE_MODAL:
             return {
                 ...state,
                 showModal: false
-            };
-        case SHOW_ORDER_FORM:
-            return {
-                ...state,
-                content: orderForm
             };
         default:
             return state;

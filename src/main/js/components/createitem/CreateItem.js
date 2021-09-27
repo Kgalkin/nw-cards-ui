@@ -5,7 +5,7 @@ import {loadAllTags} from "../content/contentUtils";
 import {connect} from "react-redux";
 import {updateTags} from "../../reducers/actions";
 
- class CreateItem extends Component {
+class CreateItem extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -39,7 +39,13 @@ import {updateTags} from "../../reducers/actions";
         const formData = new FormData();
 
         formData.append("image", file);
-        formData.append("data", JSON.stringify({price: 10, inStock: 10}));
+        formData.append("data", JSON.stringify({
+            price: this.state.price,
+            inStock: this.state.count,
+            data: {title: this.state.title, description: this.state.description}
+        }));
+
+        console.log(formData);
 
         fetch(`${HOST_AND_PORT}/api/items`, {
             method: 'POST',
@@ -55,22 +61,22 @@ import {updateTags} from "../../reducers/actions";
             <input type="file" id="file" multiple name="file" onChange={this.handleChange}/>
             <button type="submit" className="btn btn-info">Создать контент</button>
             <div>
-                <input id="price"/>
+                <input id="price" onChange={e => this.setState({price: e.target.value})}/>
                 <label>Цена</label>
             </div>
             <div>
-                <input id="inStock"/>
+                <input id="inStock" onChange={e => this.setState({count: e.target.value})}/>
                 <label>Количество</label>
             </div>
             <div>
-                <textarea id="description"/>
+                <textarea id="description" onChange={e => this.setState({description: e.target.value})}/>
                 <label>Описание</label>
             </div>
             <div>
-                <textarea id="title"/>
+                <textarea id="title" onChange={e => this.setState({title: e.target.value})}/>
                 <label>Заголовок</label>
             </div>
-            <Select isMulti = {true} options = {tags.values}/>
+            <Select isMulti={true} options={tags.values}/>
         </form>
     }
 }

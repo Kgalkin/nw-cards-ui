@@ -27,7 +27,7 @@ export const createOrder = () => ({type: CREATE_ORDER});
 export const orderFailed = () => ({type: ORDER_FAILED});
 export const orderSucceed = () => ({type: ORDER_SUCCEED});
 
-export const showModal = () => ({type: SHOW_MODAL});
+export const showModal = (payload) => ({type: SHOW_MODAL, payload});
 export const hideModal = () => ({type: HIDE_MODAL});
 export const showOrderForm = () => ({type: SHOW_ORDER_FORM});
 

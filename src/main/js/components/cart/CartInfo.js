@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './CartInfo.scss'
 import {connect} from 'react-redux'
 import {showModal} from "../../reducers/actions";
+import {CART_MODAL} from "../../reducers/modal";
 
 class CartInfo extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class CartInfo extends Component {
         const className = 'cartInfo';
 
         return <div onClick={() => {
-            if (itemsCount) showModal();
+            if (itemsCount) showModal({modalType: CART_MODAL});
         }}
                     className={className}>
             {/* <svg className={`${className}_iconSvg`} width="30" height="30" viewBox="0 0 30 30" fill="none"

@@ -1,6 +1,6 @@
 import {HOST_AND_PORT} from "../../utils/utils";
 import store from "../../reducers";
-import {LOADING, loadItems, updateTags} from "../../reducers/actions";
+import {LOADING, updateTags} from "../../reducers/actions";
 
 export const PAGE_SIZE = 20;
 
