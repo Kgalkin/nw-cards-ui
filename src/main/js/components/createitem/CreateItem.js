@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Select from 'react-select';
 import {HOST_AND_PORT} from "../../utils/utils";
-import {loadAllTags} from "../content/contentUtils";
+import {loadAllTags} from "../../utils/apiUtils";
 import {connect} from "react-redux";
 import {updateTags} from "../../reducers/actions";
 

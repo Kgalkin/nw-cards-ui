@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import "./Content.scss"
 import VendorItem from "../vendoritem/VendorItem";
-import {loadItemsPage, PAGE_SIZE} from "./contentUtils";
+import {loadItemsPage, PAGE_SIZE} from "../../utils/apiUtils";
 
 export class Content extends Component {
     constructor(props) {
