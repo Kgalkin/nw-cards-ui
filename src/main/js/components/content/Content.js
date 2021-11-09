@@ -13,7 +13,6 @@ export class Content extends Component {
         };
 
         this.loadItems = () => {
-            console.log("Setting state");
             this.setState({loading: true});
             loadItemsPage(this.state.items.length || 0 / PAGE_SIZE)
                 .then(items => this.setState({items: this.state.items.concat(items), loading: false}))
@@ -31,7 +30,7 @@ export class Content extends Component {
 
     componentDidMount() {
         window.addEventListener('scroll', () => {
-            if (document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
+            if ((this.state.items.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
                 && !this.state.loading) {
                 this.loadItems();
             }

@@ -136,7 +136,7 @@ class OrderForm extends Component {
         let order = {data: {name, email, address, index, deliveryOption, items: []}};
         Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({count: v[1].count, id: Number(v[0])}));
         this.setState({loading: true});
-        fetch(`${HOST_AND_PORT}/api/createOrder`, {
+        fetch(`${HOST_AND_PORT}/api/orders`, {
             method: 'POST',
             body: JSON.stringify(order)
         })

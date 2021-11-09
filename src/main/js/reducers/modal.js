@@ -4,6 +4,7 @@ import React from 'react'
 export const CART_MODAL = "CART_MODAL";
 export const ORDER_FORM_MODAL = "ORDER_FORM_MODAL";
 export const CREATE_ITEM_MODAL = "CREATE_ITEM_MODAL";
+export const CREATE_TAG_MODAL = 'CREATE_TAG_MODAL';
 
 export default function modal(state = {}, action) {
     switch (action.type) {

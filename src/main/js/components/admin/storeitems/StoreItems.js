@@ -2,7 +2,7 @@ import React from 'react';
 import {Content} from "../../content/Content";
 import {connect} from "react-redux";
 import {showModal} from "../../../reducers/actions";
-import {CREATE_ITEM_MODAL} from "../../../reducers/modal";
+import {CREATE_ITEM_MODAL, CREATE_TAG_MODAL} from "../../../reducers/modal";
 import {EditableItem} from "../editableitem/EditableItem";
 import './StoreItems.scss'
 
@@ -15,6 +15,7 @@ class StoreItems extends Content {
         const {showModal} = this.props;
         return <>
             <button className={`${this.className}_create_new`} onClick={() => showModal({modalType: CREATE_ITEM_MODAL})}>{"Добавить новый товар"}</button>
+            <button className={`${this.className}_create_new`} onClick={() => showModal({modalType: CREATE_TAG_MODAL})}>{"Новый тэг"}</button>
             {super.render()}</>
     }
 

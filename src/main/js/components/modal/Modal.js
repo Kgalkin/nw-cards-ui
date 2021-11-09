@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import './Modal.scss'
 import {hideModal} from "../../reducers/actions";
-import {CART_MODAL, CREATE_ITEM_MODAL, ORDER_FORM_MODAL} from "../../reducers/modal";
+import {CART_MODAL, CREATE_ITEM_MODAL, CREATE_TAG_MODAL, ORDER_FORM_MODAL} from "../../reducers/modal";
 import CartContent from "../cart/CartContent";
 import OrderForm from "../orderform/OrderForm";
-import CreateItem from "../createitem/CreateItem";
+import CreateItem from "../admin/createitem/CreateItem";
+import AddTag from "../admin/addtag/AddTag";
 
 class Modal extends Component {
     render() {
@@ -34,6 +35,8 @@ class Modal extends Component {
                 return <OrderForm/>;
             case CREATE_ITEM_MODAL:
                 return <CreateItem/>;
+            case CREATE_TAG_MODAL:
+                return <AddTag/>;
             default:
                 return null;
 
@@ -42,7 +45,6 @@ class Modal extends Component {
 }
 
 export default connect(state => {
-    console.log(state);
     return ({
     showModal: state.modal.showModal,
     modalType: state.modal.modalType

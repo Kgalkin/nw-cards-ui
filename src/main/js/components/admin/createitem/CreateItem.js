@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import Select from 'react-select';
-import {HOST_AND_PORT} from "../../utils/utils";
-import {loadAllTags} from "../../utils/apiUtils";
+import {HOST_AND_PORT} from "../../../utils/utils";
+import {loadAllTags} from "../../../utils/apiUtils";
 import {connect} from "react-redux";
-import {updateTags} from "../../reducers/actions";
+import {LOADING, updateTags} from "../../../reducers/actions";
+import './CreateItem.scss'
 
 class CreateItem extends Component {
     constructor(props) {
@@ -20,7 +21,9 @@ class CreateItem extends Component {
     }
 
     handleChange(event) {
-        this.setState({files: event.target.files});
+        var filesArr = Array.prototype.slice.call(event.target.files);
+        console.log(filesArr);
+        this.setState({files: [...this.state.files, ...filesArr]});
     }
 
     componentDidMount() {
@@ -29,6 +32,8 @@ class CreateItem extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
+        console.log('Creating content');
+        console.log(this.state.files.length);
         for (let i = 0; i < this.state.files.length; i++) {
             this.uploadFile(this.state.files[i]);
         }
@@ -36,15 +41,16 @@ class CreateItem extends Component {
     }
 
     async uploadFile(file) {
+        console.log('Uploading file');
         const formData = new FormData();
 
         formData.append("image", file);
         formData.append("data", JSON.stringify({
-            price: this.state.price,
-            inStock: this.state.count,
+            price: Number(this.state.price),
+            inStock: Number(this.state.count),
             data: {title: this.state.title, description: this.state.description}
         }));
-
+        console.log();
         console.log(formData);
 
         fetch(`${HOST_AND_PORT}/api/items`, {
@@ -58,7 +64,15 @@ class CreateItem extends Component {
             tags
         } = this.props;
         return <form onSubmit={this.handleSubmit}>
-            <input type="file" id="file" multiple name="file" onChange={this.handleChange}/>
+            <div className="custom-file-upload">
+                <label>
+                    <input type="file" id="file" multiple name="file" onChange={this.handleChange}/>
+                    <i/> Добавить файлы
+                </label>
+                {this.state.files.map(x =>
+                    <div className="file-preview">{x.name}</div>
+                )}
+            </div>
             <button type="submit" className="btn btn-info">Создать контент</button>
             <div>
                 <input id="price" onChange={e => this.setState({price: e.target.value})}/>
@@ -76,7 +90,7 @@ class CreateItem extends Component {
                 <textarea id="title" onChange={e => this.setState({title: e.target.value})}/>
                 <label>Заголовок</label>
             </div>
-            <Select isMulti={true} options={tags.values}/>
+            <Select isMulti={true} options={tags.values} isLoading={tags.state === LOADING}/>
         </form>
     }
 }

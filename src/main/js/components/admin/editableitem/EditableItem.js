@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import SmallImage from "../../image/SmallImage";
+import './EditableItem.scss'
 
 export class EditableItem extends Component {
     constructor(props) {
         super(props);
+        this.className = 'adminItem';
         this.state = {
             editable: false,
             title: null,
@@ -34,15 +36,15 @@ export class EditableItem extends Component {
             <div className={`${this.className}_descriptionBlock`}>
                 <div>
                     <textarea disabled={!this.state.editable} className={`${this.className}_description`}
-                              value={description} onChange={e =>
+                              value={this.state.description || description} onChange={e =>
                         this.setState({description: e.target.value})}/>
                     <div><label>{`Цена: `}</label>
-                        <input disabled={!this.state.editable} className={`${this.className}_price`} value={price}
+                        <input disabled={!this.state.editable} className={`${this.className}_price`} value={this.state.price || price}
                                onChange={e =>
                                    this.setState({price: e.target.value})}/>
                     </div>
-                    <div><label>{`В наличии: `}</label>>
-                        <input disabled={!this.state.editable} className={`${this.className}_inStock`} value={inStock}
+                    <div><label>{`В наличии: `}</label>
+                        <input disabled={!this.state.editable} className={`${this.className}_inStock`} value={this.state.inStock || inStock}
                                onChange={e =>
                                    this.setState({inStock: e.target.value})}/>
                     </div>
