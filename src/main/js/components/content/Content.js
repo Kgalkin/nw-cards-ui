@@ -1,21 +1,20 @@
 import React, {Component} from 'react';
 import "./Content.scss"
 import VendorItem from "../vendoritem/VendorItem";
-import {loadItemsPage, PAGE_SIZE} from "../../utils/apiUtils";
+import {loadItemsPage} from "../../utils/apiUtils";
+import {connect} from "react-redux";
+import {LOADING} from "../../reducers/actions";
+
+export const PAGE_SIZE = 20;
 
 export class Content extends Component {
     constructor(props) {
         super(props);
         this.className = "content";
-        this.state = {
-            loading: false,
-            items: []
-        };
+
 
         this.loadItems = () => {
-            this.setState({loading: true});
-            loadItemsPage(this.state.items.length || 0 / PAGE_SIZE)
-                .then(items => this.setState({items: this.state.items.concat(items), loading: false}))
+            loadItemsPage(this.props.items.nextOffset, PAGE_SIZE, this.props.activeTags || []);
         };
     }
 
@@ -23,32 +22,38 @@ export class Content extends Component {
         return <div className={this.className}>
             <div className={`${this.className}_itemContainer`}>
                 {this.constructItems()}
-                {this.state.loading && <h1>Loading...</h1>}
+                {this.props.items.state === LOADING && <h1>Loading...</h1>}
             </div>
         </div>
     }
 
     componentDidMount() {
         window.addEventListener('scroll', () => {
-            if ((this.state.items.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
-                && !this.state.loading) {
+            if (((this.props.items.items.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
+                && this.props.items.state !== LOADING)) {
                 this.loadItems();
             }
         });
         this.loadItems();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.items.state !== LOADING && this.props.items.totalCount === undefined) {
+            this.loadItems()
+        }
+    }
+
     constructItems = () => {
         let children = [];
-        this.state.items.forEach(i => {
-                const {
-                    title,
-                    description
-                } = i.data;
-                children.push(<VendorItem key={i.id} id={i.id} title={title} description={description}
-                                          price={`${i.price}`} inStock={i.inStock}/>)
+        this.props.items.items.forEach(i => {
+                children.push(<VendorItem key={i.id} item = {i}/>)
             }
         );
         return children;
     }
 }
+
+export default connect(s => ({
+    activeTags: s.tags.activeTags,
+    items: s.items
+}), null)(Content);

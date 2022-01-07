@@ -2,7 +2,7 @@ import React from 'react'
 import './VendorItem.scss';
 import {addToCart} from './../../reducers/actions'
 import {connect} from "react-redux";
-import SmallImage from "../image/SmallImage";
+import Image from "../image/Image";
 
 class VendorItem extends React.Component {
     constructor(props) {
@@ -11,18 +11,12 @@ class VendorItem extends React.Component {
         this.className = "item";
     }
     render() {
-        const {
-            title,
-            price,
-            description,
-            inStock,
-            id,
-            addToCart
-        } = this.props;
+        const {id, price, inStock} = this.props.item;
+        const {title, description, links} = this.props.item.data;
         return <div id={id} className={this.className}>
             <h3>{title}</h3>
             <div className={`${this.className}_imageContainer`}>
-                <SmallImage id={id}/>
+                <Image links={links}/>
             </div>
             <div className={`${this.className}_descriptionBlock`}>
                 <div>

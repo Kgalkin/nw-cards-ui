@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import './CartContentRow.scss'
-import SmallImage from "../image/SmallImage";
+import Image from "../image/Image";
 import {connect} from 'react-redux'
 import {removeFromCart, updateCount} from "../../reducers/actions";
 
@@ -31,7 +31,7 @@ class CartContentRow extends Component {
         const className = 'cartContentRow';
         return <div className={className}>
             <div className={`${className}_image`}>
-                {id ? <SmallImage id={id}/> : null}
+                {id ? <Image id={id}/> : null}
             </div>
             <div className={`${className}_title`}>{title}</div>
             <div className={`${className}_count`}>

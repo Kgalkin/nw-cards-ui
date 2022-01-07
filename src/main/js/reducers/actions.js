@@ -7,8 +7,13 @@ export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const SHOW_CART_FORM = 'SHOW_CART_FORM';
 export const SHOW_ORDER_FORM = 'SHOW_ORDER_FORM';
-export const LOAD_STORE_ITEMS = 'LOAD_STORE_ITEMS';
+export const ADD_ITEMS = 'ADD_ITEMS';
+export const SET_ITEMS_LOADING = 'SET_ITEMS_LOADING';
+
+export const CLEAR_ITEMS = 'CLEAR_ITEMS';
 export const UPDATE_TAGS = 'UPDATE_TAGS';
+export const ADD_ACTIVE_TAGS = 'ADD_ACTIVE_TAGS';
+
 
 export const LOADING = 'Loading';
 
@@ -17,11 +22,13 @@ export const removeFromCart = id => ({type: REMOVE_FROM_CART, payload: {id}});
 export const updateCount = payload => ({type: UPDATE_COUNT, payload});
 export const clearCart = () => ({type: CLEAR_CART});
 
-export const loadItems = payload => ({type: LOAD_STORE_ITEMS, payload});
-export const addItems = payload => ({});
+export const addItems = payload => ({type: ADD_ITEMS, payload});
+export const clearItems = () => ({type: CLEAR_ITEMS})
+export const setItemsLoading = () => ({type: SET_ITEMS_LOADING})
 
 export const updateTags = payload => ({type: UPDATE_TAGS, payload});
 export const addTags = payload => ({});
+export const addActiveTags = payload => ({type:ADD_ACTIVE_TAGS, payload});
 
 export const createOrder = () => ({type: CREATE_ORDER});
 export const orderFailed = () => ({type: ORDER_FAILED});

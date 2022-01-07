@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SmallImage from "../../image/SmallImage";
+import Image from "../../image/Image";
 import './EditableItem.scss'
 
 export class EditableItem extends Component {
@@ -31,7 +31,7 @@ export class EditableItem extends Component {
                       value={this.state.title || title} onChange={e =>
                 this.setState({title: e.target.value})}/>
             <div className={`${this.className}_imageContainer`}>
-                <SmallImage id={id}/>
+                <Image id={id}/>
             </div>
             <div className={`${this.className}_descriptionBlock`}>
                 <div>
