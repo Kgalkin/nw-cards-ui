@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import Select from 'react-select';
-import {HOST_AND_PORT} from "../../../utils/utils";
-import {loadAllTags} from "../../../utils/apiUtils";
 import {connect} from "react-redux";
-import {LOADING, updateTags} from "../../../reducers/actions";
+import {updateTags} from "../../../reducers/actions";
 import './CreateItem.scss'
+import AddTag from "../addtag/AddTag";
+import {HOST_AND_PORT} from "../../../utils/utils";
 
 class CreateItem extends Component {
     constructor(props) {
         super(props);
+        this.tagInput = null;
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
@@ -24,10 +24,6 @@ class CreateItem extends Component {
         var filesArr = Array.prototype.slice.call(event.target.files);
         console.log(filesArr);
         this.setState({files: [...this.state.files, ...filesArr]});
-    }
-
-    componentDidMount() {
-        loadAllTags();
     }
 
     async handleSubmit(e) {
@@ -48,7 +44,8 @@ class CreateItem extends Component {
         formData.append("data", JSON.stringify({
             price: Number(this.state.price),
             inStock: Number(this.state.count),
-            data: {title: this.state.title, description: this.state.description}
+            data: {title: this.state.title, description: this.state.description},
+            tags: this.tagInput.state.selected.map(t => t.value)
         }));
         console.log();
         console.log(formData);
@@ -90,7 +87,8 @@ class CreateItem extends Component {
                 <textarea id="title" onChange={e => this.setState({title: e.target.value})}/>
                 <label>Заголовок</label>
             </div>
-            <Select isMulti={true} options={tags.values} isLoading={tags.state === LOADING}/>
+            <AddTag ref={el =>
+                this.tagInput = el}/>
         </form>
     }
 }

@@ -1,6 +1,6 @@
 import {HOST_AND_PORT} from "./utils";
 import store from "../reducers";
-import {addItems, LOADING, setItemsLoading, updateTags} from "../reducers/actions";
+import {addItems, LOADING, setItemsLoading, updateItem, updateTags} from "../reducers/actions";
 
 export const getMenu = () => {
     return fetch(`${HOST_AND_PORT}/api/menu`)
@@ -45,6 +45,18 @@ export const createTag = tag => {
             .filter(t => t.value === tag)[0]);
 
 };
+
+export const patchItem = item => {
+    return fetch(`${HOST_AND_PORT}/api/items/${item.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(item)
+    }).then(response => response.json())
+        .catch(alert)
+        .then(r => {
+            store.dispatch(updateItem({item: r}));
+            return r;
+        })
+}
 
 export const debounce = (func, delay) => {
     let clearTimer;

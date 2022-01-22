@@ -2,12 +2,13 @@ import React from "react";
 import {getMenu} from "../../../utils/apiUtils";
 import {connect} from 'react-redux'
 import MenuItem from "./MenuItem";
+import "./Menu.scss"
 
 class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuItems:[]
+            menuItems: []
         }
     }
 
@@ -20,7 +21,8 @@ class Menu extends React.Component {
         const {
             menuItems,
         } = this.state
-        return <>{menuItems.map(it => <MenuItem item={it}/>)}</>;
+        const class_name = "menu"
+        return <div className={class_name}>{menuItems.map(it => <MenuItem item={it}/>)}</div>;
     }
 }
 

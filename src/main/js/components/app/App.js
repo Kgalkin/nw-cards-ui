@@ -7,9 +7,13 @@ import CartInfo from "../cart/CartInfo";
 import {Route, Switch, withRouter} from "react-router-dom"
 import StoreItems from "../admin/storeitems/StoreItems";
 import Menu from "../admin/menuselectitems/Menu";
+import {loadAllTags} from "../../utils/apiUtils";
 
 
 class App extends Component {
+    componentDidMount() {
+        loadAllTags();
+    }
 
     render() {
         this.state;

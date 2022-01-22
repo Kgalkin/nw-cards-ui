@@ -3,19 +3,28 @@ import React, {Component} from 'react'
 import CreatableSelect from 'react-select/creatable';
 import {connect} from "react-redux";
 import {LOADING, updateTags} from "../../../reducers/actions";
-import {createTag, loadAllTags} from "../../../utils/apiUtils";
+import {createTag} from "../../../utils/apiUtils";
 
 class AddTag extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: props?.tags?.state === LOADING || false,
+            initiated: false,
             selected: []
         }
     }
 
-    componentDidMount() {
-        loadAllTags();
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!this.state.initiated
+            && this.props.tags.values.length > 0
+            && this.props.initTags.length > 0) {
+            this.setState({
+                initiated: true,
+                selected: this.props.tags.values
+                    .filter(tag => this.props.initTags.includes(tag.id))
+                    .map(tag => ({value: tag.id, label: tag.value}))
+            })
+        }
     }
 
     handleChange = (
@@ -34,8 +43,8 @@ class AddTag extends Component {
         const {selected} = this.state;
         createTag(inputValue)
             .then((created) => {
-                console.log("Created")
-                console.log(created)
+                    console.log("Created")
+                    console.log(created)
                     this.setState({
                         isLoading: false,
                         selected: [...selected || [], {value: created.id, label: created.value}],
@@ -45,7 +54,7 @@ class AddTag extends Component {
     };
 
     render() {
-        const {isLoading, selected} = this.state;
+        const {selected} = this.state;
         console.group("render");
         console.log("in Render");
         console.log(this.props);
@@ -54,8 +63,8 @@ class AddTag extends Component {
             <CreatableSelect
                 isMulti={true}
                 isClearable
-                isDisabled={this.props?.tags?.state === LOADING || isLoading}
-                isLoading={this.props?.tags?.state === LOADING || isLoading}
+                isDisabled={this.props.disabled || this.props?.tags?.state === LOADING}
+                isLoading={this.props?.tags?.state === LOADING}
                 onChange={this.handleChange}
                 onCreateOption={this.handleCreate}
                 options={this.props.tags.values.map(i => ({value: i.id, label: i.value}))}
@@ -65,4 +74,4 @@ class AddTag extends Component {
     }
 }
 
-export default connect(s => ({tags: s.tags}), {updateTags})(AddTag)
+export default connect(s => ({tags: s.tags}), {updateTags}, null, {forwardRef: true})(AddTag)

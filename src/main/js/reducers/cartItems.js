@@ -12,21 +12,21 @@ function withLocalStorageSave(o) {
 const initState = getFromLocalStorage();
 
 export default function cartItems(state = initState, action) {
+    console.log(action)
     return withLocalStorageSave(cartItemsInner(state, action));
 }
 
 function cartItemsInner(state, action) {
+    console.log(action)
     switch (action.type) {
         case ADD_TO_CART:
             let contain = state[action.payload.id];
-            let count = action.payload.count + ((contain || 0) && contain.count);
+            let count = action.payload.count + (contain?.count || 0);
             return {
                 ...state,
                 [action.payload.id]: {
-                    title: action.payload.title,
-                    count,
-                    price: action.payload.price,
-                    inStock: action.payload.inStock
+                    ...action.payload,
+                    count
                 }
             };
         case UPDATE_COUNT:

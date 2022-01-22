@@ -9,6 +9,7 @@ export const SHOW_CART_FORM = 'SHOW_CART_FORM';
 export const SHOW_ORDER_FORM = 'SHOW_ORDER_FORM';
 export const ADD_ITEMS = 'ADD_ITEMS';
 export const SET_ITEMS_LOADING = 'SET_ITEMS_LOADING';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
 
 export const CLEAR_ITEMS = 'CLEAR_ITEMS';
 export const UPDATE_TAGS = 'UPDATE_TAGS';
@@ -25,6 +26,7 @@ export const clearCart = () => ({type: CLEAR_CART});
 export const addItems = payload => ({type: ADD_ITEMS, payload});
 export const clearItems = () => ({type: CLEAR_ITEMS})
 export const setItemsLoading = () => ({type: SET_ITEMS_LOADING})
+export const updateItem = (payload) => ({type: UPDATE_ITEM, payload})
 
 export const updateTags = payload => ({type: UPDATE_TAGS, payload});
 export const addTags = payload => ({});

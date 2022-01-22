@@ -21,13 +21,8 @@ class StoreItems extends Content {
 
     constructItems = () => {
         let children = [];
-        this.state.items.forEach(i => {
-                const {
-                    title,
-                    description
-                } = i.data;
-                children.push(<EditableItem key={i.id} id={i.id} title={title} description={description}
-                                            price={`${i.price}`} inStock={i.inStock}/>)
+        this.props.items.items.forEach(i => {
+                children.push(<EditableItem key={i.id} item = {i}/>)
             }
         );
         return children;
@@ -35,4 +30,7 @@ class StoreItems extends Content {
     }
 }
 
-export default connect(null, {showModal})(StoreItems);
+export default connect(s => ({
+    activeTags: s.tags.activeTags,
+    items: s.items
+}), {showModal})(StoreItems);

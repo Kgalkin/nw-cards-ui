@@ -1,4 +1,5 @@
 @import "../../styles/_fonts.scss";
+@import '../../styles/colors';
 
 .orderForm {
   &_infoHeader {
@@ -36,7 +37,7 @@ input:not([type=radio]), textarea {
 }
 
 & .error {
-  border: 2px solid red;
+  border: 2px solid $error;
 }
 
 }

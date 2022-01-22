@@ -1,54 +1,60 @@
 import React, {Component} from 'react';
 import Image from "../../image/Image";
 import './EditableItem.scss'
+import AddTag from "../addtag/AddTag";
+import {patchItem, updateItem} from "../../../utils/apiUtils";
 
 export class EditableItem extends Component {
     constructor(props) {
         super(props);
         this.className = 'adminItem';
+        this.tagInput = null;
         this.state = {
             editable: false,
-            title: null,
+            item: this.props.item,
+            /*title: null,
             description: null,
             price: null,
-            inStock: null,
-            tags: []
+            inStock: null,*/
         }
     }
 
+    updateItem = (updItem) => {
+        let item = this.state.item;
+        updItem(item)
+        this.setState({item});
+    }
+
     render() {
-        const {
-            id,
-            title,
-            description,
-            price,
-            inStock,
-            tags
-        } = this.props;
+        const {id, price, inStock, tags} = this.state.item;
+        const {title, description, links} = this.state.item.data;
 
         return <div id={id} className={this.className}>
             <textarea disabled={!this.state.editable} className={`${this.className}_title`}
-                      value={this.state.title || title} onChange={e =>
-                this.setState({title: e.target.value})}/>
+                      value={title} onChange={e =>
+                this.updateItem(item => item.data.title = e.target.value)}/>
             <div className={`${this.className}_imageContainer`}>
-                <Image id={id}/>
+                <Image links={links}/>
             </div>
             <div className={`${this.className}_descriptionBlock`}>
                 <div>
                     <textarea disabled={!this.state.editable} className={`${this.className}_description`}
-                              value={this.state.description || description} onChange={e =>
-                        this.setState({description: e.target.value})}/>
+                              value={description} onChange={e =>
+                        this.updateItem(item => item.data.description = e.target.value)}/>
                     <div><label>{`Цена: `}</label>
-                        <input disabled={!this.state.editable} className={`${this.className}_price`} value={this.state.price || price}
+                        <input disabled={!this.state.editable} className={`${this.className}_price`}
+                               value={price}
                                onChange={e =>
-                                   this.setState({price: e.target.value})}/>
+                                   this.updateItem(item => item.price = Number(e.target.value))}/>
                     </div>
                     <div><label>{`В наличии: `}</label>
-                        <input disabled={!this.state.editable} className={`${this.className}_inStock`} value={this.state.inStock || inStock}
+                        <input disabled={!this.state.editable} className={`${this.className}_inStock`}
+                               value={inStock}
                                onChange={e =>
-                                   this.setState({inStock: e.target.value})}/>
+                                   this.updateItem(item => item.inStock = Number(e.target.value))}/>
                     </div>
                 </div>
+                <AddTag ref={el => this.tagInput = el} initTags={tags} disabled={!this.state.editable}/>
                 <button className={`${this.className}_addButton`}
                         onClick={this.state.editable ? this.save : this.edit}>
                     {this.state.editable ? `Save` : `Edit`}
@@ -59,7 +65,12 @@ export class EditableItem extends Component {
 
     save = () => {
         this.setState({editable: false});
-        //save item
+        this.state.item.tags = this.tagInput.state.selected.map(s => Number(s.value));
+        console.group("changedItem")
+        console.log(this.state.item)
+        console.groupEnd()
+
+        patchItem(this.state.item)//save item
     };
 
     edit = () => {

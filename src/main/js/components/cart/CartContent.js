@@ -6,6 +6,13 @@ import CartContentRow from "./CartContentRow";
 import {isEmptyObj} from "../../utils/utils";
 import {ORDER_FORM_MODAL} from "../../reducers/modal";
 
+const createItem = item => {
+    return {
+        id: item[0],
+        ...item[1]
+    };
+};
+
 class CartContent extends Component {
     constructor(props) {
         super(props);
@@ -19,22 +26,17 @@ class CartContent extends Component {
             hideModal,
             showModal
         } = this.props;
+        console.log(cartContent);
         const content = [];
-        const createItem = item => {
-            return {
-                id: item[0],
-                title: item[1].title,
-                count: item[1].count,
-                price: item[1].price
-            };
-        };
         if (isEmptyObj(cartContent))
             hideModal();
         let totalPrice = 0;
         content.push(<CartContentRow key={content.length}
                                      item={{
                                          id: null,
-                                         title: "Название",
+                                         data: {
+                                             title: "Название"
+                                         },
                                          count: "Количество",
                                          price: "Цена, руб",
                                          total: "Итого, руб"
@@ -53,7 +55,9 @@ class CartContent extends Component {
                     hideModal();
                 }}>Очистить корзину
                 </button>
-                <button onClick={() => showModal({modalType: ORDER_FORM_MODAL})}>Перейти к оформлению</button>
+                <button disabled={cartContent && Object.entries(cartContent).some(it => it[1].count > it[1].inStock)}
+                        onClick={() => showModal({modalType: ORDER_FORM_MODAL})}>Перейти к оформлению
+                </button>
             </div>
         </div>
     }

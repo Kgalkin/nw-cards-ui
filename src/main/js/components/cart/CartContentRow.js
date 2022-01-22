@@ -1,40 +1,45 @@
 import React, {Component} from 'react'
 import './CartContentRow.scss'
 import Image from "../image/Image";
-import {connect} from 'react-redux'
+import {connect} from "react-redux";
 import {removeFromCart, updateCount} from "../../reducers/actions";
 
 
 class CartContentRow extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props)
         this.handleCountChange = this.handleCountChange.bind(this);
         //this.handleCountOnBlur = this.handleCountOnBlur.bind(this);
         this.state = {
             countInputValue: 0,
-            inEditing: false
+            inEditing: false,
         }
+        this.countOverflow = () => this.props.item.count > this.props.item.inStock
     }
 
     handleCountChange(e) {
-        this.setState({countInputValue: e.target.value, inEditing: true});
+        this.setState({
+            countInputValue: e.target.value,
+            inEditing: true,
+        });
     }
 
     render() {
         const {
             id,
-            title,
+            data,
             count,
-            price
+            price,
+            inStock
         } = this.props.item;
         const total = this.props.item.total || count * price;
         const className = 'cartContentRow';
         return <div className={className}>
             <div className={`${className}_image`}>
-                {id ? <Image id={id}/> : null}
+                {id ? <Image links={data.links}/> : null}
             </div>
-            <div className={`${className}_title`}>{title}</div>
-            <div className={`${className}_count`}>
+            <div className={`${className}_title`}>{data?.title}</div>
+            <div className={`${className + "_count" + (this.countOverflow() ? "_error" : "")}`}>
                 {Number(count) ?
                     <input value={this.state.inEditing ? this.state.countInputValue : count} onBlur={(e) => {
                         const newCount = Number(e.target.value);
@@ -49,13 +54,17 @@ class CartContentRow extends Component {
                                    e.target.blur();
                                }
                            }}/> : count}
+                <div
+                    className={`${className}_warningText`}>
+                    {this.countOverflow() ? `В наличии только ${inStock}` : ""}</div>
             </div>
             <div className={`${className}_price`}>{price}</div>
             <div className={`${className}_total`}>{total}</div>
             <div className={`${className}_remove`}>
                 {Number(count) ? <div onClick={() => this.props.removeFromCart(id)}>&times;</div> : null}
             </div>
-        </div>;
+        </div>
+            ;
     }
 }
 

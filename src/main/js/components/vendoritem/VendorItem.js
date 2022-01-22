@@ -24,7 +24,10 @@ class VendorItem extends React.Component {
                     <p className={`${this.className}_inStock`}>{`В наличии: ${inStock}`}</p>
                 </div>
                 <button className={`${this.className}_addButton`}
-                        onClick={() => addToCart({id, title, price, count: 1, inStock})}>
+                        onClick={() => {
+                            console.log("add to cart click !!!")
+                            this.props.addToCart({...this.props.item, count:1})
+                        }}>
                     {`Добавить в корзину - ${price}руб`}
                 </button>
 
