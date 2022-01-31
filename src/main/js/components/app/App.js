@@ -8,6 +8,7 @@ import {Route, Switch, withRouter} from "react-router-dom"
 import StoreItems from "../admin/storeitems/StoreItems";
 import Menu from "../admin/menuselectitems/Menu";
 import {loadAllTags} from "../../utils/apiUtils";
+import OrdersList from "../admin/orders/OrdersList";
 
 
 class App extends Component {
@@ -24,7 +25,7 @@ class App extends Component {
                         <StoreItems/>
                     </Route>
                     <Route path='/admin/orders'>
-                        <StoreItems/>
+                        <OrdersList/>
                     </Route>
                     <Route path='/'>
                         <StickyCartHeader stickyContent={

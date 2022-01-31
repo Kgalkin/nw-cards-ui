@@ -35,8 +35,6 @@ class Modal extends Component {
                 return <OrderForm/>;
             case CREATE_ITEM_MODAL:
                 return <CreateItem/>;
-            case CREATE_TAG_MODAL:
-                return <AddTag/>;
             default:
                 return null;
 

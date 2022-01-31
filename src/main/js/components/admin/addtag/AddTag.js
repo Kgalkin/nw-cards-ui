@@ -17,7 +17,7 @@ class AddTag extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (!this.state.initiated
             && this.props.tags.values.length > 0
-            && this.props.initTags.length > 0) {
+            && this.props.initTags?.length > 0) {
             this.setState({
                 initiated: true,
                 selected: this.props.tags.values

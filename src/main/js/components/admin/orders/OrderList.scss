@@ -1,0 +1,10 @@
+@import "../../../styles/fonts.scss";
+
+.order_list {
+  width: 100%;
+  @include subHeader
+}
+
+table, tr, td, th{
+  border: 2px solid black;
+}

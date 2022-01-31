@@ -15,7 +15,6 @@ class StoreItems extends Content {
         const {showModal} = this.props;
         return <>
             <button className={`${this.className}_create_new`} onClick={() => showModal({modalType: CREATE_ITEM_MODAL})}>{"Добавить новый товар"}</button>
-            <button className={`${this.className}_create_new`} onClick={() => showModal({modalType: CREATE_TAG_MODAL})}>{"Новый тэг"}</button>
             {super.render()}</>
     }
 

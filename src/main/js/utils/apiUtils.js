@@ -20,6 +20,11 @@ export const loadItemsPage = (offset, size, tags) => {
         .then(r => store.dispatch(addItems(r)))
 };
 
+export const loadItemsIds = (ids) => {
+    return fetch(`${HOST_AND_PORT}/api/items?ids=${ids.join(",")}&size=1000`)
+        .catch(alert)
+}
+
 export const loadAllTags = () => {
     store.dispatch(updateTags({state: LOADING}));
     return fetch(`${HOST_AND_PORT}/api/tags`)
@@ -56,6 +61,12 @@ export const patchItem = item => {
             store.dispatch(updateItem({item: r}));
             return r;
         })
+}
+
+export const loadOrders = state => {
+    return fetch(`${HOST_AND_PORT}/api/orders?state=${state}`)
+        .then(r => r.json())
+        .catch(alert)
 }
 
 export const debounce = (func, delay) => {

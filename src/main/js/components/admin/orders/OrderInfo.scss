@@ -1,0 +1,23 @@
+@import "../../../styles/fonts.scss";
+
+.order_info{
+  table-layout: fixed;
+  border: none;
+  text-align: center;
+  @include text;
+  background-color: white;
+  & td, th {
+    border: none;
+    border-left: 2px solid gray;
+    border-bottom: 2px solid gray;
+  }
+  & td:first-child{
+    width: 5%
+  }
+  & td:nth-child(2){
+    width: 5%
+  }
+  & img {
+    width: 100%;
+  }
+}

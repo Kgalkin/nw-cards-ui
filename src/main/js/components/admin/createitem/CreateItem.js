@@ -17,16 +17,17 @@ class CreateItem extends Component {
             description: null,
             title: null,
             count: null,
+            loading: false
         }
     }
 
     handleChange(event) {
-        var filesArr = Array.prototype.slice.call(event.target.files);
+        let filesArr = Array.prototype.slice.call(event.target.files);
         console.log(filesArr);
         this.setState({files: [...this.state.files, ...filesArr]});
     }
 
-    async handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
         console.log('Creating content');
         console.log(this.state.files.length);
@@ -36,7 +37,7 @@ class CreateItem extends Component {
         this.setState({files: []});
     }
 
-    async uploadFile(file) {
+    uploadFile = (file) => {
         console.log('Uploading file');
         const formData = new FormData();
 
@@ -50,46 +51,48 @@ class CreateItem extends Component {
         console.log();
         console.log(formData);
 
+        this.setState({loading: true})
         fetch(`${HOST_AND_PORT}/api/items`, {
             method: 'POST',
             body: formData
-        });
+        }).then(() => this.setState({loading: false}))
     }
 
     render() {
         const {
             tags
         } = this.props;
-        return <form onSubmit={this.handleSubmit}>
-            <div className="custom-file-upload">
-                <label>
-                    <input type="file" id="file" multiple name="file" onChange={this.handleChange}/>
-                    <i/> Добавить файлы
-                </label>
-                {this.state.files.map(x =>
-                    <div className="file-preview">{x.name}</div>
-                )}
-            </div>
-            <button type="submit" className="btn btn-info">Создать контент</button>
-            <div>
-                <input id="price" onChange={e => this.setState({price: e.target.value})}/>
-                <label>Цена</label>
-            </div>
-            <div>
-                <input id="inStock" onChange={e => this.setState({count: e.target.value})}/>
-                <label>Количество</label>
-            </div>
-            <div>
-                <textarea id="description" onChange={e => this.setState({description: e.target.value})}/>
-                <label>Описание</label>
-            </div>
-            <div>
-                <textarea id="title" onChange={e => this.setState({title: e.target.value})}/>
-                <label>Заголовок</label>
-            </div>
-            <AddTag ref={el =>
-                this.tagInput = el}/>
-        </form>
+        return this.state.loading ? <div>Loading...</div> :
+            <form onSubmit={this.handleSubmit}>
+                <div className="custom-file-upload">
+                    <label>
+                        <input type="file" id="file" multiple name="file" onChange={this.handleChange}/>
+                        <i/> Добавить файлы
+                    </label>
+                    {this.state.files.map(x =>
+                        <div className="file-preview">{x.name}</div>
+                    )}
+                </div>
+                <button type="submit" className="btn btn-info">Создать контент</button>
+                <div>
+                    <input id="price" onChange={e => this.setState({price: e.target.value})}/>
+                    <label>Цена</label>
+                </div>
+                <div>
+                    <input id="inStock" onChange={e => this.setState({count: e.target.value})}/>
+                    <label>Количество</label>
+                </div>
+                <div>
+                    <textarea id="description" onChange={e => this.setState({description: e.target.value})}/>
+                    <label>Описание</label>
+                </div>
+                <div>
+                    <textarea id="title" onChange={e => this.setState({title: e.target.value})}/>
+                    <label>Заголовок</label>
+                </div>
+                <AddTag ref={el =>
+                    this.tagInput = el}/>
+            </form>
     }
 }
 

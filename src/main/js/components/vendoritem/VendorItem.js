@@ -13,7 +13,7 @@ class VendorItem extends React.Component {
     render() {
         const {id, price, inStock} = this.props.item;
         const {title, description, links} = this.props.item.data;
-        return <div id={id} className={this.className}>
+        return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
             <h3>{title}</h3>
             <div className={`${this.className}_imageContainer`}>
                 <Image links={links}/>
@@ -27,7 +27,8 @@ class VendorItem extends React.Component {
                         onClick={() => {
                             console.log("add to cart click !!!")
                             this.props.addToCart({...this.props.item, count:1})
-                        }}>
+                        }}
+                disabled={!inStock}>
                     {`Добавить в корзину - ${price}руб`}
                 </button>
 
