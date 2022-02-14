@@ -1,23 +1,46 @@
 @import "../../../styles/fonts.scss";
 
-.order_info{
-  table-layout: fixed;
-  border: none;
-  text-align: center;
-  @include text;
+.order_info {
+  width: 600px;
   background-color: white;
-  & td, th {
+  @include text;
+
+  &_description_item {
+    display: flex;
+    justify-content: left;
+
+    &:last-of-type{
+      margin-bottom: 2%;
+    }
+
+    &_label {
+      font-weight: bold;
+      margin-right: 5%;
+    }
+  }
+
+  &_table {
+    table-layout: fixed;
     border: none;
-    border-left: 2px solid gray;
-    border-bottom: 2px solid gray;
-  }
-  & td:first-child{
-    width: 5%
-  }
-  & td:nth-child(2){
-    width: 5%
-  }
-  & img {
-    width: 100%;
+    text-align: center;
+    border-top: 2px solid black;;
+
+    & td, th {
+      border: none;
+      border-left: 2px solid gray;
+      border-bottom: 2px solid gray;
+    }
+
+    & td:first-child {
+      width: 5%
+    }
+
+    & td:nth-child(2) {
+      width: 5%
+    }
+
+    & img {
+      width: 100%;
+    }
   }
 }

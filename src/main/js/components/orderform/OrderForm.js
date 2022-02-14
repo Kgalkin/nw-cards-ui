@@ -4,9 +4,6 @@ import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
 import {HOST_AND_PORT} from "../../utils/utils";
 
-const simplePrice = 50;
-const orderedPrice = 80;
-const firstClassPrice = 120;
 const className = 'orderForm';
 const errorClass = 'error';
 
@@ -95,9 +92,9 @@ class OrderForm extends Component {
         switch (this.state.country) {
             case 'RU':
                 return <>
-                    {this.radioInput(`Простое письмо без трекера по РФ, до 10 открыток - ${simplePrice}₽`, simplePrice)}
-                    {this.radioInput(`Заказная бандероль по РФ - ${orderedPrice}₽`, orderedPrice)}
-                    {this.radioInput(`Заказная бандероль по РФ 1класс ${firstClassPrice}₽`, firstClassPrice)}
+                    {this.radioInput(`Простое письмо без трекера по РФ, до 10 открыток - 50₽`, 1)}
+                    {this.radioInput(`Заказная бандероль по РФ - 105₽`, 2)}
+                    {this.radioInput(`Заказная бандероль по РФ 1класс xx₽`, 3)}
                 </>;
             case 'OTHER':
                 return <div className={`${className}_deliveryChoice`}>
@@ -133,25 +130,30 @@ class OrderForm extends Component {
         const {
             name, email, address, index, deliveryOption
         } = this.state;
-        let order = {data: {name, email, address, index, deliveryOption, items: []}};
-        Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({count: v[1].count, id: Number(v[0])}));
+        let order = {data: {name, email, address, index, deliveryOption: {id: Number(deliveryOption)}, items: []}};
+        Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({
+            count: v[1].count,
+            id: Number(v[0])
+        }));
         this.setState({loading: true});
         fetch(`${HOST_AND_PORT}/api/orders`, {
             method: 'POST',
             body: JSON.stringify(order)
         })
             .then(response => {
-                    this.props.clearCart();
-                    window.location.reload();
-                    return response.text();
+                    this.setState({loading: false});
+                    if (response.status === 201) {
+                        this.props.clearCart();
+                        return response.json();
+                    } else {
+                        alert("Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
+                    }
                 },
                 error => {
                     this.setState({loading: false});
-                    return error;
+                    alert("Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
                 })
-            .then(text => {
-                alert(text)
-            });
+            .then(json => window.location.replace(`/orders/${json.uuid}`))
     }
 
     validateForm() {

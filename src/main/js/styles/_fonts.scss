@@ -1,4 +1,5 @@
 @mixin text {
+  font-weight: normal;
   @include font(16)
 }
 

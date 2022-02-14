@@ -25,6 +25,11 @@ export const loadItemsIds = (ids) => {
         .catch(alert)
 }
 
+export const loadOrderByUuid = uuid => {
+    return fetch(`${HOST_AND_PORT}/api/orders/${uuid}`)
+        .catch(alert)
+}
+
 export const loadAllTags = () => {
     store.dispatch(updateTags({state: LOADING}));
     return fetch(`${HOST_AND_PORT}/api/tags`)

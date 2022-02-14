@@ -1,5 +1,8 @@
+@import "../../../styles/fonts.scss";
+
 .order {
   padding-top: 10px;
   padding-bottom: 10px;
   border-top: 2px solid black;
+  @include text
 }

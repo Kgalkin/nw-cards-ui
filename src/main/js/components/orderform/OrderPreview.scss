@@ -1,0 +1,65 @@
+@import "../../styles/fonts.scss";
+@import "../../styles/colors.scss";
+
+.order_preview {
+  width: 600px;
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    width: 100%;
+  }
+  margin: 0 auto;
+  background-color: white;
+  @include text;
+
+  &_button_container{
+    display: flex;
+    justify-content: center;
+
+    & button {
+      width: 50%;
+      height: 50px;
+      background-color: $brand-main;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  }
+
+  &_description_item {
+    display: flex;
+    justify-content: left;
+
+    &:last-of-type{
+      margin-bottom: 2%;
+    }
+
+    &_label {
+      font-weight: bold;
+      margin-right: 5%;
+    }
+  }
+
+  &_table {
+    table-layout: fixed;
+    border: none;
+    width: 100%;
+    text-align: center;
+    border-top: 2px solid black;;
+
+    & td, th {
+      border: none;
+      border-left: 2px solid gray;
+      border-bottom: 2px solid gray;
+    }
+
+    & td:first-child {
+      width: 5%
+    }
+
+    & td:nth-child(2) {
+      width: 5%
+    }
+
+    & img {
+      width: 100%;
+    }
+  }
+}

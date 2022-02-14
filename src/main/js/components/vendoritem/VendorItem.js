@@ -29,7 +29,7 @@ class VendorItem extends React.Component {
                             this.props.addToCart({...this.props.item, count:1})
                         }}
                 disabled={!inStock}>
-                    {`Добавить в корзину - ${price}руб`}
+                    {inStock ? `Добавить в корзину - ${price}руб` : 'Нет в наличии'}
                 </button>
 
             </div>

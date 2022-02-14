@@ -18,6 +18,7 @@ export default class Order extends Component {
         return <>
             <tr className={className} onClick={() => this.setState({expanded: !this.state.expanded})}>
                 <td className={`${className}_id`}>{order.id}</td>
+                <td className={`${className}_name`}>{order.data.name}</td>
                 <td className={`${className}_state`}>{order.state}</td>
                 <td className={`${className}_created`}>{new Date(order.created).toLocaleString()}</td>
                 <td className={`${className}_totalPrice`}>{order.data.items

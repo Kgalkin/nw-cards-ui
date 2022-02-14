@@ -9,6 +9,7 @@ import StoreItems from "../admin/storeitems/StoreItems";
 import Menu from "../admin/menuselectitems/Menu";
 import {loadAllTags} from "../../utils/apiUtils";
 import OrdersList from "../admin/orders/OrdersList";
+import {OrderPreview} from "../orderform/OrderPreview";
 
 
 class App extends Component {
@@ -27,6 +28,9 @@ class App extends Component {
                     <Route path='/admin/orders'>
                         <OrdersList/>
                     </Route>
+                    <Route path='/orders/:uuid' render={props =>
+                        <OrderPreview uuid = {props.match.params.uuid}/>
+                    }/>
                     <Route path='/'>
                         <StickyCartHeader stickyContent={
                             <>
