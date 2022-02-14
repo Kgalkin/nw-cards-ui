@@ -4,6 +4,7 @@ import VendorItem from "../vendoritem/VendorItem";
 import {loadItemsPage} from "../../utils/apiUtils";
 import {connect} from "react-redux";
 import {LOADING} from "../../reducers/actions";
+import {Loading} from "../loading/Loading";
 
 export const PAGE_SIZE = 20;
 
@@ -22,7 +23,7 @@ export class Content extends Component {
         return <div className={this.className}>
             <div className={`${this.className}_itemContainer`}>
                 {this.constructItems()}
-                {this.props.items.state === LOADING && <h1>Loading...</h1>}
+                {this.props.items.state === LOADING && <Loading/>}
             </div>
         </div>
     }

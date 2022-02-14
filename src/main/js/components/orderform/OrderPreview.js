@@ -2,6 +2,7 @@ import React from "react";
 import Image from "../image/Image";
 import {loadOrderByUuid} from "../../utils/apiUtils";
 import "./OrderPreview.scss"
+import {Loading} from "../loading/Loading";
 
 const className = "order_preview"
 
@@ -27,7 +28,7 @@ export class OrderPreview extends React.Component {
         console.log(this.state.order?.data?.items)
         const {order} = this.state
         if (!order) {
-            return <h1>Loading...</h1>
+            return <Loading/>
         }
         const totalPrice = order.data.items.map(i => i.count * i.price)
             .reduce((a, b) => a + b) + order.data.deliveryOption.price
