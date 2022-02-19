@@ -3,6 +3,7 @@ import './OrderForm.scss'
 import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
 import {HOST_AND_PORT} from "../../utils/utils";
+import {loadDeliveryOptions} from "../../utils/apiUtils";
 
 const className = 'orderForm';
 const errorClass = 'error';
@@ -23,9 +24,15 @@ class OrderForm extends Component {
             validationActive: false,
             country: '',
             deliveryOption: null,
-            loading: false
+            loading: false,
+            deliveryOptions: null
             //contactOption: null
         }
+    }
+
+    componentDidMount() {
+        loadDeliveryOptions()
+            .then(r => this.setState({deliveryOptions: r}))
     }
 
     render() {
@@ -72,13 +79,13 @@ class OrderForm extends Component {
                     <label>Укажите страну: </label>
                     <select className={`${this.state.validationActive && !this.state.country ? errorClass : ''}`}
                             value={this.state.country}
-                            onChange={e => this.setState({country: e.target.value})}>
+                            onChange={e => this.setState({country: e.target.value, deliveryOption: null})}>
                         <option value='' style={{display: 'none'}}/>
                         <option value="RU">Россия</option>
                         <option value="OTHER">Другая</option>
                     </select>
                 </div>
-                {this.handleCountry(className, errorClass)}
+                {this.handleCountry()}
             </div>
             <button disabled={this.state.loading} onClick={() => {
                 if (this.validateForm())
@@ -92,14 +99,13 @@ class OrderForm extends Component {
         switch (this.state.country) {
             case 'RU':
                 return <>
-                    {this.radioInput(`Простое письмо без трекера по РФ, до 10 открыток - 50₽`, 1)}
-                    {this.radioInput(`Заказная бандероль по РФ - 105₽`, 2)}
-                    {this.radioInput(`Заказная бандероль по РФ 1класс xx₽`, 3)}
+                    {this.state.deliveryOptions.filter(o => o.price > 0)
+                        .map(o => this.radioInput(`${o.description} - ${o.price} руб.`, o.id))}
                 </>;
             case 'OTHER':
                 return <div className={`${className}_deliveryChoice`}>
-                    Доставка за границу рассчитывается индивидуально. Итоговая стоимость доставки будет отправлена вам
-                    на почту вместе с реквизитами.
+                    {this.state.deliveryOptions.filter(o => o.price < 0)
+                        .map(o => this.radioInput(`${o.description}`, o.id))}
                     {/*   <div>
                         <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
                     </div>*/}
@@ -163,7 +169,7 @@ class OrderForm extends Component {
             this.state.address &&
             this.state.index &&
             this.state.country &&
-            (this.state.deliveryOption || this.state.country === 'OTHER');
+            this.state.deliveryOption;
     }
 
     handleDeliveryOptionSelect(e) {

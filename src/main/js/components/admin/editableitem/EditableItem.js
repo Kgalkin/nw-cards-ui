@@ -45,13 +45,15 @@ export class EditableItem extends Component {
                         <input disabled={!this.state.editable} className={`${this.className}_price`}
                                value={price}
                                onChange={e =>
-                                   this.updateItem(item => item.price = Number(e.target.value) || item.price)}/>
+                                   this.updateItem(item => item.price =
+                                       this.isNumber(e.target.value) ? Number(e.target.value) : item.price)}/>
                     </div>
                     <div><label>{`В наличии: `}</label>
                         <input disabled={!this.state.editable} className={`${this.className}_inStock`}
                                value={inStock}
                                onChange={e =>
-                                   this.updateItem(item => item.inStock = Number(e.target.value) || item.inStock)}/>
+                                   this.updateItem(item => item.inStock =
+                                       this.isNumber(e.target.value) ? Number(e.target.value) : item.inStock)}/>
                     </div>
                 </div>
                 <AddTag ref={el => this.tagInput = el} initTags={tags} disabled={!this.state.editable}/>
@@ -76,5 +78,7 @@ export class EditableItem extends Component {
     edit = () => {
         this.setState({editable: true});
     };
+
+    isNumber = (val) => Number(val) || Number(val) === 0
 
 }

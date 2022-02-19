@@ -40,7 +40,7 @@ export class OrderPreview extends React.Component {
                 }
             </div>
             <div className={`${className}_button_container`}>
-                <button>{`Oплатить ${totalPrice}руб`}</button>
+                {this.canBePayed(order) ? <button>{`Oплатить ${totalPrice}руб`}</button> : null}
             </div>
             <table className={`${className}_table`}>
                 <thead>
@@ -56,13 +56,17 @@ export class OrderPreview extends React.Component {
                 <tr>
                     <td>Доставка</td>
                     <td colSpan={2}>{order.data.deliveryOption.description}</td>
-                    <td>{order.data.deliveryOption.price}</td>
-                    <td>{order.data.deliveryOption.price}</td>
+                    <td>{this.canBePayed(order) ? order.data.deliveryOption.price : "?"}</td>
+                    <td>{this.canBePayed(order) ? order.data.deliveryOption.price : "?"}</td>
                 </tr>
                 {order.data.items.map(item => this.createRow(`${className}_row_${order.id}`, item))}
                 </tbody>
             </table>
         </div>
+    }
+
+    canBePayed = (order) => {
+        return order.data.deliveryOption.price > 0
     }
 
     createRow = (prefix, item) => {

@@ -74,6 +74,11 @@ export const loadOrders = state => {
         .catch(alert)
 }
 
+export  const loadDeliveryOptions = () => {
+   return  fetch(`${HOST_AND_PORT}/api/deliveryOptions`)
+        .then(r => r.json())
+}
+
 export const debounce = (func, delay) => {
     let clearTimer;
     return function () {

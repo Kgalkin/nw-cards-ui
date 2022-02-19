@@ -10,6 +10,10 @@
   background-color: white;
   @include text;
 
+  &_description{
+    margin-bottom: 20px;
+  }
+
   &_button_container{
     display: flex;
     justify-content: center;
