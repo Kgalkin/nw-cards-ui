@@ -5,6 +5,15 @@
   background-color: white;
   @include text;
 
+  &_actions{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    & button{
+      margin-left: 5px;
+    }
+  }
+
   &_description_item {
     display: flex;
     justify-content: left;
@@ -20,15 +29,17 @@
   }
 
   &_table {
+    width: 100%;
     table-layout: fixed;
     border: none;
     text-align: center;
-    border-top: 2px solid black;;
+    border-top: 2px solid black;
 
     & td, th {
       border: none;
       border-left: 2px solid gray;
       border-bottom: 2px solid gray;
+      @include text
     }
 
     & td:first-child {

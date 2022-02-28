@@ -1,15 +1,18 @@
 import React, {Component} from 'react'
-import StickyCartHeader from "../stickyheader/StickyCartHeader";
 import './App.scss';
-import Content from './../content/Content'
-import Modal from "../modal/Modal";
-import CartInfo from "../cart/CartInfo";
 import {Route, Switch, withRouter} from "react-router-dom"
 import StoreItems from "../admin/storeitems/StoreItems";
-import Menu from "../admin/menuselectitems/Menu";
 import {loadAllTags} from "../../utils/apiUtils";
 import OrdersList from "../admin/orders/OrdersList";
+import PrivateRoute from "./PrivateRoute";
 import {OrderPreview} from "../orderform/OrderPreview";
+import StickyCartHeader from "../stickyheader/StickyCartHeader";
+import CartInfo from "../cart/CartInfo";
+import Menu from "../admin/menuselectitems/Menu";
+import Content from "../content/Content";
+import Modal from "../modal/Modal";
+import {LoginForm} from "./LoginForm";
+import {AdminBoard} from "../adminboard/board/AdminBoard";
 
 
 class App extends Component {
@@ -18,18 +21,21 @@ class App extends Component {
     }
 
     render() {
-        this.state;
         return <>
             <div className='app'>
                 <Switch>
-                    <Route path='/admin/items'>
+                    <PrivateRoute path='/admin/items'>
                         <StoreItems/>
-                    </Route>
-                    <Route path='/admin/orders'>
+                    </PrivateRoute>
+                    <PrivateRoute path='/admin/orders'>
                         <OrdersList/>
-                    </Route>
+                    </PrivateRoute>
+                    <PrivateRoute path = '/admin'>
+                        <AdminBoard/>
+                    </PrivateRoute>
+                    <Route path='/login' render={props => <LoginForm {...props}/>}/>
                     <Route path='/orders/:uuid' render={props =>
-                        <OrderPreview uuid = {props.match.params.uuid}/>
+                        <OrderPreview uuid={props.match.params.uuid}/>
                     }/>
                     <Route path='/'>
                         <StickyCartHeader stickyContent={
@@ -37,8 +43,7 @@ class App extends Component {
                                 <CartInfo/>
                                 <Menu/>
                             </>}
-                                          mainContent={
-                                              <Content/>}/>
+                                          mainContent={<Content/>}/>
                     </Route>
                 </Switch>
             </div>

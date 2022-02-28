@@ -3,6 +3,7 @@ import Image from "../../image/Image";
 import './EditableItem.scss'
 import AddTag from "../addtag/AddTag";
 import {patchItem, updateItem} from "../../../utils/apiUtils";
+import {isNumber} from "../../../utils/utils";
 
 export class EditableItem extends Component {
     constructor(props) {
@@ -29,7 +30,8 @@ export class EditableItem extends Component {
         const {id, price, inStock, tags} = this.state.item;
         const {title, description, links} = this.state.item.data;
 
-        return <div id={id} className={this.className}>
+        return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
+            <div>{`# ${id}`}</div>
             <textarea disabled={!this.state.editable} className={`${this.className}_title`}
                       value={title} onChange={e =>
                 this.updateItem(item => item.data.title = e.target.value)}/>
@@ -46,14 +48,14 @@ export class EditableItem extends Component {
                                value={price}
                                onChange={e =>
                                    this.updateItem(item => item.price =
-                                       this.isNumber(e.target.value) ? Number(e.target.value) : item.price)}/>
+                                       isNumber(e.target.value) ? Number(e.target.value) : item.price)}/>
                     </div>
                     <div><label>{`В наличии: `}</label>
                         <input disabled={!this.state.editable} className={`${this.className}_inStock`}
                                value={inStock}
                                onChange={e =>
                                    this.updateItem(item => item.inStock =
-                                       this.isNumber(e.target.value) ? Number(e.target.value) : item.inStock)}/>
+                                       isNumber(e.target.value) ? Number(e.target.value) : item.inStock)}/>
                     </div>
                 </div>
                 <AddTag ref={el => this.tagInput = el} initTags={tags} disabled={!this.state.editable}/>
@@ -78,7 +80,4 @@ export class EditableItem extends Component {
     edit = () => {
         this.setState({editable: true});
     };
-
-    isNumber = (val) => Number(val) || Number(val) === 0
-
 }

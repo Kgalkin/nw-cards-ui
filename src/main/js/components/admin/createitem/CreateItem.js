@@ -4,6 +4,7 @@ import {updateTags} from "../../../reducers/actions";
 import './CreateItem.scss'
 import AddTag from "../addtag/AddTag";
 import {HOST_AND_PORT} from "../../../utils/utils";
+import {withAuth} from "../../../utils/apiUtils";
 
 class CreateItem extends Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class CreateItem extends Component {
         console.log(formData);
 
         this.setState({loading: true})
-        fetch(`${HOST_AND_PORT}/api/items`, {
+        withAuth(`${HOST_AND_PORT}/api/items`, {
             method: 'POST',
             body: formData
         }).then(() => this.setState({loading: false}))

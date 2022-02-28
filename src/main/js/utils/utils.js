@@ -7,3 +7,5 @@ export function isEmptyObj(o){
     }
     return true;
 }
+
+export const isNumber = (val) => Number(val) || Number(val) === 0

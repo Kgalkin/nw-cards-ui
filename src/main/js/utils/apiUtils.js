@@ -1,6 +1,7 @@
 import {HOST_AND_PORT} from "./utils";
 import store from "../reducers";
 import {addItems, LOADING, setItemsLoading, updateItem, updateTags} from "../reducers/actions";
+import PrivateRoute from "../components/app/PrivateRoute";
 
 export const getMenu = () => {
     return fetch(`${HOST_AND_PORT}/api/menu`)
@@ -38,15 +39,22 @@ export const loadAllTags = () => {
         .then(updateTagsFromResponse);
 };
 
+export const loadDeliveryOptions = () => {
+    return fetch(`${HOST_AND_PORT}/api/deliveryOptions`)
+        .then(r => r.json())
+}
+
 const updateTagsFromResponse = (r) => {
     store.dispatch(updateTags(
         {state: null, values: r}));
     return r;
 };
 
+
+//private
 export const createTag = tag => {
     store.dispatch(updateTags({state: LOADING}));
-    return fetch(`${HOST_AND_PORT}/api/tags`, {
+    return withAuth(`${HOST_AND_PORT}/api/tags`, {
         method: 'POST',
         body: `["${tag}"]`
     }).then(response => response.json())
@@ -57,7 +65,7 @@ export const createTag = tag => {
 };
 
 export const patchItem = item => {
-    return fetch(`${HOST_AND_PORT}/api/items/${item.id}`, {
+    return withAuth(`${HOST_AND_PORT}/api/items/${item.id}`, {
         method: 'PATCH',
         body: JSON.stringify(item)
     }).then(response => response.json())
@@ -69,22 +77,40 @@ export const patchItem = item => {
 }
 
 export const loadOrders = state => {
-    return fetch(`${HOST_AND_PORT}/api/orders?state=${state}`)
+    return withAuth(`${HOST_AND_PORT}/api/orders?state=${state}`)
         .then(r => r.json())
         .catch(alert)
 }
 
-export  const loadDeliveryOptions = () => {
-   return  fetch(`${HOST_AND_PORT}/api/deliveryOptions`)
-        .then(r => r.json())
+export const patchOrder = (id, payload) => {
+    return withAuth(`${HOST_AND_PORT}/api/orders/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(payload)
+    })
 }
 
-export const debounce = (func, delay) => {
-    let clearTimer;
-    return function () {
-        const context = this;
-        const args = arguments;
-        clearTimeout(clearTimer);
-        clearTimer = setTimeout(() => func.apply(context, args), delay);
+export const login = (login, password) => {
+    localStorage.setItem("auth", JSON.stringify({login, password}))
+    return withAuth(`${HOST_AND_PORT}/api/login`)
+        .then(r => {
+            if (r.status !== 200) {
+                localStorage.removeItem("auth")
+                throw r.text().then(text => {
+                    alert(text)
+                    return  text;
+                })
+            }
+        })
+}
+
+export const withAuth = (url, params) => {
+    let auth = JSON.parse(localStorage.getItem("auth"))
+    params = {
+        ...params,
+        headers: {
+            ...params?.headers,
+            Authorization: "Basic " + btoa(`${auth.login}:${auth.password}`)
+        }
     }
-};
+    return fetch(url, params)
+}
