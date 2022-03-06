@@ -1,5 +1,6 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import "./AdminBoard.scss"
+
 const className = 'admin_board'
 
 export class AdminBoard extends React.Component {

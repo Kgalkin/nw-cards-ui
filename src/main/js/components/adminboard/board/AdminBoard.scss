@@ -1,0 +1,8 @@
+@import '../../../styles/fonts';
+
+.admin_board_container {
+  @include header;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
