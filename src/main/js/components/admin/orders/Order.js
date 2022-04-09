@@ -37,6 +37,9 @@ export default class Order extends Component {
         if (isFinalState(order.state)) {
             return "#889596"
         }
+        if (order.state === 'payment_received'){
+            return "#37ff3f"
+        }
         if (order.data.deliveryOption.price < 0) {
             return "#f7f79b"
         }

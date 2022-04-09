@@ -3,8 +3,7 @@ import {connect} from "react-redux";
 import {updateTags} from "../../../reducers/actions";
 import './CreateItem.scss'
 import AddTag from "../addtag/AddTag";
-import {HOST_AND_PORT} from "../../../utils/utils";
-import {withAuth} from "../../../utils/apiUtils";
+import {HOST_AND_PORT, withAuth} from "../../../utils/apiUtils";
 
 class CreateItem extends Component {
     constructor(props) {

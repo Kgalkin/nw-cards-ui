@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "../image/Image";
-import {loadOrderByUuid} from "../../utils/apiUtils";
+import {loadOrderByUuid, requestPayment} from "../../utils/apiUtils";
 import "./OrderPreview.scss"
 import {Loading} from "../loading/Loading";
 
@@ -11,6 +11,20 @@ export class OrderPreview extends React.Component {
         super(props);
         this.state = {
             order: null
+        }
+        this.handlePayment = () => {
+            console.group("handlePayment:")
+            console.log(this)
+            console.groupEnd()
+            requestPayment(this.state.order.id)
+                .then(r => {
+                    if (r.status===200){
+                        r.json().then(json => window.location.href = json.link)
+                    } else {
+                        alert("Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуста.")
+                    }
+                })
+
         }
     }
 
@@ -35,12 +49,12 @@ export class OrderPreview extends React.Component {
         return <div className={className}>
             <div className={`${className}_description`}>
                 {`Вы оформили заказ в магазине NorthwindCards здесь вы можете еще раз просмотреть ваш заказ и оплатить его.
-                    Если заказ не будет оплачен в течение 3х дней, он будет расформирован.` + (order.state.includes("email_sent") &&
-                    " На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу.")
+                    Если заказ не будет оплачен в течение 3х дней, он будет расформирован.` + (order.state.includes("email_sent") ?
+                    " На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу." : "")
                 }
             </div>
             <div className={`${className}_button_container`}>
-                {this.canBePayed(order) ? <button>{`Oплатить ${totalPrice}руб`}</button> : null}
+                {this.canBePayed(order) ? <button onClick={this.handlePayment}>{`Oплатить ${totalPrice}руб`}</button> : null}
             </div>
             <table className={`${className}_table`}>
                 <thead>
@@ -66,7 +80,7 @@ export class OrderPreview extends React.Component {
     }
 
     canBePayed = (order) => {
-        return order.data.deliveryOption.price > 0
+        return order.data.deliveryOption.price >= 0
     }
 
     createRow = (prefix, item) => {

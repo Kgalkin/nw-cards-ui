@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import './OrderForm.scss'
 import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
-import {HOST_AND_PORT} from "../../utils/utils";
-import {loadDeliveryOptions} from "../../utils/apiUtils";
+import {HOST_AND_PORT, loadDeliveryOptions} from "../../utils/apiUtils";
 
 const className = 'orderForm';
 const errorClass = 'error';

@@ -1,7 +1,7 @@
-import {HOST_AND_PORT} from "./utils";
 import store from "../reducers";
 import {addItems, LOADING, setItemsLoading, updateItem, updateTags} from "../reducers/actions";
-import PrivateRoute from "../components/app/PrivateRoute";
+
+export const HOST_AND_PORT = 'http://192.168.0.100:8080';
 
 export const getMenu = () => {
     return fetch(`${HOST_AND_PORT}/api/menu`)
@@ -16,13 +16,29 @@ export const loadItemsPage = (offset, size, tags) => {
         request += `&tags=${tags.join(",")}`
     }
     return fetch(request)
+        .then(r => {
+            if (r.status < 200 && r.status >= 400){
+                throw Error("Запрос завершился с ошибкой: " + r.status)
+            }
+            return r;
+        })
         .then(response => response.json())
         .catch(alert)
         .then(r => store.dispatch(addItems(r)))
 };
 
+export const requestPayment = orderId => {
+    return fetch(`${HOST_AND_PORT}/api/orders/${orderId}/requestPayment`)
+        .catch(alert)
+}
+
 export const loadItemsIds = (ids) => {
     return fetch(`${HOST_AND_PORT}/api/items?ids=${ids.join(",")}&size=1000`)
+        .then(r => {
+            if (r.status < 200 && r.status >= 400){
+                throw Error("Запрос завершился с ошибкой: " + r.status)
+            }
+        })
         .catch(alert)
 }
 

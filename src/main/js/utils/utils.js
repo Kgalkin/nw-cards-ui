@@ -1,4 +1,4 @@
-export const HOST_AND_PORT = 'http://localhost:8080';
+
 
 export function isEmptyObj(o){
     for (var key in o){
