@@ -25,5 +25,9 @@
   & input, & textarea,  &_descriptionBlock  {
     @include font(20);
   }
+
+  &_addButton{
+    @include header
+  }
 }
 
