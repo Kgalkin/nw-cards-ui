@@ -15,6 +15,10 @@
     height: 80%;
   }
 
+  &_description {
+    white-space: pre-line;
+  }
+
   &_descriptionBlock {
     display: flex;
     justify-content: space-between;

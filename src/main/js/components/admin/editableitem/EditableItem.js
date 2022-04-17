@@ -4,6 +4,7 @@ import './EditableItem.scss'
 import AddTag from "../addtag/AddTag";
 import {patchItem, updateItem} from "../../../utils/apiUtils";
 import {isNumber} from "../../../utils/utils";
+import {Textarea} from "../../textarea/Textarea";
 
 export class EditableItem extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ export class EditableItem extends Component {
             </div>
             <div className={`${this.className}_descriptionBlock`}>
                 <div>
-                    <textarea disabled={!this.state.editable} className={`${this.className}_description`}
+                    <Textarea autosize = {this.state.editable} disabled={!this.state.editable} className={`${this.className}_description`}
                               value={description} onChange={e =>
                         this.updateItem(item => item.data.description = e.target.value)}/>
                     <div><label>{`Цена: `}</label>
@@ -80,4 +81,9 @@ export class EditableItem extends Component {
     edit = () => {
         this.setState({editable: true});
     };
+
+    adjustElementHeight = e => {
+       e.style.height = "";
+       e.style.height = e.scrollHeight + "px"
+    }
 }

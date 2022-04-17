@@ -1,7 +1,7 @@
 import store from "../reducers";
 import {addItems, LOADING, setItemsLoading, updateItem, updateTags} from "../reducers/actions";
 
-export const HOST_AND_PORT = '';
+export const HOST_AND_PORT = 'http://192.168.0.100:8080';
 
 export const getMenu = () => {
     return fetch(`${HOST_AND_PORT}/api/menu`)
