@@ -16,7 +16,7 @@ export class Textarea extends React.Component {
         const {autosize, value, disabled, onChange} = this.props
         return (
             <textarea ref={c => this.element = c}
-                      style={autosize ? {height: this.element.scrollHeight} : {}}
+                      style={{height: autosize ? this.element.scrollHeight : "auto"}}
                       value={value}
                       disabled={disabled}
                       onChange={onChange}>

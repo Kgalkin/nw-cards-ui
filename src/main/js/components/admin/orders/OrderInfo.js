@@ -1,13 +1,14 @@
-import React, {Component} from "react";
+import React from "react";
 import Image from "../../image/Image";
 import "./OrderInfo.scss"
 import {patchOrder} from "../../../utils/apiUtils";
 import {isFinalState} from "./OrderUtils";
 import {isNumber} from "../../../utils/utils";
+import prompt from "react-router-dom/es/Prompt";
 
 const className = "order_info"
 
-export class OrderInfo extends Component {
+export class OrderInfo extends React.Component {
     constructor(props) {
         super(props);
 
@@ -19,6 +20,7 @@ export class OrderInfo extends Component {
             <div className={`${className}_actions`}>
                 {this.createSetDeliveryPriceAction()}
                 {this.createRevokeOrderAction()}
+                {this.createSendToCustomerAction()}
             </div>
             <div className={`${className}_description`}>
                 <div className={`${className}_description_item`}>
@@ -77,16 +79,17 @@ export class OrderInfo extends Component {
     createSetDeliveryPriceAction = () => {
         return this.props.order.data.deliveryOption.price > 0 || isFinalState(this.props.order.state) ? null :
             <button className={`${className}_actions_setdeliveryprice`}
-            onClick={() => {
-                const deliveryPrice = prompt("Укажите цену доставки")
-                if (isNumber(deliveryPrice)){
-                   this.sendPatchOrder({advance: "SET_DELIVERY_PRICE", deliveryPrice})
-                       .then(r => window.location.reload())
-                } else {
-                    alert("Вы ввели нечитаемое чисо")
-                }
-            }
-            }>Задать цену доставки</button>
+                    onClick={() => {
+                        const deliveryPrice = prompt("Укажите цену доставки")
+                        if (isNumber(deliveryPrice)) {
+                            this.sendPatchOrder({advance: "SET_DELIVERY_PRICE", deliveryPrice})
+                                .then(r => window.location.reload())
+                        } else {
+                            alert("Вы ввели нечитаемое чисо")
+                        }
+                    }
+                    }>Задать цену доставки
+            </button>
     }
 
     createRevokeOrderAction = () => {
@@ -97,7 +100,25 @@ export class OrderInfo extends Component {
                     if (confirm("Вы хотите отменить заказ ?"))
                         this.sendPatchOrder({advance: "REVOKE"})
                             .then(r => window.location.reload())
-                }}>Cancel Order</button>
+                }}>Отменить
+            </button>
+    }
+
+    createSendToCustomerAction = () => {
+        return this.props.order.state !== "payment_received" ? null :
+            <button
+                className={`${className}_actions_send`}
+                onClick={() => {
+                    let code = prompt("Введите трек нмер")
+                    if (code)
+                        this.sendPatchOrder({
+                            advance: "SENT_CODE",
+                            postalCode: code
+                        })
+                            .then(r => window.location.reload())
+                }}>Отправлен
+            </button>
+
     }
 
     sendPatchOrder = (payload) => {
