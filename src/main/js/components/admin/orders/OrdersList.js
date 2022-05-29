@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {loadOrders} from "../../../utils/apiUtils";
 import Order from "./Order";
 import "./OrderList.scss"
+import {LOADING} from "../../../reducers/actions";
+import {PAGE_SIZE} from "../../content/Content";
 
 const className = "order_list"
 export default class OrdersList extends Component {
@@ -12,7 +14,7 @@ export default class OrdersList extends Component {
         }
 
         this.loadOrdersPage = () => {
-            loadOrders("iddqd")
+            loadOrders("none")
                 .then(orders => {
                     console.log(orders)
                     this.setState({orders})
@@ -21,6 +23,12 @@ export default class OrdersList extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener('scroll', () => {
+            if (((this.props.items.items.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
+                && this.props.items.state !== LOADING)) {
+                this.loadOrdersPage();
+            }
+        });
         this.loadOrdersPage()
     }
 
