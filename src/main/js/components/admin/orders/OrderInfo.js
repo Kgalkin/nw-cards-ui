@@ -116,7 +116,7 @@ export class OrderInfo extends React.Component {
                             postalCode: code
                         })
                             .then(r => window.location.reload())
-                }}>Отправлен
+                }}>Заказ отправлен
             </button>
 
     }

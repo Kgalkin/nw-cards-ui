@@ -21,7 +21,7 @@ export default class Order extends Component {
                 <td className={`${className}_id`}>{order.id}</td>
                 <td className={`${className}_name`}>{order.data.name}</td>
                 <td className={`${className}_state`}>{order.state}</td>
-                <td className={`${className}_created`}>{new Date(order.created).toLocaleString()}</td>
+                <td className={`${className}_created`}>{new Date(order.created).toLocaleString('en-US', {hour12: false})}</td>
                 <td className={`${className}_totalPrice`}>{order.data.items
                     .map(order => order.price * order.count)
                     .reduce((a, b) => a + b)}</td>
