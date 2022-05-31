@@ -96,7 +96,7 @@ export class OrderInfo extends React.Component {
             <button
                 className={`${className}_actions_revokeorder`}
                 onClick={() => {
-                    if (confirm("Вы хотите отменить заказ ?"))
+                    if (window.confirm("Вы хотите отменить заказ ?"))
                         this.sendPatchOrder({advance: "REVOKE"})
                             .then(r => window.location.reload())
                 }}>Отменить
@@ -108,7 +108,7 @@ export class OrderInfo extends React.Component {
             <button
                 className={`${className}_actions_send`}
                 onClick={() => {
-                    let code = prompt("Введите трек нмер")
+                    let code = window.prompt("Введите трек нмер")
                     if (code)
                         this.sendPatchOrder({
                             advance: "SENT_CODE",
