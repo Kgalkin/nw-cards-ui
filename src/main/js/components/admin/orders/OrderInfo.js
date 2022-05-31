@@ -4,7 +4,6 @@ import "./OrderInfo.scss"
 import {patchOrder} from "../../../utils/apiUtils";
 import {isFinalState} from "./OrderUtils";
 import {isNumber} from "../../../utils/utils";
-import prompt from "react-router-dom/es/Prompt";
 
 const className = "order_info"
 
