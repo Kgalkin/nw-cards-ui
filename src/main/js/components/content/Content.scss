@@ -1,5 +1,13 @@
-.content_itemContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.content{
+  &_itemContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  &_store_info{
+    padding-top: 10%;
+    text-align: center;
+    flex: 0 0 100%;
+  }
 }

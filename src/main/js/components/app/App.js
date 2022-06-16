@@ -7,7 +7,7 @@ import OrdersList from "../admin/orders/OrdersList";
 import PrivateRoute from "./PrivateRoute";
 import {OrderPreview} from "../orderform/OrderPreview";
 import StickyCartHeader from "../stickyheader/StickyCartHeader";
-import CartInfo from "../cart/CartInfo";
+import CartInfo from "../cart/HeaderInfoLine";
 import Menu from "../admin/menuselectitems/Menu";
 import Content from "../content/Content";
 import Modal from "../modal/Modal";

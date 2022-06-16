@@ -1,0 +1,11 @@
+@import "src/main/js/styles/fonts";
+@import "src/main/js/styles/colors";
+
+.menu_item {
+  @include subHeader;
+  border: 2px solid black;
+  border-radius: 10%;
+  width: fit-content;
+  margin-right: 5px;
+  margin-top: 5px;
+}

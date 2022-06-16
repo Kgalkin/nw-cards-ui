@@ -13,7 +13,7 @@ export default function tags(state = {state: null, values: []}, action) {
         case ADD_ACTIVE_TAGS: {
             return {
                 ...state,
-                activeTags: [...action.payload.activeTags, ...state.activeTags || []]
+                activeTags: [...action.payload.activeTags || []]
             }
 
         }

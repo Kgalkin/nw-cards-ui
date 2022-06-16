@@ -3,6 +3,7 @@ import './VendorItem.scss';
 import {addToCart} from './../../reducers/actions'
 import {connect} from "react-redux";
 import Image from "../image/Image";
+import {cartSvg} from "../cart/CartUtils";
 
 class VendorItem extends React.Component {
     constructor(props) {
@@ -29,7 +30,8 @@ class VendorItem extends React.Component {
                             this.props.addToCart({...this.props.item, count:1})
                         }}
                 disabled={!inStock}>
-                    {inStock ? `Добавить в корзину - ${price}руб` : 'Нет в наличии'}
+                    <span>{inStock ? `Добавить в корзину - ${price}руб`  : 'Нет в наличии'}</span>
+                    {inStock && <div>{cartSvg()}</div>}
                 </button>
 
             </div>

@@ -1,5 +1,7 @@
 @import "src/main/js/styles/colors.scss";
 
 .menu {
+  display: flex;
+  flex-wrap: wrap;
   background-color: $brand-secondary;
 }

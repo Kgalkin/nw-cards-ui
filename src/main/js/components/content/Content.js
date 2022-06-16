@@ -24,6 +24,7 @@ export class Content extends Component {
             <div className={`${this.className}_itemContainer`}>
                 {this.constructItems()}
                 {this.props.items.state === LOADING && <Loading/>}
+                {<div className={`${this.className}_store_info`}>Здесь будет располагаться информация о магазине</div>}
             </div>
         </div>
     }

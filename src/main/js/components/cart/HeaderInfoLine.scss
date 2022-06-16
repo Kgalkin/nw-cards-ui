@@ -1,0 +1,26 @@
+@import "../../styles/_fonts.scss";
+
+.headerInfoLine {
+  display: flex;
+  justify-content: space-between;
+  @include font(18);
+  font-weight: bold;
+
+  &_cartState {
+    text-align: right;
+  }
+
+  &_aboutUs{
+    white-space: nowrap;
+  }
+
+  & div:nth-child(odd){
+    padding-left: 2%;
+    padding-right: 2%;
+    cursor: pointer;
+  }
+
+  &_delivery{
+    text-align: left;
+  }
+}

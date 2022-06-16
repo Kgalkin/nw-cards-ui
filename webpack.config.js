@@ -27,7 +27,7 @@ module.exports = {
     mode: "development",
     devtool: 'eval-cheap-module-source-map',
     devServer: {
-        //host: "192.168.0.101",
+        host: "localhost",
         static: path.join(__dirname, 'src/main/resources/static/'),
         port: 9090,
     }
