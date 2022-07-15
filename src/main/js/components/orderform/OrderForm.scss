@@ -18,6 +18,10 @@
     }
   }
 
+  &_simpleNotAvailable{
+    @include font(14)
+  }
+
   & label, & select, & option{
     @include text
 }

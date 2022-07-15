@@ -7,7 +7,7 @@ import {
   updateTags
 } from "../reducers/actions";
 
-export const HOST_AND_PORT = ''; //http://localhost:8080
+export const HOST_AND_PORT = '';
 
 export const getMenu = () => {
   return fetch(`${HOST_AND_PORT}/api/menu`)

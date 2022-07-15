@@ -29,5 +29,19 @@
   &_addButton{
     @include header
   }
+
+  &_changeImage#file{
+    position: absolute;
+    display: block;
+    opacity: 0;
+  }
+
+  &_changeImageLabel{
+    @include header;
+    border: 1px solid black;
+    height: 50px;
+  }
 }
+
+
 

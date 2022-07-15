@@ -26,7 +26,6 @@ class StoreItems extends Content {
             }
         );
         return children;
-
     }
 }
 
