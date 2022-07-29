@@ -115,7 +115,8 @@ class OrderForm extends Component {
         return <>
           {this.state.deliveryOptions.filter(o => o.price > 0)
           .map(o => this.radioInput(
-              `${o.description} - ${o.price} руб.`, o.id, o.id === 1 && canNotBeSimplePost))}
+              `${o.description} - ${o.price} руб.`, o.id,
+              o.id === 1 && canNotBeSimplePost))}
         </>;
       case 'OTHER':
         return <div className={`${className}_deliveryChoice`}>
@@ -136,11 +137,14 @@ class OrderForm extends Component {
       <label
           className={`${this.state.validationActive
           && !this.state.deliveryOption ? errorClass : ''}`}>
-        <input disabled={canNotBeSimple} type="radio" name="delivery" value={value}
+        <input disabled={canNotBeSimple} type="radio" name="delivery"
+               value={value}
                checked={Number(this.state.deliveryOption) === value}
                onChange={this.handleDeliveryOptionSelect}/>{label}
       </label>
-      {canNotBeSimple ? <div className={`${className}_simpleNotAvailable`}>Доступно только для заказов из 15(или меньше) открыток</div> : null}
+      {canNotBeSimple ? <div
+          className={`${className}_simpleNotAvailable`}>Доступно только для
+        заказов из 15(или меньше) открыток</div> : null}
     </div>
   }
 
@@ -175,7 +179,6 @@ class OrderForm extends Component {
     .then(response => {
           this.setState({loading: false});
           if (response.status === 201) {
-            this.props.clearCart();
             return response.json();
           } else {
             alert(
@@ -187,7 +190,10 @@ class OrderForm extends Component {
           alert(
               "Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
         })
-    .then(json => window.location.replace(`/orders/${json.uuid}`))
+    .then(json => {
+      window.location.replace(`/orders/${json.uuid}`)
+      this.props.clearCart();
+    })
   }
 
   validateForm() {

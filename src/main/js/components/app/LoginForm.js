@@ -12,7 +12,6 @@ export class LoginForm extends React.Component {
     }
 
     render() {
-        console.log("login form")
         return <div className="form">
             <form onSubmit={this.handleSubmit}>
                 <div className="input-container">

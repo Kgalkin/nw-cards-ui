@@ -17,12 +17,10 @@ function withLocalStorageSave(o) {
 const initState = getFromLocalStorage();
 
 export default function cartItems(state = initState, action) {
-  console.log(action)
   return withLocalStorageSave(cartItemsInner(state, action));
 }
 
 function cartItemsInner(state, action) {
-  console.log(action)
   switch (action.type) {
     case ADD_TO_CART:
       let contain = state[action.payload.id];

@@ -13,9 +13,6 @@ export class OrderPreview extends React.Component {
             order: null
         }
         this.handlePayment = () => {
-            console.group("handlePayment:")
-            console.log(this)
-            console.groupEnd()
             requestPayment(this.state.order.id)
                 .then(r => {
                     if (r.status===200){
@@ -32,14 +29,12 @@ export class OrderPreview extends React.Component {
         loadOrderByUuid(this.props.uuid)
             .then(r => r.json())
             .then(r => {
-                    console.log({order: r});
                     this.setState({order: r});
                 }
             )
     }
 
     render() {
-        console.log(this.state.order?.data?.items)
         const {order} = this.state
         if (!order) {
             return <Loading/>

@@ -31,10 +31,6 @@ class AddTag extends Component {
         newValue,
         actionMeta
     ) => {
-        console.group('Value Changed');
-        console.log(newValue);
-        console.log(`action: ${actionMeta.action}`);
-        console.groupEnd();
         this.setState({selected: newValue});
     };
 
@@ -43,8 +39,6 @@ class AddTag extends Component {
         const {selected} = this.state;
         createTag(inputValue)
             .then((created) => {
-                    console.log("Created")
-                    console.log(created)
                     this.setState({
                         isLoading: false,
                         selected: [...selected || [], {value: created.id, label: created.value}],
@@ -55,10 +49,6 @@ class AddTag extends Component {
 
     render() {
         const {selected} = this.state;
-        console.group("render");
-        console.log("in Render");
-        console.log(this.props);
-        console.groupEnd();
         return (
             <CreatableSelect
                 isMulti={true}

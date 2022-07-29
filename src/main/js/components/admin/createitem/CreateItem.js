@@ -23,14 +23,11 @@ class CreateItem extends Component {
 
     handleChange(event) {
         let filesArr = Array.prototype.slice.call(event.target.files);
-        console.log(filesArr);
         this.setState({files: [...this.state.files, ...filesArr]});
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Creating content');
-        console.log(this.state.files.length);
         for (let i = 0; i < this.state.files.length; i++) {
             this.uploadFile(this.state.files[i]);
         }
@@ -38,7 +35,6 @@ class CreateItem extends Component {
     }
 
     uploadFile = (file) => {
-        console.log('Uploading file');
         const formData = new FormData();
 
         formData.append("image", file);
@@ -48,8 +44,6 @@ class CreateItem extends Component {
             data: {title: this.state.title, description: this.state.description},
             tags: this.tagInput.state.selected.map(t => t.value)
         }));
-        console.log();
-        console.log(formData);
 
         this.setState({loading: true})
         withAuth(`${HOST_AND_PORT}/api/items`, {

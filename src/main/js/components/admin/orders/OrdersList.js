@@ -16,7 +16,6 @@ export default class OrdersList extends Component {
         this.loadOrdersPage = () => {
             loadOrders("none")
                 .then(orders => {
-                    console.log(orders)
                     this.setState({orders})
                 })
         }

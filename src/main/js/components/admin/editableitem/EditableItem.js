@@ -93,10 +93,6 @@ export class EditableItem extends Component {
     this.setState({editable: false});
     this.state.item.tags = this.tagInput.state.selected.map(
         s => Number(s.value));
-    console.group("changedItem")
-    console.log(this.state.item)
-    console.groupEnd()
-
     patchItem(this.state.item)//save item
   };
 

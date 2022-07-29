@@ -15,7 +15,6 @@ export default class Order extends Component {
 
     render() {
         const {order} = this.props
-        console.log(order)
         return <>
             <tr className={className} style={{backgroundColor: this.setOrderColor()}} onClick={() => this.setState({expanded: !this.state.expanded})}>
                 <td className={`${className}_id`}>{order.id}</td>

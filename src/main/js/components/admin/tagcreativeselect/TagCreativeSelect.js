@@ -16,22 +16,14 @@ class TagCreativeSelect extends React.Component {
         };
 
         this.handleChange = (option, actionMeta) => {
-            console.group('Value Changed');
-            console.log(option);
-            console.log(`action: ${actionMeta.action}`);
-            console.groupEnd();
             this.setState({value: [...this.state.value, option]});
         };
 
         this.handleCreate = (inputValue) => {
             this.setState({isLoading: true});
-            console.group('Option created');
-            console.log('Wait a moment...');
             setTimeout(() => {
                 const {options} = this.state;
                 const newOption = createOption(inputValue);
-                console.log(newOption);
-                console.groupEnd();
                 this.setState({
                     isLoading: false,
                     options: [...options, newOption],
@@ -43,7 +35,6 @@ class TagCreativeSelect extends React.Component {
 
     render() {
         const {isLoading, options, value} = this.state;
-        console.log(value);
         return (
             <CreatableSelect
                 isMulti={true}

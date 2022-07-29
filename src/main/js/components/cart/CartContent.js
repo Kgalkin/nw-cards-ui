@@ -31,7 +31,6 @@ class CartContent extends Component {
       hideModal,
       showModal
     } = this.props;
-    console.log(cartContent);
     const content = [];
     if (isEmptyObj(cartContent)) {
       hideModal();

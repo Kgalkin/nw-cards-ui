@@ -106,10 +106,10 @@ export const loadOrders = state => {
   .catch(alert)
 }
 
-export const patchOrder = (id, payload) => {
+export const patchOrder = (id, formData) => {
   return withAuth(`${HOST_AND_PORT}/api/orders/${id}`, {
     method: 'PATCH',
-    body: JSON.stringify(payload)
+    body: formData
   })
 }
 

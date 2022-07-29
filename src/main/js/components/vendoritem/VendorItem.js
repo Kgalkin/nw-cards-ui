@@ -26,7 +26,6 @@ class VendorItem extends React.Component {
                 </div>
                 <button className={`${this.className}_addButton`}
                         onClick={() => {
-                            console.log("add to cart click !!!")
                             this.props.addToCart({...this.props.item, count:1})
                         }}
                 disabled={!inStock}>
