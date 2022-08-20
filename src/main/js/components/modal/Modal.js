@@ -60,7 +60,7 @@ class Modal extends Component {
           России. Мы не занимаемся розыском таких писем.<br/><br/>
 
           <strong>Заказная бандероль</strong> с трекером отслеживания<br/>
-          Стоимость <strong>105</strong> рублей<br/><br/>
+          Стоимость <strong>110</strong> рублей<br/><br/>
 
           Заказ от 2000 руб доставляется по РФ за счет магазина<br/><br/>
 
@@ -69,25 +69,22 @@ class Modal extends Component {
         </div>
       case ABOUT_US_MODAL:
         return <div className={`textModal`}>
-          О нас<br/>
-          Приветствуем вас в магазине North Wind Cards. Печатаем открытки с 2019
-          года. Делаем посткроссинг красивым и экономным хобби.<br/><br/>
-
-          Попутного ветра каждой открытке!<br/><br/><br/>
-
+          Приветствуем в магазине почтовых открыток North Wind Cards - создаем открытки с 2019 года.<br/><br/>
+          В магазине десятки сюжетов, напечатанных на плотном картоне с приятным покрытием софт-тач.<br/><br/>
+          Эти открытки снабжены оборотом для написания адреса и вашего послания, а еще их можно вложить в подарок или вставить в рамку.<br/><br/>
+          Магия бумажной переписки никогда не устаревает. Если вы никогда или уже сто лет как не отправляли ни одной открытки – наш магазин к вашим услугам, можно начать прямо сейчас!<br/><br/>
+          Если вы опытный посткроссер, то для вас в магазине есть не только открытки, но и марки, конверты и наклейки для оформления.<br/><br/>
 
           <strong>Контакты:</strong> Northwindcards@gmail.com<br/>
           <strong>Вконтакте:</strong> <a target="_blank"
                                          href="https://vk.com/northwindcards">https://vk.com/northwindcards</a><br/>
           <strong>Telegram:</strong> <a target="_blank"
                                         href="https://t.me/northwindcards_store">t.me/northwindcards_store</a><br/>
-          <storng>Now</storng>
-          north_wind_cards<br/>
         </div>
       case USER_AGREEMENT_MODAL:
         return <UserAgreement/>
       case CONTACTS_MODAL:
-        return <Contacts/>
+        return <Contacts/>;
       default:
         return null;
 
