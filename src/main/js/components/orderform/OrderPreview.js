@@ -18,7 +18,7 @@ export class OrderPreview extends React.Component {
                     if (r.status===200){
                         r.json().then(json => window.location.href = json.link)
                     } else {
-                        alert("Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуста.")
+                        alert("Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
                     }
                 })
 
@@ -43,8 +43,9 @@ export class OrderPreview extends React.Component {
             .reduce((a, b) => a + b) + order.data.deliveryOption.price
         return <div className={className}>
             <div className={`${className}_description`}>
-                {`Вы оформили заказ в магазине NorthwindCards здесь вы можете еще раз просмотреть ваш заказ и оплатить его.
-                    Если заказ не будет оплачен в течение 3х дней, он будет расформирован.` + (order.state.includes("email_sent") ?
+                {`Вы оформили заказ в магазине NorthwindCards. 
+                Здесь вы можете еще раз просмотреть ваш заказ и оплатить его. 
+                Заказ, не оплаченный в течение трех дней, будет расформирован.` + (order.state.includes("email_sent") ?
                     " На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу." : "")
                 }
             </div>

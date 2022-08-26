@@ -34,13 +34,16 @@ export default class Order extends Component {
     setOrderColor = () => {
         const {order} = this.props
         if (isFinalState(order.state)) {
-            return "#889596"
+            return "#889596";
         }
         if (order.state === 'payment_received'){
-            return "#37ff3f"
+            return "#37ff3f";
         }
         if (order.data.deliveryOption.price < 0) {
-            return "#f7f79b"
+            return "#f7f79b";
+        }
+        if (order.state === 'sent_to_customer'){
+            return "#4ab2e8";
         }
     }
 }
