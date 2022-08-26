@@ -5,7 +5,7 @@ import {showModal} from "../../reducers/actions";
 import {
   ABOUT_US_MODAL,
   CART_MODAL,
-  DELIVERY_INFO_MODAL
+  DELIVERY_INFO_MODAL, VK_MODAL
 } from "../../reducers/modal";
 import {cartSvg} from "./CartUtils";
 
@@ -34,6 +34,9 @@ class HeaderInfoLine extends Component {
       <div>|</div>
       <div className={`${className}_aboutUs`}
       onClick={() => showModal({modalType: ABOUT_US_MODAL})}>О нас</div>
+      <div>|</div>
+      <div className={`${className}_vk`}
+           onClick={() => showModal({modalType: VK_MODAL})}>Мы вконтакте</div>
       <div>|</div>
       <div
           onClick={() => {

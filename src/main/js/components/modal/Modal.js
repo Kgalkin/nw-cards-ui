@@ -4,11 +4,13 @@ import './Modal.scss'
 import {hideModal} from "../../reducers/actions";
 import {
   ABOUT_US_MODAL,
-  CART_MODAL, CONTACTS_MODAL,
+  CART_MODAL,
+  CONTACTS_MODAL,
   CREATE_ITEM_MODAL,
   DELIVERY_INFO_MODAL,
   ORDER_FORM_MODAL,
-  USER_AGREEMENT_MODAL
+  USER_AGREEMENT_MODAL,
+  VK_MODAL
 } from "../../reducers/modal";
 import CartContent from "../cart/CartContent";
 import OrderForm from "../orderform/OrderForm";
@@ -26,11 +28,15 @@ class Modal extends Component {
     const className = 'modal';
     return <div className={className}
                 style={{display: showModal ? "block" : "none"}} onClick={e => {
-      if (e.target.className === className) {
+      if (e.target.className === className || e.target.className
+          === `${className}_close_button`) {
         hideModal();
       }
     }}>
       <div className={`${className}_window`}>
+        <div className={`${className}_close`}>
+          <div className={`${className}_close_button`}>Закрыть</div>
+        </div>
         {this.modalContent(modalType)}
       </div>
     </div>
@@ -69,11 +75,17 @@ class Modal extends Component {
         </div>
       case ABOUT_US_MODAL:
         return <div className={`textModal`}>
-          Приветствуем в магазине почтовых открыток North Wind Cards - создаем открытки с 2019 года.<br/><br/>
-          В магазине десятки сюжетов, напечатанных на плотном картоне с приятным покрытием софт-тач.<br/><br/>
-          Эти открытки снабжены оборотом для написания адреса и вашего послания, а еще их можно вложить в подарок или вставить в рамку.<br/><br/>
-          Магия бумажной переписки никогда не устаревает. Если вы никогда или уже сто лет как не отправляли ни одной открытки – наш магазин к вашим услугам, можно начать прямо сейчас!<br/><br/>
-          Если вы опытный посткроссер, то для вас в магазине есть не только открытки, но и марки, конверты и наклейки для оформления.<br/><br/>
+          Приветствуем в магазине почтовых открыток North Wind Cards - создаем
+          открытки с 2019 года.<br/><br/>
+          В магазине десятки сюжетов, напечатанных на плотном картоне с приятным
+          покрытием софт-тач.<br/><br/>
+          Эти открытки снабжены оборотом для написания адреса и вашего послания,
+          а еще их можно вложить в подарок или вставить в рамку.<br/><br/>
+          Магия бумажной переписки никогда не устаревает. Если вы никогда или
+          уже сто лет как не отправляли ни одной открытки – наш магазин к вашим
+          услугам, можно начать прямо сейчас!<br/><br/>
+          Если вы опытный посткроссер, то для вас в магазине есть не только
+          открытки, но и марки, конверты и наклейки для оформления.<br/><br/>
 
           <strong>Контакты:</strong> Northwindcards@gmail.com<br/>
           <strong>Вконтакте:</strong> <a target="_blank"
@@ -85,6 +97,13 @@ class Modal extends Component {
         return <UserAgreement/>
       case CONTACTS_MODAL:
         return <Contacts/>;
+      case VK_MODAL:
+        return <div className={`textModal`}>
+          <a target="_blank" href="https://vk.com/northwindcards">Мы в контакте</a>
+          <br/>
+          <br/>
+          <a target="_blank" href="https://vk.com/northwindcards">Отзывы</a>
+        </div>
       default:
         return null;
 
