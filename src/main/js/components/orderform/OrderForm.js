@@ -150,9 +150,11 @@ class OrderForm extends Component {
     .reduce((a, b) => a + b) > 1999) {
       return this.state.deliveryOptions.filter(o => o.price === 0)
       .map(o => this.radioInput(
-          `${o.description} - ${o.price} руб.`, o.id,false))
+          `${o.description} - ${o.price} руб.`, o.id, false))
     } else {
       const canNotBeSimplePost = Object.entries(this.props.cartItems)
+          .some(it => !it[1]?.tags?.includes(1)) ||
+          Object.entries(this.props.cartItems)
       .filter(it => it[1]?.tags?.includes(1))
       .map(it => it[1]?.count)
       .reduce((a, b) => a + b) > 15
