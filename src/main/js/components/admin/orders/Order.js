@@ -37,7 +37,7 @@ export default class Order extends Component {
             return "#889596";
         }
         if (order.state === 'payment_received'){
-            return "#37ff3f";
+            return "rgba(255,55,55,0.69)";
         }
         if (order.data.deliveryOption.price < 0) {
             return "#f7f79b";

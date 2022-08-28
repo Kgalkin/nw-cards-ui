@@ -1,0 +1,12 @@
+@import "../../styles/fonts.scss";
+
+.paymentReceived {
+  position: absolute;
+  top: 40%;
+  @include subHeader();
+  text-align: center;
+}
+
+.backLink {
+  margin-top: 5%;
+}

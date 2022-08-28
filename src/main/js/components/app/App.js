@@ -14,6 +14,7 @@ import {LoginForm} from "./LoginForm";
 import {AdminBoard} from "../adminboard/board/AdminBoard";
 import HeaderInfoLine from "../cart/HeaderInfoLine";
 import Footer from "../footer/Footer";
+import {PaymentReceived} from "../pymentreceived/PaymentReceived";
 
 class App extends Component {
   componentDidMount() {
@@ -37,6 +38,7 @@ class App extends Component {
           <Route path='/orders/:uuid' render={props =>
               <OrderPreview uuid={props.match.params.uuid}/>
           }/>
+          <Route path='/paymentreceived'><PaymentReceived/> </Route>
           <Route path='/'>
             <StickyCartHeader stickyContent={
               <>
