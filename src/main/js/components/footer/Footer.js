@@ -12,14 +12,18 @@ class Footer extends Component {
 
   render() {
     const className = 'footer';
-    return <div className={className}>
-      <div onClick={() => this.props.showModal(
-          {modalType: CONTACTS_MODAL})}>Контакты</div>
-      <span>|</span>
-      <div onClick={() => this.props.showModal(
-          {modalType: USER_AGREEMENT_MODAL})}>Пользовательское соглашение
+    return <>
+      <div className={className}>
+        <div onClick={() => this.props.showModal(
+            {modalType: CONTACTS_MODAL})}>Контакты
+        </div>
+        <span>|</span>
+        <div onClick={() => this.props.showModal(
+            {modalType: USER_AGREEMENT_MODAL})}>Пользовательское соглашение
+        </div>
       </div>
-    </div>
+      <div className={`${className}_copyright`}>©NorthWindCards (2022)</div>
+    </>
   }
 }
 

@@ -1,7 +1,16 @@
-.content{
+@import "../../styles/fonts.scss";
+
+.content {
   &_itemContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+  }
+
+  &_emptyContent {
+    width: 100%;
+    @include subHeader();
+    text-align: center;
+    margin: 5%;
   }
 }

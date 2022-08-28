@@ -1,11 +1,19 @@
+@import "../../styles/_fonts.scss";
+
 .footer {
   display: flex;
   justify-content: space-around;
   padding-top: 2%;
   text-align: center;
   border-top: 1px solid gray;
+
   & div {
     width: 50%;
     cursor: pointer;
+  }
+
+  &_copyright {
+    @include font(12);
+    text-align: center;
   }
 }

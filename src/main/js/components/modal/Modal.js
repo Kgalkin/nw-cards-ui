@@ -102,7 +102,7 @@ class Modal extends Component {
           <a target="_blank" href="https://vk.com/northwindcards">Мы в контакте</a>
           <br/>
           <br/>
-          <a target="_blank" href="https://vk.com/northwindcards">Отзывы</a>
+          <a target="_blank" href="https://vk.com/topic-182017496_46570052">Отзывы</a>
         </div>
       default:
         return null;

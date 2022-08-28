@@ -54,7 +54,7 @@ export class Content extends Component {
           children.push(<VendorItem key={i.id} item={i}/>)
         }
     );
-    return children;
+    return children.length ? children : <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div>;
   }
 }
 
