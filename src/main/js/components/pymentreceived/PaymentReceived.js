@@ -13,7 +13,7 @@ export class PaymentReceived extends React.Component {
       <br/>Когда ваш заказ будет собран и отправлен, вы получите письмо с
       трекером, или фото-подтверждение, в случае оплаты доставки простым письмом.
       <br/> Спасибо за заказ!
-      <div className={"backLink"}><a href = "http://nw-cards.com">В магазин</a></div>
+      <div className={"backLink"}><a href = "/">В магазин</a></div>
     </div>
     </>
   }
