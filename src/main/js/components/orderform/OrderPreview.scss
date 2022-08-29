@@ -66,4 +66,10 @@
       width: 100%;
     }
   }
+
+  &_paymentLink{
+    @include subHeader();
+    text-align: center;
+    margin-bottom: 2%;
+  }
 }

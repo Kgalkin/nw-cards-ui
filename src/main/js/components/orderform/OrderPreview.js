@@ -10,13 +10,16 @@ export class OrderPreview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            order: null
+            order: null,
+            link: null
         }
         this.handlePayment = () => {
             requestPayment(this.state.order.id)
                 .then(r => {
                     if (r.status===200){
-                        r.json().then(json => window.location.href = json.link)
+                        r.json().then(json =>{
+                            this.setState({link: json.link})
+                            window.location.href = json.link})
                     } else {
                         alert("Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
                     }
@@ -50,7 +53,7 @@ export class OrderPreview extends React.Component {
                 }
             </div>
             <div className={`${className}_button_container`}>
-                {this.canBePayed(order) ? <button onClick={this.handlePayment}>{`Oплатить ${totalPrice}руб`}</button> : null}
+                {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
             </div>
             <table className={`${className}_table`}>
                 <thead>
@@ -76,7 +79,7 @@ export class OrderPreview extends React.Component {
     }
 
     canBePayed = (order) => {
-        return order.data.deliveryOption.price >= 0
+        return order.state === 'created' && order.data.deliveryOption.price >= 0
     }
 
     createRow = (prefix, item) => {
@@ -87,5 +90,15 @@ export class OrderPreview extends React.Component {
             <td>{item.price}</td>
             <td>{item.price * item.count}</td>
         </tr>
+    }
+
+    buttonOrLink = (totalPrice) => {
+        return this.state.link == null ?
+            <button onClick={this.handlePayment}>
+                {`Oплатить ${totalPrice}руб`}
+            </button> :
+            <div className={`${className}_paymentLink`}>Если вы не были автоматически перенаправлены на страницу оплаты, вы можете перейти по &nbsp;
+                <a href = {`${this.state.link}`}>ссылке</a>
+            </div>
     }
 }
