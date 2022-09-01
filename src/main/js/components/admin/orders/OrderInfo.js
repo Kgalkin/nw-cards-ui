@@ -19,6 +19,7 @@ export class OrderInfo extends React.Component {
       <div className={`${className}_actions`}>
         {this.createSetDeliveryPriceAction()}
         {this.createRevokeOrderAction()}
+        {this.createReadyForShippingAction()}
         {this.createSendToCustomerActionPostCode()}
         {this.createSendToCustomerActionImage()}
       </div>
@@ -112,9 +113,23 @@ export class OrderInfo extends React.Component {
         </button>
   }
 
+  createReadyForShippingAction = () => {
+    return this.props.order.state !== "payment_received" ? null :
+        <button
+            className={`${className}_actions_readyforshipping`}
+            onClick={() => {
+              if (window.confirm("Заказ готов к отправке ?")) {
+                this.sendPatchOrder({advance: "READY_FOR_SHIPPING"})
+                .then(r => window.location.reload())
+              }
+            }}>Готов к отправке
+        </button>
+
+  }
+
   createSendToCustomerActionPostCode = () => {
     const order = this.props.order;
-    return order.state !== "payment_received" ||
+    return order.state !== "ready_for_shipping" ||
     order.data.deliveryOption.id === 1 ? null :
         <button
             className={`${className}_actions_send`}
@@ -133,7 +148,7 @@ export class OrderInfo extends React.Component {
 
   createSendToCustomerActionImage = () => {
     const order = this.props.order;
-    return order.state !== "payment_received" ||
+    return order.state !== "ready_for_shipping" ||
     order.data.deliveryOption.id !== 1 ? null :
         <ButtonFileUpload label="Заказ отправлен" onFileSelect={(event) => {
           const file = event.target.files[0];
