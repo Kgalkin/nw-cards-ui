@@ -45,6 +45,12 @@ export class OrderInfo extends React.Component {
               className={`${className}_description_item_value`}>{order.data.index}</div>
         </div>
         <div className={`${className}_description_item`}>
+          <div className={`${className}_description_item_label`}>Комментарии
+          </div>
+          <div
+              className={`${className}_description_item_value`}>{order.data.comments}</div>
+        </div>
+        <div className={`${className}_description_item`}>
           <div className={`${className}_description_item_label`}>Доставка</div>
           <div
               className={`${className}_description_item_value`}>{order.data.deliveryOption.price}</div>

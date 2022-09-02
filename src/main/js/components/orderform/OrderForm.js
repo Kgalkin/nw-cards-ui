@@ -25,7 +25,8 @@ class OrderForm extends Component {
       country: '',
       deliveryOption: null,
       loading: false,
-      deliveryOptions: null
+      deliveryOptions: null,
+      comments: null
       //contactOption: null
     }
   }
@@ -74,6 +75,15 @@ class OrderForm extends Component {
                     ? errorClass : ''}`}
                 placeholder={'Индекс'} value={this.state.index}
                 onChange={e => this.handleChange(e, 'index')}/>
+          </div>
+        </div>
+        <div className={`${className}_index`}>
+          <label>Комментарии</label>
+          <div>
+            <textarea
+                className={`${className}_comments`}
+                placeholder={'Комментарии к заказу'} value={this.state.comments}
+                onChange={e => this.handleChange(e, 'comments')}/>
           </div>
         </div>
 
@@ -167,7 +177,7 @@ class OrderForm extends Component {
 
   newOrder() {
     const {
-      name, email, address, index, deliveryOption
+      name, email, address, index, deliveryOption, comments
     } = this.state;
     let order = {
       data: {
@@ -175,6 +185,7 @@ class OrderForm extends Component {
         email,
         address,
         index,
+        comments,
         deliveryOption: {id: Number(deliveryOption)},
         items: []
       }
