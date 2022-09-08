@@ -7,7 +7,6 @@ import OrdersList from "../admin/orders/OrdersList";
 import PrivateRoute from "./PrivateRoute";
 import {OrderPreview} from "../orderform/OrderPreview";
 import StickyCartHeader from "../stickyheader/StickyCartHeader";
-import Menu from "../admin/menuselectitems/Menu";
 import Content from "../content/Content";
 import Modal from "../modal/Modal";
 import {LoginForm} from "./LoginForm";
@@ -15,6 +14,7 @@ import {AdminBoard} from "../adminboard/board/AdminBoard";
 import HeaderInfoLine from "../cart/HeaderInfoLine";
 import Footer from "../footer/Footer";
 import {PaymentReceived} from "../pymentreceived/PaymentReceived";
+import Menu from "../menuselectitems/Menu";
 
 class App extends Component {
   componentDidMount() {

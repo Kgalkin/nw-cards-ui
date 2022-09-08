@@ -15,11 +15,14 @@ export const getMenu = () => {
   .catch(alert)
 }
 
-export const loadItemsPage = (offset, size, tags) => {
+export const loadItemsPage = (offset, size, tags, tagsMethod) => {
   store.dispatch(setItemsLoading())
   let request = `${HOST_AND_PORT}/api/items?offset=${offset}&size=${size}`;
   if (tags && tags.length > 0) {
     request += `&tags=${tags.join(",")}`
+  }
+  if (tagsMethod) {
+    request += `&tags.method=${tagsMethod}`
   }
   return fetch(request)
   .then(r => {

@@ -14,7 +14,7 @@ class AddTag extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    /*componentDidUpdate(prevProps, prevState, snapshot) {
         if (!this.state.initiated
             && this.props.tags.values.length > 0
             && this.props.initTags?.length > 0) {
@@ -24,6 +24,19 @@ class AddTag extends Component {
                     .filter(tag => this.props.initTags.includes(tag.id))
                     .map(tag => ({value: tag.id, label: tag.value}))
             })
+        }
+    }*/
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (!prevState.initiated
+            && nextProps.tags.values.length > 0
+            && nextProps.initTags?.length > 0) {
+            return {
+                initiated: true,
+                selected: nextProps.tags.values
+                .filter(tag => nextProps.initTags.includes(tag.id))
+                .map(tag => ({value: tag.id, label: tag.value}))
+            }
         }
     }
 

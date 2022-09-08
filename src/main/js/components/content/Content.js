@@ -15,7 +15,7 @@ export class Content extends Component {
 
     this.loadItems = () => {
       loadItemsPage(this.props.items.nextOffset, PAGE_SIZE,
-          this.props.activeTags || []);
+          this.props.activeTags || [], this.props.tagsMethod);
     };
   }
 
@@ -54,11 +54,13 @@ export class Content extends Component {
           children.push(<VendorItem key={i.id} item={i}/>)
         }
     );
-    return children.length ? children : <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div>;
+    return children.length && this.props.items.state !== LOADING ? children : <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div>;
   }
 }
 
-export default connect(s => ({
+export default connect(s => {
+  console.log("Connecting content: ", s)
+  return {
   activeTags: s.tags.activeTags,
   items: s.items
-}), null)(Content);
+}}, null)(Content);

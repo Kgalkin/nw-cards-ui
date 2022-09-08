@@ -1,5 +1,5 @@
 import React from "react";
-import {getMenu} from "../../../utils/apiUtils";
+import {getMenu} from "../../utils/apiUtils";
 import {connect} from 'react-redux'
 import MenuItem from "./MenuItem";
 import "./Menu.scss"

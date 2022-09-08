@@ -1,5 +1,5 @@
 import React from "react";
-import {addActiveTags, clearItems} from "../../../reducers/actions";
+import {addActiveTags, clearItems} from "../../reducers/actions";
 import {connect} from "react-redux";
 import "./MenuItem.scss"
 

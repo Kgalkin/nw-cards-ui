@@ -100,11 +100,6 @@ export class EditableItem extends Component {
     this.setState({editable: true});
   };
 
-  adjustElementHeight = e => {
-    e.style.height = "";
-    e.style.height = e.scrollHeight + "px"
-  }
-
   updateImage = (event) => {
     const file = event.target.files[0];
     if (file) {

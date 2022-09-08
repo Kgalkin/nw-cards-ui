@@ -1,0 +1,18 @@
+@import "../../../styles/fonts";
+@import "../../../styles/colors";
+
+.admin_search{
+  padding: 2%;
+  @include text();
+  display: flex;
+  background-color: $brand-main;
+  justify-content: left;
+
+  & label {
+    margin-right: 1%;
+  }
+
+  &_tags{
+    width: 50%;
+  }
+}
