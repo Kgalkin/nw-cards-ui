@@ -54,13 +54,16 @@ export class Content extends Component {
           children.push(<VendorItem key={i.id} item={i}/>)
         }
     );
-    return !children.length && this.props.items.state !== LOADING ?  <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div> : children;
+    return !children.length && this.props.items.state !== LOADING ? <div
+            className={`${this.className}_emptyContent`}>Здесь пока пусто</div>
+        : children;
   }
 }
 
 export default connect(s => {
-  console.log("Connecting content: ", s)
   return {
-  activeTags: s.tags.activeTags,
-  items: s.items
-}}, null)(Content);
+    activeTags: s.tags.activeTags,
+    tagsMethod: s.tags.method,
+    items: s.items
+  }
+}, null)(Content);

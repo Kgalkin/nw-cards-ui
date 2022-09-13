@@ -1,7 +1,18 @@
 @import "src/main/js/styles/colors";
+@import "src/main/js/styles/_fonts.scss";
 
 .menu {
   display: flex;
   flex-wrap: wrap;
   background-color: $brand-secondary;
+
+  &_search {
+    @include subHeader;
+    border: 2px solid black;
+    border-radius: 10%;
+    //width: fit-content;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-left: auto;
+  }
 }

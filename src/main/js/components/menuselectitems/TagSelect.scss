@@ -1,0 +1,5 @@
+@import "src/main/js/styles/_fonts.scss";
+
+.tagSelect {
+  @include subHeader();
+}
