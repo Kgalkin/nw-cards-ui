@@ -1,4 +1,6 @@
 @import "../../styles/_fonts.scss";
+@import "../../styles/colors.scss";
+
 .сartContent {
   &_grid {
     border: 1px solid black;
@@ -13,5 +15,9 @@
     & button {
       @include text
     }
+  }
+
+  &_stampsError {
+    color: $error;
   }
 }

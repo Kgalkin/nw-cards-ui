@@ -59,15 +59,17 @@ class CartContent extends Component {
                                    price: "",
                                    total: totalPrice
                                  }}/>);
+    const noStamps = this.canNotByStampsMessage();
     return <div className={this.className}>
       <div className={`${this.className}_grid`}>{content}</div>
+      {noStamps}
       <div className={`${this.className}_buttonContainer`}>
         <button onClick={() => {
           clearCart();
           hideModal();
         }}>Очистить корзину
         </button>
-        <button disabled={cartContent && Object.entries(cartContent)
+        <button disabled={noStamps || cartContent && Object.entries(cartContent)
         .some(it => it[1].count > it[1].inStock)}
                 onClick={() => {
                   requestInStockUpdate(Object.keys(cartContent))
@@ -81,6 +83,30 @@ class CartContent extends Component {
         </button>
       </div>
     </div>
+  }
+
+  canNotByStampsMessage = () => {
+    const contentArray = Object.values(this.props.cartContent || {});
+    const stampsTag = 36; //todo REPLACE !!!!!
+    const priceForStamps = 500;
+    console.log(contentArray)
+    console.log(contentArray.some(it => it.tags.includes(stampsTag)))
+    if (contentArray.some(it => it.tags.includes(stampsTag))) {
+      const currentPrice = contentArray
+      .filter(it => !it.tags.includes(stampsTag))
+      .map(it => it.count * it.price)
+      .reduce((a, b) => a + b);
+      if (currentPrice < priceForStamps) {
+        return <div className={`${this.className}_stampsError`}>Заказ марок
+          возможен только при сумме заказа других товаров от&nbsp;
+          <strong>{`${priceForStamps}р`}</strong>, для
+          оформления заказа добавьте товаров (не марок) на сумму&nbsp;
+          <strong>{`${priceForStamps - currentPrice}р`}</strong>
+          &nbsp;или уберите марки из заказа
+        </div>
+      }
+    }
+    return null;
   }
 }
 

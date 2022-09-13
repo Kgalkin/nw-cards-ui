@@ -54,7 +54,7 @@ export class Content extends Component {
           children.push(<VendorItem key={i.id} item={i}/>)
         }
     );
-    return children.length && this.props.items.state !== LOADING ? children : <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div>;
+    return !children.length && this.props.items.state !== LOADING ?  <div className={`${this.className}_emptyContent`}>Здесь пока пусто</div> : children;
   }
 }
 
