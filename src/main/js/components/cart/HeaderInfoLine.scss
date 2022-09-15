@@ -1,6 +1,8 @@
 @import "../../styles/_fonts.scss";
+@import "../../styles/colors.scss";
 
 .headerInfoLine {
+  color: $brand-background;
   display: flex;
   justify-content: space-between;
   @include font(18);
@@ -22,5 +24,8 @@
 
   &_delivery{
     text-align: left;
+  }
+  & svg {
+    fill: $brand-background;
   }
 }

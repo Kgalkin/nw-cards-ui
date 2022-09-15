@@ -1,3 +1,5 @@
+@import "../../styles/colors.scss";
+
 .stickyCartHeader {
 
   &_scrolledLogo {
@@ -8,7 +10,7 @@
   &_static {
     padding-top: 10px;
     z-index: 1;
-    background-color: #5fa6d1;
+    background-color: $brand-main;
   }
 }
 
