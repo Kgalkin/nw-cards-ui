@@ -9,6 +9,7 @@ export const ABOUT_US_MODAL = "ABOUT_US_MODAL";
 export const VK_MODAL = "VK_MODAL";
 export const CONTACTS_MODAL = "CONTACTS_MODAL";
 export const USER_AGREEMENT_MODAL = "USER_AGREEMENT_MODAL";
+export const IMAGE_PREVIEW = "IMAGE_PREVIEW"
 
 export default function modal(state = {}, action) {
     switch (action.type) {
@@ -16,7 +17,11 @@ export default function modal(state = {}, action) {
             return {
                 ...state,
                 modalType: action.payload.modalType,
-                showModal: true
+                showModal: true,
+                data: {
+                    ...state.data,
+                    ...action.payload.data
+                }
             };
         case HIDE_MODAL:
             return {

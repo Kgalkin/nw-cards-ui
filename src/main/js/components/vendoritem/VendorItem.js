@@ -1,9 +1,10 @@
 import React from 'react'
 import './VendorItem.scss';
-import {addToCart} from './../../reducers/actions'
+import {addToCart, showModal} from './../../reducers/actions'
 import {connect} from "react-redux";
 import Image from "../image/Image";
 import {cartSvg} from "../cart/CartUtils";
+import {IMAGE_PREVIEW} from "../../reducers/modal";
 
 class VendorItem extends React.Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class VendorItem extends React.Component {
         const {title, description, links} = this.props.item.data;
         return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
             <h3>{title}</h3>
-            <div className={`${this.className}_imageContainer`}>
+            <div className={`${this.className}_imageContainer`}
+                 onClick={()=> this.props.showModal({modalType: IMAGE_PREVIEW, data: {links: links}})}>
                 <Image links={links}/>
             </div>
             <div className={`${this.className}_descriptionBlock`}>
@@ -38,4 +40,4 @@ class VendorItem extends React.Component {
     }
 }
 
-export default connect(null, {addToCart})(VendorItem)
+export default connect(null, {addToCart, showModal})(VendorItem)

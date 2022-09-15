@@ -8,6 +8,7 @@ import {
   CONTACTS_MODAL,
   CREATE_ITEM_MODAL,
   DELIVERY_INFO_MODAL,
+  IMAGE_PREVIEW,
   ORDER_FORM_MODAL,
   USER_AGREEMENT_MODAL,
   VK_MODAL
@@ -17,13 +18,15 @@ import OrderForm from "../orderform/OrderForm";
 import CreateItem from "../admin/createitem/CreateItem";
 import {UserAgreement} from "./UserAgreement";
 import {Contacts} from "./Contacts";
+import ImagePreview from "./ImagePreview";
 
 class Modal extends Component {
   render() {
     const {
       modalType,
       showModal,
-      hideModal
+      hideModal,
+      data
     } = this.props;
     const className = 'modal';
     return <div className={className}
@@ -37,12 +40,12 @@ class Modal extends Component {
         <div className={`${className}_close`}>
           <div className={`${className}_close_button`}>Закрыть</div>
         </div>
-        {this.modalContent(modalType)}
+        {this.modalContent(modalType, data)}
       </div>
     </div>
   }
 
-  modalContent = (modalType) => {
+  modalContent = (modalType, data) => {
     switch (modalType) {
       case CART_MODAL:
         return <CartContent/>;
@@ -99,11 +102,15 @@ class Modal extends Component {
         return <Contacts/>;
       case VK_MODAL:
         return <div className={`textModal`}>
-          <a target="_blank" href="https://vk.com/northwindcards">Мы в контакте</a>
+          <a target="_blank" href="https://vk.com/northwindcards">Мы в
+            контакте</a>
           <br/>
           <br/>
-          <a target="_blank" href="https://vk.com/topic-182017496_46570052">Отзывы</a>
+          <a target="_blank"
+             href="https://vk.com/topic-182017496_46570052">Отзывы</a>
         </div>
+      case IMAGE_PREVIEW:
+        return <ImagePreview links={[data.links.preview, data.links.short]}/>;
       default:
         return null;
 
@@ -114,6 +121,7 @@ class Modal extends Component {
 export default connect(state => {
   return ({
     showModal: state.modal.showModal,
-    modalType: state.modal.modalType
+    modalType: state.modal.modalType,
+    data: state.modal.data
   })
 }, {hideModal})(Modal)

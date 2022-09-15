@@ -5,13 +5,10 @@
   width: 30%;
   margin-left: 3%;
   @media (-webkit-min-device-pixel-ratio: 1.5) {
-    width: 95%;
-    @media (orientation: landscape) {
-      width: 45%;
-    }
+    width: 45%;
   }
 
-  &_imageContainer{
+  &_imageContainer {
     height: 80%;
   }
 
