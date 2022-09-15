@@ -89,8 +89,6 @@ class CartContent extends Component {
     const contentArray = Object.values(this.props.cartContent || {});
     const stampsTag = 36; //todo REPLACE !!!!!
     const priceForStamps = 500;
-    console.log(contentArray)
-    console.log(contentArray.some(it => it.tags.includes(stampsTag)))
     if (contentArray.some(it => it.tags.includes(stampsTag))) {
       const currentPrice = contentArray
       .filter(it => !it.tags.includes(stampsTag))

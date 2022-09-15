@@ -17,7 +17,7 @@ export default function items(state = DEFAULT_STATE, action) {
         case UPDATE_ITEM:
             let newItem = action.payload.item;
             return {
-                items: state.items.map(i => i.id === newItem.id ? newItem : id),
+                items: state.items.map(i => i.id === newItem.id ? newItem : i),
                 ...state
             }
         default:

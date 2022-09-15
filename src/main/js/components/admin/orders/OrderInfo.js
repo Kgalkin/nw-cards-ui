@@ -78,7 +78,7 @@ export class OrderInfo extends React.Component {
   }
 
   createRow = (prefix, item) => {
-    return <tr className={`${prefix}_item_${item?.id}`}>
+    return <tr key ={`${prefix}_${item?.id}`} className={`${prefix}_item_${item?.id}`}>
       <td><Image links={item.data.links}/></td>
       <td>{item.id}</td>
       <td>{item.data.title}</td>

@@ -26,7 +26,7 @@ class OrderForm extends Component {
       deliveryOption: null,
       loading: false,
       deliveryOptions: null,
-      comments: null
+      comments: ''
       //contactOption: null
     }
   }

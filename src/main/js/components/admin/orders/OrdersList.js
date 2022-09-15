@@ -23,7 +23,7 @@ export default class OrdersList extends Component {
 
     componentDidMount() {
         window.addEventListener('scroll', () => {
-            if (((this.props.items.items.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
+            if (((this.props.items?.items?.length % PAGE_SIZE === 0) && document.scrollingElement.scrollHeight / (document.scrollingElement.scrollTop + document.scrollingElement.scrollWidth) < 1.2
                 && this.props.items.state !== LOADING)) {
                 this.loadOrdersPage();
             }
@@ -49,6 +49,6 @@ export default class OrdersList extends Component {
     }
 
     constructOrders = orders => {
-        return orders.map(order => <Order order={order}/>)
+        return orders.map(order => <Order key={order.id} order={order}/>)
     }
 }

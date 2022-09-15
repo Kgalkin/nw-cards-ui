@@ -25,7 +25,7 @@ class Menu extends React.Component {
     const class_name = "menu"
     return <>
       <div className={class_name}>{menuItems.map(
-          it => <MenuItem item={it}/>)}
+          it => <MenuItem key={it.name} item={it}/>)}
 
         <div className={`${class_name}_search`}
              onClick={() => this.setState(

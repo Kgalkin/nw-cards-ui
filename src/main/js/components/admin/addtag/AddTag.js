@@ -38,6 +38,7 @@ class AddTag extends Component {
                 .map(tag => ({value: tag.id, label: tag.value}))
             }
         }
+        return null;
     }
 
     handleChange = (

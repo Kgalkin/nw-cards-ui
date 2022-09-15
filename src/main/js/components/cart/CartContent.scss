@@ -13,11 +13,12 @@
     justify-content: space-between;
 
     & button {
-      @include text
+      @include text();
     }
   }
 
   &_stampsError {
     color: $error;
+    @include font(18);
   }
 }
