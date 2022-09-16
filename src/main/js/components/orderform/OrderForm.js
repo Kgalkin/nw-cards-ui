@@ -3,6 +3,7 @@ import './OrderForm.scss'
 import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
 import {HOST_AND_PORT, loadDeliveryOptions} from "../../utils/apiUtils";
+import Select from "react-select";
 
 const className = 'orderForm';
 const errorClass = 'error';
@@ -92,16 +93,16 @@ class OrderForm extends Component {
         <span className={`${className}_deliveryHeader`}>Доставка</span>
         <div className={`${className}_deliverySelectCountry`}>
           <label>Укажите страну: </label>
-          <select
+          <Select
               className={`${this.state.validationActive && !this.state.country
                   ? errorClass : ''}`}
               value={this.state.country}
-              onChange={e => this.setState(
-                  {country: e.target.value, deliveryOption: null})}>
-            <option value='' style={{display: 'none'}}/>
-            <option value="RU">Россия</option>
-            <option value="OTHER">Другая</option>
-          </select>
+              onChange={e =>
+                  this.setState({country: e, deliveryOption: null})}
+              placeholder="Выберите страну"
+              options={[{id: "RU", label: "Россия"},
+                {id: "OTHER", label: "Другая"}]}>
+          </Select>
         </div>
         {this.handleCountry()}
       </div>
@@ -116,13 +117,13 @@ class OrderForm extends Component {
   }
 
   handleCountry() {
-    switch (this.state.country) {
+    switch (this.state.country.id) {
       case 'RU':
         return <>{this.buildDeliveryOptions()}</>;
       case 'OTHER':
+        const option = this.state.deliveryOptions.filter(o => o.price < 0)[0];
         return <div className={`${className}_deliveryChoice`}>
-          {this.state.deliveryOptions.filter(o => o.price < 0)
-          .map(o => this.radioInput(`${o.description}`, o.id))}
+          {this.radioInput(`${option.description}`, option.id)}
           {/*   <div>
                         <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
                     </div>*/}
@@ -165,9 +166,9 @@ class OrderForm extends Component {
       const canNotBeSimplePost = Object.entries(this.props.cartItems)
           .some(it => !it[1]?.tags?.includes(1)) ||
           Object.entries(this.props.cartItems)
-      .filter(it => it[1]?.tags?.includes(1))
-      .map(it => it[1]?.count)
-      .reduce((a, b) => a + b) > 15
+          .filter(it => it[1]?.tags?.includes(1))
+          .map(it => it[1]?.count)
+          .reduce((a, b) => a + b) > 15
       return this.state.deliveryOptions.filter(o => o.price > 0)
       .map(o => this.radioInput(
           `${o.description} - ${o.price} руб.`, o.id,
