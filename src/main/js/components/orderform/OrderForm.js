@@ -100,6 +100,7 @@ class OrderForm extends Component {
               onChange={e =>
                   this.setState({country: e, deliveryOption: null})}
               placeholder="Выберите страну"
+              isSearchable={false}
               options={[{id: "RU", label: "Россия"},
                 {id: "OTHER", label: "Другая"}]}>
           </Select>
