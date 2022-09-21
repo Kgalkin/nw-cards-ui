@@ -1,0 +1,10 @@
+@import "../../styles/_fonts.scss";
+@import "../../styles/colors.scss";
+
+.textWithMore {
+  @include text();
+  &_control{
+    @include subHeader();
+    color: $brand-secondary;
+  }
+}

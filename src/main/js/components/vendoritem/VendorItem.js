@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import Image from "../image/Image";
 import {cartSvg} from "../cart/CartUtils";
 import {IMAGE_PREVIEW} from "../../reducers/modal";
+import TextWithMore from "./TextWithMore";
 
 class VendorItem extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class VendorItem extends React.Component {
             </div>
             <div className={`${this.className}_descriptionBlock`}>
                 <div>
-                    <p className={`${this.className}_description`}>{description}</p>
+                    <TextWithMore text={description} cutAfter={50} className={`${this.className}_description`}/>
                     <p className={`${this.className}_inStock`}>{`В наличии: ${inStock}`}</p>
                 </div>
                 <button className={`${this.className}_addButton`}
