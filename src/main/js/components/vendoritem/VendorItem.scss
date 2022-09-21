@@ -1,4 +1,5 @@
 @import "../../styles/_fonts.scss";
+@import "../../styles/colors.scss";
 
 .item {
   height: 100%;
@@ -39,6 +40,27 @@
   }
 
   &_addButton {
-    @include text
+    @include text;
+    height: 60%;
+    background-color: $brand-background;
+    color: $brand-main;
+    border-radius: 20%;
+    border: 1px solid $brand-main;
+    transition-duration: 0.1s;
+    -webkit-transition-duration: 0.1s;
+
+    &:hover {
+      box-shadow: 0 0 2px 2px $brand-main;
+      transition: all 200ms;
+    }
+
+    &:active {
+      transition: all 200ms;
+      box-shadow: 0 0 10px 10px $brand-main;
+    }
+
+    & svg {
+      fill: $brand-main;
+    }
   }
 }

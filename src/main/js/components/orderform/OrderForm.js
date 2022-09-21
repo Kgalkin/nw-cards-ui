@@ -136,7 +136,7 @@ class OrderForm extends Component {
   }
 
   radioInput(label, value, canNotBeSimple = false) {
-    return <div className={`${className}_deliveryChoice`}>
+    return <div key={value} className={`${className}_deliveryChoice`}>
       <label
           className={`${this.state.validationActive
           && !this.state.deliveryOption ? errorClass : ''}`}>
@@ -192,6 +192,9 @@ class OrderForm extends Component {
         items: []
       }
     };
+    if (typeof ym !== 'undefined') {
+      ym(90177751,'reachGoal','create_order');
+    }
     Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({
       count: v[1].count,
       id: Number(v[0])
