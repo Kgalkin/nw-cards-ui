@@ -89,7 +89,7 @@ export class OrderInfo extends React.Component {
   }
 
   createSetDeliveryPriceAction = () => {
-    return this.props.order.data.deliveryOption.price > 0 || isFinalState(
+    return this.props.order.data.deliveryOption.price >= 0 || isFinalState(
         this.props.order.state) ? null :
         <button className={`${className}_actions_setdeliveryprice`}
                 onClick={() => {

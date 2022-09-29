@@ -37,6 +37,7 @@ export default class OrdersList extends Component {
             <tr>
                 <th>Номер</th>
                 <th>Имя</th>
+                <th>Доставка</th>
                 <th>Статус</th>
                 <th>Дата создания</th>
                 <th>Полная стоимость</th>
