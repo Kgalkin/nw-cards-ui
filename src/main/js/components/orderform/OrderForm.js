@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import './OrderForm.scss'
-import {connect} from "react-redux";
 import {clearCart} from "../../reducers/actions";
 import {HOST_AND_PORT, loadDeliveryOptions} from "../../utils/apiUtils";
 import Select from "react-select";
+import {connect} from "react-redux";
 
 const className = 'orderForm';
 const errorClass = 'error';
@@ -28,7 +28,6 @@ class OrderForm extends Component {
       loading: false,
       deliveryOptions: null,
       comments: ''
-      //contactOption: null
     }
   }
 
@@ -118,36 +117,21 @@ class OrderForm extends Component {
   }
 
   handleCountry() {
-    switch (this.state.country.id) {
-      case 'RU':
-        return <>{this.buildDeliveryOptions()}</>;
-      case 'OTHER':
-        const option = this.state.deliveryOptions.filter(o => o.price < 0)[0];
-        return <div className={`${className}_deliveryChoice`}>
-          {this.radioInput(`${option.description}`, option.id)}
-          {/*   <div>
-                        <textarea placeholder="Предпочтительный способ связи для уточнения стоимости доставки"/>
-                    </div>*/}
-        </div>;
-      default :
-        return null
-
-    }
+    return this.state.country?.id && <>{this.buildDeliveryOptions()}</>;
   }
 
-  radioInput(label, value, canNotBeSimple = false) {
+  radioInput(label, value, disabled, text) {
     return <div key={value} className={`${className}_deliveryChoice`}>
       <label
           className={`${this.state.validationActive
           && !this.state.deliveryOption ? errorClass : ''}`}>
-        <input disabled={canNotBeSimple} type="radio" name="delivery"
+        <input disabled={disabled} type="radio" name="delivery"
                value={value}
                checked={Number(this.state.deliveryOption) === value}
                onChange={this.handleDeliveryOptionSelect}/>{label}
       </label>
-      {canNotBeSimple ? <div
-          className={`${className}_simpleNotAvailable`}>Доступно только для
-        заказов из 15(или меньше) открыток</div> : null}
+      {text ? <div
+          className={`${className}_optionDescription`}>{text}</div> : null}
     </div>
   }
 
@@ -157,23 +141,77 @@ class OrderForm extends Component {
   }
 
   buildDeliveryOptions = () => {
-    if (Object.entries(this.props.cartItems).map(
-        it => it[1].count * it[1].price)
-    .reduce((a, b) => a + b) > 1999) {
-      return this.state.deliveryOptions.filter(o => o.price === 0)
-      .map(o => this.radioInput(
-          `${o.description} - ${o.price} руб.`, o.id, false))
-    } else {
-      const canNotBeSimplePost = Object.entries(this.props.cartItems)
-          .some(it => !it[1]?.tags?.includes(1)) ||
-          Object.entries(this.props.cartItems)
-          .filter(it => it[1]?.tags?.includes(1))
-          .map(it => it[1]?.count)
-          .reduce((a, b) => a + b) > 15
-      return this.state.deliveryOptions.filter(o => o.price > 0)
-      .map(o => this.radioInput(
-          `${o.description} - ${o.price} руб.`, o.id,
-          o.id === 1 && canNotBeSimplePost))
+    let options = [];
+    //if there is priority on option it is counted as UNIQUE
+    const sortedByPriority = Object.values(this.state.deliveryOptions || [])
+    .sort((a, b) => {
+      const apriority = a.data?.constraints?.map(it => it.priority)
+      .reduce((f, s) => f > s ? f : s);
+      const bpriority = b.data?.constraints?.map(it => it.priority)
+      .reduce((f, s) => f > s ? f : s);
+      return (bpriority || 0) - (apriority || 0);
+    })
+    for (let number in sortedByPriority) {
+      const option = sortedByPriority[number];
+      const test = this.constraintsMatches(option.data?.constraints || []);
+      if (test.matches) {
+        if (option.data?.constraints?.map(it => it.priority)
+        .reduce((f, s) => f > s ? f : s)) {
+          return [this.radioInput(
+              `${option.description} - ${option.price} руб.`, option.id)]
+        } else {
+          options.push(this.radioInput(
+              `${option.description} - ${option.price} руб.`, option.id,
+              false))
+        }
+      } else if (test.text) {
+        options.push(this.radioInput(
+            `${option.description} - ${option.price} руб.`, option.id,
+            true, test.text))
+      }
+    }
+    return options;
+  }
+
+  constraintsMatches = (constraints) => {
+    for (let i in constraints) {
+      const constraint = constraints[i]
+      if (!this.testConstraint(constraint)) {
+        return {matches: false, text: constraint.text}
+      }
+    }
+    return {matches: true}
+  }
+
+  testConstraint = (constraint) => {
+    switch (constraint.type) {
+      case "country":
+        return constraint.equals && constraint.equals
+            === this.state.country.id
+      case "totalPrice":
+        return Object.entries(this.props.cartItems).map(
+            it => it[1].count * it[1].price)
+        .reduce((a, b) => a + b) >= constraint.min
+      case "tagData":
+        let map = new Map();
+        this.props.tags.values
+        .filter(tag => tag.data[`${constraint.fieldName}`])
+        .forEach(it => map.set(it.id, it.data[`${constraint.fieldName}`]))
+        const items = Object.entries(this.props.cartItems);
+        let sum = 0;
+        for (let i in items) {
+          let it = items[i]
+          let tags = it[1].tags;
+          const itemWight = tags.map(tag => map.has(tag) && map.get(tag))
+          .reduce((a, b) => a > b ? a : b);
+          if (!itemWight){
+            return false;
+          }
+          sum += itemWight && itemWight * it[1].count;
+        }
+        return sum <= constraint.max;
+      default:
+        return false;
     }
   }
 
@@ -193,12 +231,13 @@ class OrderForm extends Component {
       }
     };
     if (typeof ym !== 'undefined') {
-      ym(90177751,'reachGoal','create_order');
+      ym(90177751, 'reachGoal', 'create_order');
     }
-    Object.entries(this.props.cartItems).forEach((v) => order.data.items.push({
-      count: v[1].count,
-      id: Number(v[0])
-    }));
+    Object.entries(this.props.cartItems).forEach(
+        (v) => order.data.items.push({
+          count: v[1].count,
+          id: Number(v[0])
+        }));
     this.setState({loading: true});
     fetch(`${HOST_AND_PORT}/api/orders`, {
       method: 'POST',
@@ -246,5 +285,5 @@ class OrderForm extends Component {
   }
 }
 
-export default connect(state => ({cartItems: state.cartItems}), {clearCart})(
+export default connect(state => ({cartItems: state.cartItems, tags: state.tags}), {clearCart})(
     OrderForm)
