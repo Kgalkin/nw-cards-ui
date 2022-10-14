@@ -209,7 +209,13 @@ class OrderForm extends Component {
           }
           sum += itemWight && itemWight * it[1].count;
         }
-        return sum <= constraint.max;
+        if (constraint.max) {
+          return sum <= constraint.max;
+        }
+        if (constraint.min) {
+          return sum >= constraint.min;
+        }
+        return false;
       default:
         return false;
     }
