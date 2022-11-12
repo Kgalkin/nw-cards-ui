@@ -45,6 +45,7 @@ function cartItemsInner(state, action) {
       action.payload.forEach(it => {
         let item = copy[it.id];
         if (item) {
+          item.price = it.price;
           item.inStock = it.inStock;
         }
       })

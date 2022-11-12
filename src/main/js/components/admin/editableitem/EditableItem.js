@@ -19,6 +19,7 @@ export class EditableItem extends Component {
     this.state = {
       editable: false,
       item: this.props.item,
+      oldPrice: 0
       /*title: null,
       description: null,
       price: null,
@@ -33,7 +34,7 @@ export class EditableItem extends Component {
   }
 
   render() {
-    const {id, price, inStock, tags} = this.state.item;
+    const {id, price, oldPrice, inStock, tags} = this.state.item;
     const {title, description, links} = this.state.item.data;
 
     return <div id={id} className={this.className}
@@ -60,6 +61,21 @@ export class EditableItem extends Component {
                     className={`${this.className}_description`}
                     value={description} onChange={e =>
               this.updateItem(item => item.data.description = e.target.value)}/>
+          <div><label>{`Старая цена: `}</label>
+            {oldPrice ? <input disabled={!this.state.editable}
+                               className={`${this.className}_price`}
+                               value={oldPrice}
+                               onChange={e =>
+                                   this.updateItem(item => item.oldPrice =
+                                       isNumber(e.target.value) ? Number(e.target.value)
+                                           : item.oldPrice)}/>
+                : <span onClick={() => {
+                  let item = this.state.item;
+                  item.oldPrice = this.state.oldPrice;
+                  this.setState({item});
+                }
+                }>+</span>}
+          </div>
           <div><label>{`Цена: `}</label>
             <input disabled={!this.state.editable}
                    className={`${this.className}_price`}
@@ -97,7 +113,10 @@ export class EditableItem extends Component {
   };
 
   edit = () => {
-    this.setState({editable: true});
+    this.setState({
+      editable: true,
+      oldPrice: this.state.item.price
+    });
   };
 
   updateImage = (event) => {

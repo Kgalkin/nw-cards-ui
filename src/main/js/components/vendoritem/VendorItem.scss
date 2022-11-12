@@ -64,3 +64,23 @@
     }
   }
 }
+
+.oldPrice {
+  position: relative;
+  opacity: 50%;
+}
+
+.oldPrice::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 2px solid;
+  border-color: black;
+
+
+  -ms-transform: rotate(-5deg);
+
+  transform: rotate(-5deg);
+}

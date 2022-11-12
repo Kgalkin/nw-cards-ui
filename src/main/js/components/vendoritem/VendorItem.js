@@ -14,8 +14,9 @@ class VendorItem extends React.Component {
         this.className = "item";
     }
     render() {
-        const {id, price, inStock} = this.props.item;
+        const {id, price, oldPrice, inStock} = this.props.item;
         const {title, description, links} = this.props.item.data;
+        console.log(price, oldPrice);
         return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
             <h3>{title}</h3>
             <div className={`${this.className}_imageContainer`}
@@ -33,11 +34,22 @@ class VendorItem extends React.Component {
                         }}
                 disabled={!inStock}>
                     {inStock ? <div>{cartSvg()}</div> : null}
-                    <span>{inStock ? `${price}руб` : 'Нет в наличии'}</span>
+                    {inStock ? this.buildPrice(oldPrice, price) : null}
                 </button>
 
             </div>
         </div>
+    }
+
+    buildPrice = (oldPrice, price) => {
+        if (oldPrice && price){
+            return <>
+                <div className={'oldPrice'}>{`${oldPrice}руб`}</div>
+                <div>{`${price}руб`}</div>
+            </>
+        } else {
+            return <div>{`${price}руб`}</div>
+        }
     }
 }
 
