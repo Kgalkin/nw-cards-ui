@@ -151,6 +151,8 @@ class OrderForm extends Component {
       .reduce((f, s) => f > s ? f : s);
       return (bpriority || 0) - (apriority || 0);
     })
+    .sort((a, b) => a.price > b.price ? 1 : -1);
+
     for (let number in sortedByPriority) {
       const option = sortedByPriority[number];
       const test = this.constraintsMatches(option.data?.constraints || []);
@@ -158,11 +160,16 @@ class OrderForm extends Component {
         if (option.data?.constraints?.map(it => it.priority)
         .reduce((f, s) => f > s ? f : s)) {
           return [this.radioInput(
-              `${option.description} - ${option.price} руб.`, option.id)]
+              `${option.description} - ${option.price} руб.`,
+              option.id,
+              false,
+              option.data.description)]
         } else {
           options.push(this.radioInput(
-              `${option.description} - ${option.price} руб.`, option.id,
-              false))
+              `${option.description} - ${option.price} руб.`,
+              option.id,
+              false,
+              option.data.description))
         }
       } else if (test.text) {
         options.push(this.radioInput(
@@ -195,7 +202,7 @@ class OrderForm extends Component {
       case "tagData":
         let map = new Map();
         this.props.tags.values
-        .filter(tag => tag.data[`${constraint.fieldName}`])
+        .filter(tag => tag.data && tag.data[`${constraint.fieldName}`])
         .forEach(it => map.set(it.id, it.data[`${constraint.fieldName}`]))
         const items = Object.entries(this.props.cartItems);
         let sum = 0;
@@ -204,13 +211,13 @@ class OrderForm extends Component {
           let tags = it[1].tags;
           const itemWight = tags.map(tag => map.has(tag) && map.get(tag))
           .reduce((a, b) => a > b ? a : b);
-          if (!itemWight){
+          if (!itemWight && constraint.failOnAbsent) {
             return false;
           }
           sum += itemWight && itemWight * it[1].count;
         }
         if (constraint.max) {
-          return sum <= constraint.max;
+          return sum <= (constraint.max < 0 ? 0 : constraint.max);
         }
         if (constraint.min) {
           return sum >= constraint.min;
@@ -291,5 +298,6 @@ class OrderForm extends Component {
   }
 }
 
-export default connect(state => ({cartItems: state.cartItems, tags: state.tags}), {clearCart})(
+export default connect(
+    state => ({cartItems: state.cartItems, tags: state.tags}), {clearCart})(
     OrderForm)
