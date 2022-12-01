@@ -16,7 +16,6 @@ class VendorItem extends React.Component {
     render() {
         const {id, price, oldPrice, inStock} = this.props.item;
         const {title, description, links} = this.props.item.data;
-        console.log(price, oldPrice);
         return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
             <h3>{title}</h3>
             <div className={`${this.className}_imageContainer`}
