@@ -4,9 +4,9 @@ export default function tags(state = {state: null, values: []}, action) {
   switch (action.type) {
     case UPDATE_TAGS:
       let activeTags = [];
-      if (state.values?.length === 0) {
-        activeTags = action.payload?.values
-        ?.filter(t => "postcard" === t.data?.speciality)
+      if (state.values?.length === 0 && action.payload.values) {
+        activeTags = action.payload.values
+        .filter(t => "postcard" === t.data?.speciality)
         .map(t => t.id);
       }
       return {
