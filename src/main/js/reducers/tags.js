@@ -1,18 +1,11 @@
 import {ADD_ACTIVE_TAGS, UPDATE_TAGS} from "./actions";
 
-export default function tags(state = {state: null, values: []}, action) {
+export default function tags(state = {state: null, values: [], activeTags:[1]}, action) {
   switch (action.type) {
     case UPDATE_TAGS:
-      let activeTags = [];
-      if (state.values?.length === 0 && action.payload.values) {
-        activeTags = action.payload.values
-        .filter(t => "postcard" === t.data?.speciality)
-        .map(t => t.id);
-      }
       return {
         ...state,
-        ...action.payload,
-        activeTags
+        ...action.payload
       };
     case ADD_ACTIVE_TAGS: {
       return {

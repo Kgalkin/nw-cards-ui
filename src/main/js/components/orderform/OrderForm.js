@@ -197,7 +197,7 @@ class OrderForm extends Component {
             === this.state.country.id
       case "totalPrice":
         return Object.entries(this.props.cartItems).map(
-            it => it[1].count * it[1].price)
+            it => (it.count || 0) * (it.price || 0))
         .reduce((a, b) => a + b) >= constraint.min
       case "tagData":
         let map = new Map();

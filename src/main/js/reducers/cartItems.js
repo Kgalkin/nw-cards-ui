@@ -2,7 +2,8 @@ import {
   ADD_TO_CART,
   CLEAR_CART,
   REMOVE_FROM_CART,
-  UPDATE_COUNT, UPDATE_INSTOCK
+  UPDATE_COUNT,
+  UPDATE_INSTOCK
 } from './actions'
 
 function getFromLocalStorage() {
@@ -42,11 +43,15 @@ function cartItemsInner(state, action) {
       };
     case UPDATE_INSTOCK:
       let copy = {...state};
-      action.payload.forEach(it => {
-        let item = copy[it.id];
-        if (item) {
-          item.price = it.price;
-          item.inStock = it.inStock;
+      Object.entries(state).forEach(store => {
+        let found = action.payload.find(it => {
+            return it.id === Number(store[0])
+        });
+        if (found) {
+          copy[found.id].price = found.price;
+          copy[found.id].inStock = found.inStock;
+        } else {
+          delete copy[store[0]];
         }
       })
       return copy;
