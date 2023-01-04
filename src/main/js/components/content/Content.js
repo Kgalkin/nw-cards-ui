@@ -50,7 +50,9 @@ export class Content extends Component {
 
   constructItems = () => {
     let children = [];
-    this.props.items.items.forEach(i => {
+    this.props.items.items
+    .filter(i => i.inStock > 0)
+    .forEach(i => {
           children.push(<VendorItem key={i.id} item={i}/>)
         }
     );
