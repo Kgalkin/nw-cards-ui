@@ -1,42 +1,32 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {getMenu} from "../../utils/apiUtils";
 import {connect} from 'react-redux'
 import MenuItem from "./MenuItem";
 import "./Menu.scss"
 import TagSelect from "./TagSelect";
 
-class Menu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuItems: [],
-      tagSelectVisible: false
-    }
-  }
+export default function Menu(props) {
+  const [state, setState] = useState({
+    menuItems: [],
+    tagSelectVisible: false
+  })
 
-  componentDidMount() {
-    getMenu().then(r => this.setState({menuItems: r}))
-  }
+  const {menuItems, tagSelectVisible} = state;
 
-  render() {
-    const {
-      menuItems,
-    } = this.state
-    const class_name = "menu"
-    return <>
-      <div className={class_name}>{menuItems.map(
-          it => <MenuItem key={it.name} item={it}/>)}
+  useEffect(() =>
+      getMenu().then(r => setState({menuItems: r, tagSelectVisible})), [])
 
-        <div className={`${class_name}_search`}
-             onClick={() => this.setState(
-                 {tagSelectVisible: !this.state.tagSelectVisible})}>
-          Расширенный поиск
-        </div>
+  const class_name = "menu"
+  return <>
+    <div className={class_name}>{state.menuItems.map(
+        it => <MenuItem key={it.name} item={it}/>)}
+
+      <div className={`${class_name}_search`}
+           onClick={() => setState(
+               {menuItems, tagSelectVisible: !state.tagSelectVisible})}>
+        Расширенный поиск
       </div>
-      {this.state.tagSelectVisible ? <TagSelect/> : null}
-    </>;
-  }
+    </div>
+    {state.tagSelectVisible ? <TagSelect/> : null}
+  </>;
 }
-
-export default connect(state =>
-    ({m: state.tags.values.filter(tag => tag.isMenuItem)}), null)(Menu)

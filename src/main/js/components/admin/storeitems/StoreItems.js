@@ -1,5 +1,5 @@
 import React from 'react';
-import {Content} from "../../content/Content";
+import Content from "../../content/Content";
 import {connect} from "react-redux";
 import {showModal} from "../../../reducers/actions";
 import {CREATE_ITEM_MODAL} from "../../../reducers/modal";
@@ -7,33 +7,21 @@ import {EditableItem} from "../editableitem/EditableItem";
 import './StoreItems.scss'
 import SearchLine from "./SearchLine";
 
-class StoreItems extends Content {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {showModal} = this.props;
-    return <>
-      <button className={`${this.className}_admin_create_new`}
-              onClick={() => showModal(
-                  {modalType: CREATE_ITEM_MODAL})}>{"Добавить новый товар"}</button>
-        <SearchLine/>
-      {super.render()}</>
-  }
-
-  constructItems = () => {
+function StoreItems(props) {
+  const constructItems = (items) => {
     let children = [];
-    this.props.items.items.forEach(i => {
-          children.push(<EditableItem key={i.id} item={i}/>)
-        }
-    );
+    items.forEach(i => children.push(<EditableItem key={i.id} item={i}/>));
     return children;
   }
+
+  return <>
+    <button className={`content_admin_create_new`}
+            onClick={() => props.showModal(
+                {modalType: CREATE_ITEM_MODAL})}>{"Добавить новый товар"}</button>
+    <SearchLine/>
+    <Content constructItems={constructItems}/></>
+
 }
 
-export default connect(s => ({
-  activeTags: s.tags.activeTags,
-  tagsMethod: s.tags.method,
-  items: s.items
-}), {showModal})(StoreItems);
+export default connect(null,
+    {showModal})(StoreItems);

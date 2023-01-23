@@ -1,43 +1,52 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./SearchLine.scss"
 import Select from "react-select";
 import {connect} from "react-redux";
-import {addActiveTags, clearItems, LOADING} from "../../../reducers/actions";
+import {clearItems, LOADING} from "../../../reducers/actions";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const className = 'admin_search'
 
-class SearchLine extends React.Component {
+function SearchLine(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTags: []
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [selected, setSelected] = useState(null);
+
+  const handleTags = selectedTags => {
+    setSelected(selectedTags || [])
+  }
+
+  useEffect(() => {
+    if (props.tags) {
+      setSelected(searchParams.get('tags')?.split(',')
+      ?.map(it => Number(it))
+      .filter(it => it)
+      ?.map(it => ({
+        value: it,
+        label: props.tags.values.filter(tag => tag.id === it)[0]?.value
+      }))
+      .filter(it => it.value));
     }
-  }
+  }, [props.tags]);
 
-  handleTags = selectedTags => {
-    this.setState({selectedTags: selectedTags || []})
-  }
-
-  render() {
-    return <div className={`${className}`}>
-      <label >Тэги: </label>
-      <Select
-          className = {`${className}_tags`}
-          isMulti={true}
-          isLoading={this.props?.tags?.state === LOADING}
-          isDisabled={this.props?.tags?.state === LOADING}
-          onChange = {this.handleTags}
-          options={this.props.tags.values.map(i => ({value: i.id, label: i.value}))}
-      />
-      <button onClick={() => {
-          this.props.addActiveTags({
-            activeTags: this.state.selectedTags.map(it => it.value),
-            tagsMethod: "and"
-          });
-          this.props.clearItems();}}>Применить</button>
-    </div>
-  }
+  return <div className={`${className}`}>
+    <label>Тэги: </label>
+    <Select
+        className={`${className}_tags`}
+        isMulti={true}
+        isLoading={props.tags?.state === LOADING}
+        isDisabled={props.tags?.state === LOADING}
+        onChange={handleTags}
+        value={selected}
+        options={props.tags.values.map(i => ({value: i.id, label: i.value}))}
+    />
+    <button onClick={() => {
+      navigate(`/admin/items?tags=${selected.map(it => it.value).join(
+          ',')}&tagsMethod=and`);
+    }}>Применить
+    </button>
+  </div>
 }
 
-export default connect(state => ({tags: state.tags}), {addActiveTags, clearItems})(SearchLine);
+export default connect(state => ({tags: state.tags}))(SearchLine);

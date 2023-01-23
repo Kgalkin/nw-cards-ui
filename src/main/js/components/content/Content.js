@@ -1,71 +1,70 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import "./Content.scss"
 import VendorItem from "../vendoritem/VendorItem";
 import {loadItemsPage} from "../../utils/apiUtils";
 import {connect} from "react-redux";
-import {LOADING} from "../../reducers/actions";
+import {clearItems, LOADING} from "../../reducers/actions";
 import {Loading} from "../loading/Loading";
+import {useSearchParams} from "react-router-dom";
 
 export const PAGE_SIZE = 20;
 
-export class Content extends Component {
-  constructor(props) {
-    super(props);
-    this.className = "content";
+function Content(props) {
+  const [searchParams] = useSearchParams();
 
-    this.loadItems = () => {
-      loadItemsPage(this.props.items.nextOffset, PAGE_SIZE,
-          this.props.activeTags || [], this.props.tagsMethod);
-    };
+  useEffect(() => props.clearItems(), [searchParams])
+
+  const loadItems = () => {
+    console.group("Loading items")
+    console.log(searchParams.toString())
+    console.groupEnd()
+    loadItemsPage(props.items.nextOffset, PAGE_SIZE,
+        searchParams.get('tags') || [],
+        searchParams.get('tagsMethod'));
   }
+  const className = props.className || "content"
 
-  render() {
-    return <div className={this.className}>
-      <div className={`${this.className}_itemContainer`}>
-        {this.constructItems()}
-        {this.props.items.state === LOADING && <Loading/>}
-      </div>
-    </div>
-  }
+  const constructItems =  props.constructItems
+      ? () => props.constructItems(props.items.items)
+      : (() => {
+        let children = [];
+        props.items.items
+        .filter(i => i.inStock > 0)
+        .forEach(i => children.push(<VendorItem key={i.id} item={i}/>));
+        return !children.length && props.items.state !== LOADING ? <div
+                className={`${className}_emptyContent`}>Здесь пока пусто</div>
+            : children;
+      })
 
-  componentDidMount() {
-    window.addEventListener('scroll', () => {
-      if (((this.props.items.items.length % PAGE_SIZE === 0)
-          && document.scrollingElement.scrollHeight
-          / (document.scrollingElement.scrollTop
-              + document.scrollingElement.scrollWidth) < 1.2
-          && this.props.items.state !== LOADING)) {
-        this.loadItems();
-      }
-    });
-    this.loadItems();
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.items.state !== LOADING && this.props.items.totalCount
-        === undefined) {
-      this.loadItems()
+  const scrollHandler = () => {
+    if (((props.items.items.length < props.items.totalCount)
+        && document.scrollingElement.scrollHeight
+        / (document.scrollingElement.scrollTop
+            + document.scrollingElement.scrollWidth) < 1.2
+        && props.items.state !== LOADING)) {
+      console.group("LOADING FROM SCROLL")
+      console.groupEnd();
+      loadItems();
     }
-  }
+  };
 
-  constructItems = () => {
-    let children = [];
-    this.props.items.items
-    .filter(i => i.inStock > 0)
-    .forEach(i => {
-          children.push(<VendorItem key={i.id} item={i}/>)
-        }
-    );
-    return !children.length && this.props.items.state !== LOADING ? <div
-            className={`${this.className}_emptyContent`}>Здесь пока пусто</div>
-        : children;
-  }
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandler)
+    if (props.items.totalCount === undefined && props.items.state !== LOADING) {
+      console.group("INIT LOADING")
+      console.groupEnd()
+      loadItems();
+    }
+    return () => window.removeEventListener('scroll', scrollHandler)
+  }, [props.items]);
+
+  return <div className={className}>
+    <div className={`${className}_itemContainer`}>
+      {constructItems()}
+      {props.items.state === LOADING && <Loading/>}
+    </div>
+  </div>
+
 }
 
-export default connect(s => {
-  return {
-    activeTags: s.tags.activeTags,
-    tagsMethod: s.tags.method,
-    items: s.items
-  }
-}, null)(Content);
+export default connect(s => ({items: s.items}), {clearItems})(Content);

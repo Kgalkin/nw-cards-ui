@@ -1,21 +1,12 @@
 import React from "react";
-import {addActiveTags, clearItems} from "../../reducers/actions";
-import {connect} from "react-redux";
 import "./MenuItem.scss"
+import {useNavigate} from "react-router-dom";
 
-class MenuItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.className = "menu_item"
-    }
+export default function MenuItem(props) {
+  const className = "menu_item"
+  const navigate = useNavigate();
 
-    render() {
-        const {item, addActiveTags, clearItems} = this.props;
-        return <div className={this.className} onClick={() => {
-            addActiveTags({activeTags: item.tags})
-            clearItems()
-        }}>{item.name}</div>
-    }
+  return <div className={className} onClick={() =>
+      navigate(`/content?tags=${props.item.tags.join(',')}&tagsMethod=and`)}>{props.item.name}</div>
+
 }
-
-export default connect(null, {addActiveTags, clearItems})(MenuItem);

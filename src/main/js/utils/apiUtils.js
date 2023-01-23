@@ -7,7 +7,7 @@ import {
   updateTags
 } from "../reducers/actions";
 
-export const HOST_AND_PORT = '';
+export const HOST_AND_PORT = 'https://localhost';
 
 export const getMenu = () => {
   return fetch(`${HOST_AND_PORT}/api/menu`)
@@ -19,11 +19,12 @@ export const loadItemsPage = (offset, size, tags, tagsMethod) => {
   store.dispatch(setItemsLoading())
   let request = `${HOST_AND_PORT}/api/items?offset=${offset}&size=${size}`;
   if (tags && tags.length > 0) {
-    request += `&tags=${tags.join(",")}`
+    request += `&tags=${tags}`
   }
   if (tagsMethod) {
     request += `&tags.method=${tagsMethod}`
   }
+  console.log(request)
   return fetch(request)
   .then(r => {
     if (r.status < 200 && r.status >= 400) {
@@ -33,7 +34,9 @@ export const loadItemsPage = (offset, size, tags, tagsMethod) => {
   })
   .then(response => response.json())
   .catch(alert)
-  .then(r => store.dispatch(addItems(r)))
+  .then(r => {
+    store.dispatch(addItems(r))
+  })
 };
 
 export const requestPayment = orderId => {

@@ -1,50 +1,41 @@
 import React from "react";
 import {connect} from "react-redux";
-import {addActiveTags, clearItems, LOADING} from "../../reducers/actions";
+import {clearItems, LOADING} from "../../reducers/actions";
 import Select from "react-select";
 import "./TagSelect.scss"
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 export const className = 'tagSelect'
 
-class TagSelect extends React.Component {
+function TagSelect(props) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTags: [],
-    }
+  const handleTags = (selectedTags, triggeredAction) => {
+    navigate(`/content?tags=${selectedTags.map(it => it.value).join(',')}&tagsMethod=and`)
   }
 
-  handleTags = (selectedTags, triggeredAction) => {
-    this.setState({selectedTags: selectedTags || []})
-    this.props.addActiveTags({
-      activeTags: (selectedTags || []).map(it => it.value),
-      tagsMethod: "and"
-    });
-    this.props.clearItems();
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const tags = nextProps.tags;
-    return {selectedTags: tags.activeTags?.map(it =>
-        ({value: it, label: tags.values.filter(tag => tag.id === it)[0]?.value}))}
-  }
-
-  render() {
-    return (
-        <Select
-            className={className}
-            isMulti={true}
-            isLoading={this.props?.tags?.state === LOADING}
-            isDisabled={this.props?.tags?.state === LOADING}
-            onChange={this.handleTags}
-            value={this.state.selectedTags}
-            options={this.props.tags.values.map(
-                i => ({value: i.id, label: i.value}))}
-            placeholder = 'Поиск'
-        />);
-  }
+  const selectedTags = searchParams.get('tags')?.split(',')
+  ?.map(it => Number(it))
+  .filter(it=>it)
+  ?.map(it => ({
+    value: it,
+    label: props.tags.values.filter(tag => tag.id === it)[0]?.value
+  }))
+  .filter(it => it.value)
+  return (
+      <Select
+          className={className}
+          isMulti={true}
+          isLoading={props?.tags?.state === LOADING}
+          isDisabled={props?.tags?.state === LOADING}
+          onChange={handleTags}
+          value={selectedTags}
+          options={props.tags.values.map(
+              i => ({value: i.id, label: i.value}))}
+          placeholder='Поиск'
+      />);
 }
 
 export default connect(state => ({tags: state.tags}),
-    {addActiveTags, clearItems})(TagSelect)
+    {clearItems})(TagSelect)

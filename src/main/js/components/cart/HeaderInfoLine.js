@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import './HeaderInfoLine.scss'
-import {connect} from 'react-redux'
 import {showModal} from "../../reducers/actions";
 import {
   ABOUT_US_MODAL,
@@ -8,6 +7,7 @@ import {
   DELIVERY_INFO_MODAL, VK_MODAL
 } from "../../reducers/modal";
 import {cartSvg} from "./CartUtils";
+import {connect} from "react-redux";
 
 class HeaderInfoLine extends Component {
   constructor(props) {
