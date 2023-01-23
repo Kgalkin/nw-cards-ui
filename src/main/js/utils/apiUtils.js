@@ -15,7 +15,7 @@ export const getMenu = () => {
   .catch(alert)
 }
 
-export const loadItemsPage = (offset, size, tags, tagsMethod) => {
+export const loadItemsPage = (offset, size, tags, tagsMethod, ids) => {
   store.dispatch(setItemsLoading())
   let request = `${HOST_AND_PORT}/api/items?offset=${offset}&size=${size}`;
   if (tags && tags.length > 0) {
@@ -24,7 +24,9 @@ export const loadItemsPage = (offset, size, tags, tagsMethod) => {
   if (tagsMethod) {
     request += `&tags.method=${tagsMethod}`
   }
-  console.log(request)
+  if (ids) {
+    request += `&ids=${ids}`
+  }
   return fetch(request)
   .then(r => {
     if (r.status < 200 && r.status >= 400) {

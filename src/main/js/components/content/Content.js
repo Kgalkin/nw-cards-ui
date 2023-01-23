@@ -15,21 +15,17 @@ function Content(props) {
   useEffect(() => props.clearItems(), [searchParams])
 
   const loadItems = () => {
-    console.group("Loading items")
-    console.log(searchParams.toString())
-    console.groupEnd()
     loadItemsPage(props.items.nextOffset, PAGE_SIZE,
         searchParams.get('tags') || [],
-        searchParams.get('tagsMethod'));
+        searchParams.get('tagsMethod'),
+        searchParams.get('ids'));
   }
   const className = props.className || "content"
 
-  const constructItems =  props.constructItems
-      ? () => props.constructItems(props.items.items)
-      : (() => {
+  const constructItems = props.constructItems
+      || ((items) => {
         let children = [];
-        props.items.items
-        .filter(i => i.inStock > 0)
+        items.filter(i => i.inStock > 0)
         .forEach(i => children.push(<VendorItem key={i.id} item={i}/>));
         return !children.length && props.items.state !== LOADING ? <div
                 className={`${className}_emptyContent`}>Здесь пока пусто</div>
@@ -42,8 +38,6 @@ function Content(props) {
         / (document.scrollingElement.scrollTop
             + document.scrollingElement.scrollWidth) < 1.2
         && props.items.state !== LOADING)) {
-      console.group("LOADING FROM SCROLL")
-      console.groupEnd();
       loadItems();
     }
   };
@@ -51,8 +45,6 @@ function Content(props) {
   useEffect(() => {
     window.addEventListener('scroll', scrollHandler)
     if (props.items.totalCount === undefined && props.items.state !== LOADING) {
-      console.group("INIT LOADING")
-      console.groupEnd()
       loadItems();
     }
     return () => window.removeEventListener('scroll', scrollHandler)
@@ -60,7 +52,7 @@ function Content(props) {
 
   return <div className={className}>
     <div className={`${className}_itemContainer`}>
-      {constructItems()}
+      {constructItems(props.items.items)}
       {props.items.state === LOADING && <Loading/>}
     </div>
   </div>

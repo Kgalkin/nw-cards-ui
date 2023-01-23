@@ -3,7 +3,6 @@ import {ADD_ITEMS, CLEAR_ITEMS, LOADING, SET_ITEMS_LOADING, UPDATE_ITEM} from ".
 export const DEFAULT_STATE = {items: [], nextOffset: 0};
 
 export default function items(state = DEFAULT_STATE, action) {
-    console.log(action)
     switch (action.type) {
         case ADD_ITEMS:
             action.payload.items = [...state.items, ...action.payload.items]
