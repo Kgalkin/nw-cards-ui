@@ -1,26 +1,19 @@
 import React from 'react'
 import './App.scss';
 import {createBrowserRouter, redirect, RouterProvider, Outlet} from "react-router-dom"
-//import StoreItems from "../admin/storeitems/StoreItems";
-/*import OrdersList from "../admin/orders/OrdersList";
-import PrivateRoute from "./PrivateRoute";
-import {OrderPreview} from "../orderform/OrderPreview";*/
 import StickyCartHeader from "../stickyheader/StickyCartHeader";
 import Content from "../content/Content";
-/*import Modal from "../modal/Modal";
-import {LoginForm} from "./LoginForm";
-import {AdminBoard} from "../adminboard/board/AdminBoard";*/
 import HeaderInfoLine from "../cart/HeaderInfoLine";
 import Footer from "../footer/Footer";
-//import {PaymentReceived} from "../pymentreceived/PaymentReceived";
 import Menu from "../menuselectitems/Menu";
 import Modal from "../modal/Modal";
 import LoginForm from "./LoginForm";
 import {AdminBoard} from "../adminboard/board/AdminBoard";
 import OrdersList from "../admin/orders/OrdersList";
 import StoreItems from "../admin/storeitems/StoreItems";
-import content from "../content/Content";
 import {loadAllTags} from "../../utils/apiUtils";
+import OrderPreview from "../orderform/OrderPreview";
+import {PaymentReceived} from "../pymentreceived/PaymentReceived";
 
 const privateRouteLoader = () => {
   if (localStorage.getItem("auth")) {
@@ -62,6 +55,14 @@ const router = createBrowserRouter([
               <Footer/>
             </>}/>
     )
+  },
+  {
+    path: "/orders/:uuid",
+    element: <OrderPreview/>
+  },
+  {
+    path: "/paymentreceived",
+    element: <PaymentReceived/>
   },
   {
     path: "*",

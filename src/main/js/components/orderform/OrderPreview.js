@@ -3,10 +3,11 @@ import Image from "../image/Image";
 import {loadOrderByUuid, requestPayment} from "../../utils/apiUtils";
 import "./OrderPreview.scss"
 import {Loading} from "../loading/Loading";
+import withRouter from "../../utils/withRouter";
 
 const className = "order_preview"
 
-export class OrderPreview extends React.Component {
+class OrderPreview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +32,7 @@ export class OrderPreview extends React.Component {
   }
 
   componentDidMount() {
-    loadOrderByUuid(this.props.uuid)
+    loadOrderByUuid(this.props.params.uuid)
     .then(r => r.json())
     .then(r => {
           this.setState({order: r});
@@ -106,3 +107,5 @@ export class OrderPreview extends React.Component {
         </div>
   }
 }
+
+export default withRouter(OrderPreview);
