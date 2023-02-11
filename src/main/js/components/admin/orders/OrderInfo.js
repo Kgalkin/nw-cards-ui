@@ -17,6 +17,7 @@ export class OrderInfo extends React.Component {
     const {order} = this.props
     return <div className={className}>
       <div className={`${className}_actions`}>
+        {this.createAddCommentsAction()}
         {this.createSetDeliveryPriceAction()}
         {this.createRevokeOrderAction()}
         {this.createReadyForShippingAction()}
@@ -24,39 +25,16 @@ export class OrderInfo extends React.Component {
         {this.createSendToCustomerActionImage()}
       </div>
       <div className={`${className}_description`}>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Имя:</div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.name}</div>
-        </div>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Почта:</div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.email}</div>
-        </div>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Адрес:</div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.address}</div>
-        </div>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Индекс:</div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.index}</div>
-        </div>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Комментарии
-          </div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.comments}</div>
-        </div>
-        <div className={`${className}_description_item`}>
-          <div className={`${className}_description_item_label`}>Доставка</div>
-          <div
-              className={`${className}_description_item_value`}>{order.data.deliveryOption.price}</div>
-          <div>{`(${order.data.deliveryOption.description})`}</div>
-        </div>
-
+        {this.createDescriptionItem('Имя:', order.data.name)}
+        {this.createDescriptionItem('Почта:', order.data.email)}
+        {this.createDescriptionItem('Адрес:', order.data.address)}
+        {this.createDescriptionItem('Индекс:', order.data.index)}
+        {this.createDescriptionItem('Комментарии:', order.data.comments)}
+        {this.createDescriptionItem('Доставка:', order.data.deliveryOption.price)}
+        {order.data.adminComments ?
+            this.createDescriptionItem("Комментарий администратора:",
+                order.data.adminComments)
+            : null}
       </div>
       <table className={`${className}_table`}>
         <thead>
@@ -74,6 +52,14 @@ export class OrderInfo extends React.Component {
             item => this.createRow(`${className}_row_${order.id}`, item))}
         </tbody>
       </table>
+    </div>
+  }
+
+  createDescriptionItem = (label, value) => {
+   return <div className={`${className}_description_item`}>
+      <div className={`${className}_description_item_label`}>{label}</div>
+      <div
+          className={`${className}_description_item_value`}>{value}</div>
     </div>
   }
 
@@ -150,6 +136,21 @@ export class OrderInfo extends React.Component {
               }
             }}>Заказ отправлен
         </button>
+  }
+
+  createAddCommentsAction = () => {
+    return <button
+        className={`${className}_actions_addComment`}
+        onClick={() => {
+          let comment = window.prompt("Введите комментарий")
+          if (comment) {
+            this.sendPatchOrder({
+              advance: "ADD_ADMIN_COMMENTS",
+              adminComments: comment
+            })
+            .then(r => window.location.reload())
+          }
+        }}>Добавить комментарий</button>
   }
 
   createSendToCustomerActionImage = () => {
