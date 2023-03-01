@@ -1,20 +1,15 @@
-import {ADD_ACTIVE_TAGS, UPDATE_TAGS} from "./actions";
+import {UPDATE_TAGS} from "./actions";
 
-export default function tags(state = {state: null, values: [], activeTags:[1]}, action) {
+export default function tags(state = {state: null, values: []}, action) {
   switch (action.type) {
     case UPDATE_TAGS:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        hidden: action.payload.values
+        ?.filter(it => it.data?.hidden)
+        .map(it => it.id)
       };
-    case ADD_ACTIVE_TAGS: {
-      return {
-        ...state,
-        activeTags: [...action.payload.activeTags || []],
-        method: action.payload.tagsMethod
-      }
-
-    }
     default:
       return state;
   }

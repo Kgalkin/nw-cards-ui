@@ -14,7 +14,6 @@ export const UPDATE_ITEM = 'UPDATE_ITEM';
 
 export const CLEAR_ITEMS = 'CLEAR_ITEMS';
 export const UPDATE_TAGS = 'UPDATE_TAGS';
-export const ADD_ACTIVE_TAGS = 'ADD_ACTIVE_TAGS';
 
 
 export const LOADING = 'Loading';
@@ -32,7 +31,6 @@ export const updateItem = (payload) => ({type: UPDATE_ITEM, payload})
 
 export const updateTags = payload => ({type: UPDATE_TAGS, payload});
 export const addTags = payload => ({});
-export const addActiveTags = payload => ({type:ADD_ACTIVE_TAGS, payload});
 
 export const createOrder = () => ({type: CREATE_ORDER});
 export const orderFailed = () => ({type: ORDER_FAILED});

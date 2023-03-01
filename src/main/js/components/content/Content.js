@@ -22,15 +22,18 @@ function Content(props) {
   }
   const className = props.className || "content"
 
-  const constructItems = props.constructItems
-      || ((items) => {
-        let children = [];
-        items.filter(i => i.inStock > 0)
-        .forEach(i => children.push(<VendorItem key={i.id} item={i}/>));
-        return !children.length && props.items.state !== LOADING ? <div
-                className={`${className}_emptyContent`}>Здесь пока пусто</div>
-            : children;
-      })
+  const userItemsBuilder = (items) => {
+    let children = [];
+    items
+    .filter(i => i.inStock > 0)
+    .filter(i => !i.tags.some(t => props.hiddenTags?.indexOf(t) >= 0))
+    .forEach(i => children.push(<VendorItem key={i.id} item={i}/>));
+    return !children.length && props.items.state !== LOADING ? <div
+            className={`${className}_emptyContent`}>Здесь пока пусто</div>
+        : children;
+  };
+
+  const constructItems = props.constructItems || userItemsBuilder;
 
   const scrollHandler = () => {
     if (((props.items.items.length < props.items.totalCount)
@@ -59,4 +62,5 @@ function Content(props) {
 
 }
 
-export default connect(s => ({items: s.items}), {clearItems})(Content);
+export default connect(s => ({items: s.items, hiddenTags: s.tags.hidden}),
+    {clearItems})(Content);
