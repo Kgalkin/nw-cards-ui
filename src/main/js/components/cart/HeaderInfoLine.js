@@ -4,7 +4,7 @@ import {showModal} from "../../reducers/actions";
 import {
   ABOUT_US_MODAL,
   CART_MODAL,
-  DELIVERY_INFO_MODAL, VK_MODAL
+  DELIVERY_INFO_MODAL, OZON_MODAL, VK_MODAL
 } from "../../reducers/modal";
 import {cartSvg} from "./CartUtils";
 import {connect} from "react-redux";
@@ -37,6 +37,9 @@ class HeaderInfoLine extends Component {
       <div>|</div>
       <div className={`${className}_vk`}
            onClick={() => showModal({modalType: VK_MODAL})}>Мы вконтакте</div>
+      <div>|</div>
+      <div className={`${className}_ozon`}
+           onClick={() => showModal({modalType: OZON_MODAL})}>Магазин на OZON</div>
       <div>|</div>
       <div
           onClick={() => {

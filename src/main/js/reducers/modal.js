@@ -9,7 +9,8 @@ export const ABOUT_US_MODAL = "ABOUT_US_MODAL";
 export const VK_MODAL = "VK_MODAL";
 export const CONTACTS_MODAL = "CONTACTS_MODAL";
 export const USER_AGREEMENT_MODAL = "USER_AGREEMENT_MODAL";
-export const IMAGE_PREVIEW = "IMAGE_PREVIEW"
+export const IMAGE_PREVIEW = "IMAGE_PREVIEW";
+export const OZON_MODAL = "OZON_MODAL";
 
 export default function modal(state = {}, action) {
     switch (action.type) {
