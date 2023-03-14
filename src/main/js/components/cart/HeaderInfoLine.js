@@ -31,16 +31,12 @@ class HeaderInfoLine extends Component {
             </svg>*/}
       <div className={`${className}_delivery`}
       onClick={() => showModal({modalType: DELIVERY_INFO_MODAL})}>Доставка и оплата</div>
-      <div>|</div>
       <div className={`${className}_aboutUs`}
       onClick={() => showModal({modalType: ABOUT_US_MODAL})}>О нас</div>
-      <div>|</div>
       <div className={`${className}_vk`}
            onClick={() => showModal({modalType: VK_MODAL})}>Мы вконтакте</div>
-      <div>|</div>
       <div className={`${className}_ozon`}
            onClick={() => showModal({modalType: OZON_MODAL})}>Магазин на OZON</div>
-      <div>|</div>
       <div
           onClick={() => {
               if (itemsCount) showModal({modalType: CART_MODAL});

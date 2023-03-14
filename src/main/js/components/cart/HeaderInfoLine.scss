@@ -5,7 +5,7 @@
   color: $brand-background;
   display: flex;
   justify-content: space-between;
-  @include font(18);
+  @include font(16);
   font-weight: bold;
 
   &_cartState {
@@ -16,10 +16,13 @@
     white-space: nowrap;
   }
 
-  & div:nth-child(odd){
-    padding-left: 2%;
-    padding-right: 2%;
+  & div{
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-bottom: 5px;
+    border-right: 2px solid white;
     cursor: pointer;
+    text-align: left;
   }
 
   &_delivery{
