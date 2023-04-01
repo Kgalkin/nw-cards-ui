@@ -17,8 +17,13 @@
     }
   }
 
-  &_stampsError {
+  &_globalError {
     color: $error;
     @include font(18);
+
+    &:nth-child(n+3){
+      border-top: 2px solid black;
+      margin-top: 5px;
+    }
   }
 }

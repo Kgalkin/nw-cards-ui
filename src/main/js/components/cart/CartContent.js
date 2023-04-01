@@ -14,6 +14,14 @@ const createItem = item => {
   };
 };
 
+String.prototype.interpolate = function (params) {
+  const names = Object.keys(params);
+  const vals = Object.values(params);
+  return new Function(...names, `return \`${this}\`;`)(...vals);
+}
+
+const globalMessageId = 'globalMessage';
+
 class CartContent extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +43,13 @@ class CartContent extends Component {
     if (isEmptyObj(cartContent)) {
       hideModal();
     }
-    let totalPrice = 0;
+    const contentArray = Object.values(this.props.cartContent || {});
+    const totalPrice = contentArray
+    .map(it => it.count * it.price)
+    .reduce((a, b) => a + b);
+    const idsAndMessages = this.processTags(totalPrice, contentArray);
+    this.processCount(idsAndMessages, contentArray);
+    console.log(idsAndMessages);
     content.push(<CartContentRow key={content.length}
                                  item={{
                                    id: null,
@@ -48,8 +62,8 @@ class CartContent extends Component {
                                  }}/>);
     Object.entries(cartContent || {}).forEach((item, i) => {
       content.push(<CartContentRow key={content.length}
-                                   item={createItem(item)}/>);
-      totalPrice += item[1].count * item[1].price;
+                                   item={createItem(item)}
+                                   errorMessages={idsAndMessages[item[0]]}/>);
     });
     content.push(<CartContentRow key={content.length}
                                  item={{
@@ -59,18 +73,17 @@ class CartContent extends Component {
                                    price: "",
                                    total: totalPrice
                                  }}/>);
-    const noStamps = this.canNotByStampsMessage();
+
     return <div className={this.className}>
       <div className={`${this.className}_grid`}>{content}</div>
-      {noStamps}
+      {idsAndMessages[globalMessageId]?.map(it => <div className={`${this.className}_globalError`} dangerouslySetInnerHTML={{__html: it}}/>)}
       <div className={`${this.className}_buttonContainer`}>
         <button onClick={() => {
           clearCart();
           hideModal();
         }}>Очистить корзину
         </button>
-        <button disabled={noStamps || cartContent && Object.entries(cartContent)
-        .some(it => it[1].count > it[1].inStock)}
+        <button disabled= {!isEmptyObj(idsAndMessages)}
                 onClick={() => {
                   requestInStockUpdate(Object.keys(cartContent))
                   .then(it => {
@@ -85,28 +98,91 @@ class CartContent extends Component {
     </div>
   }
 
-  canNotByStampsMessage = () => {
-    const contentArray = Object.values(this.props.cartContent || {});
-    const stampsTag = 36; //todo REPLACE !!!!!
-    const priceForStamps = 500;
-    if (contentArray.some(it => it.tags.includes(stampsTag))) {
-      const currentPrice = contentArray
-      .filter(it => !it.tags.includes(stampsTag))
-      .map(it => it.count * it.price)
-      .reduce((a, b) => a + b);
-      if (currentPrice < priceForStamps) {
-        return <div className={`${this.className}_stampsError`}>Заказ марок
-          возможен только при сумме заказа других товаров от&nbsp;
-          <strong>{`${priceForStamps}р`}</strong>, для
-          оформления заказа добавьте товаров (не марок) на сумму&nbsp;
-          <strong>{`${priceForStamps - currentPrice}р`}</strong>
-          &nbsp;или уберите марки из заказа
-        </div>
+  processTags = (totalPrice, contentArray) => {
+    console.group("processTags");
+    const usedTags = new Set();
+    console.log(contentArray);
+    contentArray.some(it => it.tags.forEach(t => usedTags.add(t)));
+    console.log(usedTags);
+    let idsAndMessages = {};
+    usedTags.forEach(t => {
+      const currentTag = this.props.tags.values.filter(tag => {
+        return tag.id === t
+      })[0];
+      console.log(currentTag);
+      const constraints = currentTag?.data?.constraints
+      if (constraints) {
+        constraints.forEach(constraint => {
+          switch (constraint?.type) {
+            case "allowCountOnTotalPrice":
+              const totalPriceWithoutThis = contentArray
+              .filter(c => !c.tags.includes(t))
+              .map(it => it.count * it.price)
+              .reduce((a, b) => a + b);
+              const itemsInCart = contentArray
+              .filter(c => c.tags.includes(t))
+              .map(it => it.count)
+              .reduce((a, b) => a + b);
+
+              const maxAllowedItems = Math.trunc(
+                      totalPriceWithoutThis / constraint.forPrice)
+                  * constraint.count;
+
+              const haveToAdd =
+                  constraint.forPrice *
+                  Math.ceil(Math.ceil(itemsInCart - maxAllowedItems)
+                  / constraint.count) - totalPriceWithoutThis;
+
+              const invalidItems =  contentArray
+              .filter(c => c.tags.includes(t))
+              .filter(c => {
+
+                if (c.count > maxAllowedItems) {
+                  const current = idsAndMessages[c.id];
+                  const message = constraint.message.interpolate({
+                    maxAllowedItems,
+                  });
+                  idsAndMessages[c.id] = current
+                      ? current.concat(message) : [message];
+                  return true
+                }
+              })
+              .map(c => c.data.title);
+
+              if (invalidItems.length > 0) {
+                const globals = idsAndMessages[globalMessageId];
+                const globalMessage = constraint.globalMessage?.interpolate({
+                  invalidItems,
+                  itemsInCart,
+                  maxAllowedItems,
+                  haveToAdd
+                });
+                if (globalMessage) {
+                  idsAndMessages[globalMessageId] = globals ?
+                      globals.concat(globalMessage) : [globalMessage]
+                }
+              }
+              break
+            default:
+          }
+        })
       }
-    }
-    return null;
+    });
+    console.groupEnd();
+    return idsAndMessages;
+  }
+
+  processCount = (idsAndMessages, contentArray) => {
+    contentArray.forEach(it => {
+      if (it.count > it.inStock) {
+        const message = `В наличии только ${it.inStock}`;
+        const item = idsAndMessages[it.id];
+        idsAndMessages[it.id] = item ? item.concat(message) : [message]
+      }
+    })
   }
 }
 
-export default connect(state => ({cartContent: state.cartItems}),
+export default connect(
+    state => ({cartContent: state.cartItems, tags: state.tags}),
     {clearCart, hideModal, showModal})(CartContent);

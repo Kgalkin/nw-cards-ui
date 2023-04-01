@@ -18,30 +18,35 @@
     }
   }
 
-  &_optionDescription{
+  &_optionDescription {
     @include font(14)
   }
 
-  & label, & select, & option{
+  & label, & select, & option {
     @include text
-}
+  }
 
-input:not([type=radio]), textarea {
-  width: 80%;
-  @include text;
-}
+  input:not([type=radio]), textarea {
+    width: 80%;
+    @include text;
+  }
 
-&_name, &_email, &_address, &_index {
-  margin-top: 20px;
-}
+  &_name, &_email, &_address, &_index {
+    margin-top: 20px;
+  }
 
-& button {
-  @include text;
-  margin-top: 20px;
-}
+  & button {
+    @include text;
+    margin-top: 20px;
+  }
 
-& .error {
-  border: 2px solid $error;
-}
+  & .error {
+    border: 2px solid $error;
+  }
+
+  &_errorDescription{
+    color: $error;
+    @include text;
+  }
 
 }

@@ -36,7 +36,11 @@
 
   &_warningText {
     color: $error;
-    @include font(12)
+    @include font(12);
+
+    &:nth-child(n+3){
+      border-top: 2px solid $error;
+    }
   }
 
   &_image, &_title, {

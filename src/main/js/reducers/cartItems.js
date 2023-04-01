@@ -49,6 +49,7 @@ function cartItemsInner(state, action) {
         });
         if (found) {
           copy[found.id].price = found.price;
+          copy[found.id].tags = found.tags;
           copy[found.id].inStock = found.inStock;
         } else {
           delete copy[store[0]];

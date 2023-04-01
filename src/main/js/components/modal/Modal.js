@@ -134,7 +134,9 @@ class Modal extends Component {
           </a>
         </div>
       case IMAGE_PREVIEW:
-        return <ImagePreview links={[data.links.preview, data.links.short]}/>;
+        return <div className="imageContainer">
+          <ImagePreview links={[data.links.preview, data.links.short]}/>
+        </div>;
       default:
         return null;
 

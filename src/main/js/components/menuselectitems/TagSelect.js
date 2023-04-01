@@ -12,12 +12,13 @@ function TagSelect(props) {
   const [searchParams] = useSearchParams();
 
   const handleTags = (selectedTags, triggeredAction) => {
-    navigate(`/content?tags=${selectedTags.map(it => it.value).join(',')}&tagsMethod=and`)
+    navigate(`/content?tags=${selectedTags.map(it => it.value).join(
+        ',')}&tagsMethod=and`)
   }
 
   const selectedTags = searchParams.get('tags')?.split(',')
   ?.map(it => Number(it))
-  .filter(it=>it)
+  .filter(it => it)
   ?.map(it => ({
     value: it,
     label: props.tags.values.filter(tag => tag.id === it)[0]?.value
@@ -31,8 +32,8 @@ function TagSelect(props) {
           isDisabled={props?.tags?.state === LOADING}
           onChange={handleTags}
           value={selectedTags}
-          options={props.tags.values.map(
-              i => ({value: i.id, label: i.value}))}
+          options={props.tags.values.filter(t => !t.isSystem)
+          .map(i => ({value: i.id, label: i.value}))}
           placeholder='Поиск'
       />);
 }
