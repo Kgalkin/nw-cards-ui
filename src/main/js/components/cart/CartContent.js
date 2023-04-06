@@ -46,10 +46,9 @@ class CartContent extends Component {
     const contentArray = Object.values(this.props.cartContent || {});
     const totalPrice = contentArray
     .map(it => it.count * it.price)
-    .reduce((a, b) => a + b);
+    .reduce((a, b) => a + b, 0);
     const idsAndMessages = this.processTags(totalPrice, contentArray);
     this.processCount(idsAndMessages, contentArray);
-    console.log(idsAndMessages);
     content.push(<CartContentRow key={content.length}
                                  item={{
                                    id: null,
@@ -76,14 +75,16 @@ class CartContent extends Component {
 
     return <div className={this.className}>
       <div className={`${this.className}_grid`}>{content}</div>
-      {idsAndMessages[globalMessageId]?.map(it => <div className={`${this.className}_globalError`} dangerouslySetInnerHTML={{__html: it}}/>)}
+      {idsAndMessages[globalMessageId]?.map(
+          it => <div className={`${this.className}_globalError`}
+                     dangerouslySetInnerHTML={{__html: it}}/>)}
       <div className={`${this.className}_buttonContainer`}>
         <button onClick={() => {
           clearCart();
           hideModal();
         }}>Очистить корзину
         </button>
-        <button disabled= {!isEmptyObj(idsAndMessages)}
+        <button disabled={!isEmptyObj(idsAndMessages)}
                 onClick={() => {
                   requestInStockUpdate(Object.keys(cartContent))
                   .then(it => {
@@ -99,17 +100,16 @@ class CartContent extends Component {
   }
 
   processTags = (totalPrice, contentArray) => {
-    console.group("processTags");
     const usedTags = new Set();
-    console.log(contentArray);
+
     contentArray.some(it => it.tags.forEach(t => usedTags.add(t)));
-    console.log(usedTags);
+
     let idsAndMessages = {};
     usedTags.forEach(t => {
       const currentTag = this.props.tags.values.filter(tag => {
         return tag.id === t
       })[0];
-      console.log(currentTag);
+
       const constraints = currentTag?.data?.constraints
       if (constraints) {
         constraints.forEach(constraint => {
@@ -118,11 +118,11 @@ class CartContent extends Component {
               const totalPriceWithoutThis = contentArray
               .filter(c => !c.tags.includes(t))
               .map(it => it.count * it.price)
-              .reduce((a, b) => a + b);
+              .reduce((a, b) => a + b, 0);
               const itemsInCart = contentArray
               .filter(c => c.tags.includes(t))
               .map(it => it.count)
-              .reduce((a, b) => a + b);
+              .reduce((a, b) => a + b, 0);
 
               const maxAllowedItems = Math.trunc(
                       totalPriceWithoutThis / constraint.forPrice)
@@ -130,26 +130,41 @@ class CartContent extends Component {
 
               const haveToAdd =
                   constraint.forPrice *
-                  Math.ceil(Math.ceil(itemsInCart - maxAllowedItems)
-                  / constraint.count) - totalPriceWithoutThis;
+                  Math.ceil(itemsInCart / constraint.count) - totalPriceWithoutThis;
 
-              const invalidItems =  contentArray
-              .filter(c => c.tags.includes(t))
-              .filter(c => {
-
-                if (c.count > maxAllowedItems) {
-                  const current = idsAndMessages[c.id];
-                  const message = constraint.message.interpolate({
-                    maxAllowedItems,
-                  });
-                  idsAndMessages[c.id] = current
-                      ? current.concat(message) : [message];
-                  return true
+              let invalidItems;
+              if (constraint.shareWithAll) {
+                if (itemsInCart > maxAllowedItems) {
+                  invalidItems = contentArray
+                  .filter(c => c.tags.includes(t))
+                  .map(c => {
+                    const current = idsAndMessages[c.id];
+                    const message = constraint.message.interpolate({
+                      maxAllowedItems,
+                    });
+                    idsAndMessages[c.id] = current
+                        ? current.concat(message) : [message];
+                    return c.data.title;
+                  })
                 }
-              })
-              .map(c => c.data.title);
+              } else {
+                invalidItems = contentArray
+                .filter(c => c.tags.includes(t))
+                .filter(c => {
+                  if (c.count > maxAllowedItems) {
+                    const current = idsAndMessages[c.id];
+                    const message = constraint.message.interpolate({
+                      maxAllowedItems,
+                    });
+                    idsAndMessages[c.id] = current
+                        ? current.concat(message) : [message];
+                    return true
+                  }
+                })
+                .map(c => c.data.title);
+              }
 
-              if (invalidItems.length > 0) {
+              if (invalidItems?.length > 0) {
                 const globals = idsAndMessages[globalMessageId];
                 const globalMessage = constraint.globalMessage?.interpolate({
                   invalidItems,
@@ -168,7 +183,6 @@ class CartContent extends Component {
         })
       }
     });
-    console.groupEnd();
     return idsAndMessages;
   }
 
