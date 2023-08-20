@@ -7,48 +7,42 @@ import {cartSvg} from "../cart/CartUtils";
 import {IMAGE_PREVIEW} from "../../reducers/modal";
 import TextWithMore from "./TextWithMore";
 
-class VendorItem extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.className = "item";
-    }
-    render() {
-        const {id, price, oldPrice, inStock} = this.props.item;
-        const {title, description, links} = this.props.item.data;
-        return <div id={id} className={this.className} style={{opacity: inStock ? "1" : "50%"}}>
+const className = "item";
+function VendorItem(props){
+        const {id, price, oldPrice, inStock} = props.item;
+        const {title, description, links} = props.item.data;
+        return <div id={id} className={className} style={{opacity: inStock ? "1" : "50%"}}>
             <h3>{title}</h3>
-            <div className={`${this.className}_imageContainer`}
-                 onClick={()=> this.props.showModal({modalType: IMAGE_PREVIEW, data: {links: links}})}>
+            <div className={`${className}_imageContainer`}
+                 onClick={()=> props.showModal({modalType: IMAGE_PREVIEW, data: {links: links}})}>
                 <Image links={links}/>
             </div>
-            <div className={`${this.className}_descriptionBlock`}>
+            <div className={`${className}_descriptionBlock`}>
                 <div>
-                    <TextWithMore text={description} cutAfter={50} className={`${this.className}_description`}/>
-                    <p className={`${this.className}_inStock`}>{`В наличии: ${inStock}`}</p>
+                    <TextWithMore text={description} cutAfter={50} className={`${className}_description`}/>
+                    <p className={`${className}_inStock`}>{`В наличии: ${inStock}`}</p>
                 </div>
-                <button className={`${this.className}_addButton`}
+                <button className={`${className}_addButton`}
                         onClick={() => {
-                            this.props.addToCart({...this.props.item, count:1})
+                            props.addToCart({...props.item, count:1})
                         }}
                 disabled={!inStock}>
-                    {inStock ? <div>{cartSvg()}</div> : null}
-                    {inStock ? this.buildPrice(oldPrice, price) : null}
+                    {inStock ? <span>{cartSvg()}</span> : null}
+                    {inStock ? buildPrice(oldPrice, price) : null}
                 </button>
 
             </div>
         </div>
-    }
+}
 
-    buildPrice = (oldPrice, price) => {
-        if (oldPrice && price){
-            return <>
-                <div className={'oldPrice'}>{`${oldPrice}руб`}</div>
-                <div>{`${price}руб`}</div>
-            </>
-        } else {
-            return <div>{`${price}руб`}</div>
-        }
+const buildPrice = (oldPrice, price) => {
+    if (oldPrice && price){
+        return <>
+            <span className={'oldPrice'}>{`${oldPrice}руб`}</span>
+            <span>{`${price}руб`}</span>
+        </>
+    } else {
+        return <span>{`${price}руб`}</span>
     }
 }
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./SearchLine.scss"
 import Select from "react-select";
 import {connect} from "react-redux";
-import {clearItems, LOADING} from "../../../reducers/actions";
+import {LOADING} from "../../../reducers/actions";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 const className = 'admin_search'
