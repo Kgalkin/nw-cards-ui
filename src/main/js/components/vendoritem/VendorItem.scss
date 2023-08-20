@@ -33,7 +33,8 @@
   }
 
   & h3 {
-    @include header;
+    @include font(20);
+    font-weight: bold;
     margin-bottom: 2.5%;
   }
 
