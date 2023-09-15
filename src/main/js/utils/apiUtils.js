@@ -12,7 +12,6 @@ export const HOST_AND_PORT = 'https://localhost';
 export const getMenu = () => {
   return fetch(`${HOST_AND_PORT}/api/menu`)
   .then(response => response.json())
-  .catch(alert)
 }
 
 export const loadItemsPage = (offset, size, tags, tagsMethod, ids) => {
@@ -35,7 +34,6 @@ export const loadItemsPage = (offset, size, tags, tagsMethod, ids) => {
     return r;
   })
   .then(response => response.json())
-  .catch(alert)
   .then(r => {
     store.dispatch(addItems(r))
   })
@@ -43,7 +41,6 @@ export const loadItemsPage = (offset, size, tags, tagsMethod, ids) => {
 
 export const requestPayment = orderId => {
   return fetch(`${HOST_AND_PORT}/api/orders/${orderId}/requestPayment`)
-  .catch(alert)
 }
 
 export const loadItemsIds = (ids) => {
@@ -56,21 +53,23 @@ export const loadItemsIds = (ids) => {
     return r;
   })
   .then(r => r.json())
-  .catch(alert)
 }
 
 export const loadOrderByUuid = uuid => {
   return fetch(`${HOST_AND_PORT}/api/orders/${uuid}`)
-  .catch(alert)
 }
 
 export const loadAllTags = () => {
   store.dispatch(updateTags({state: LOADING}));
   return fetch(`${HOST_AND_PORT}/api/tags`)
   .then(response => response.json())
-  .catch(alert)
   .then(updateTagsFromResponse);
 };
+
+export const getBonuses = () => {
+  return fetch(`${HOST_AND_PORT}/api/bonuses`)
+  .then(response => response.json())
+}
 
 export const loadDeliveryOptions = () => {
   return fetch(`${HOST_AND_PORT}/api/deliveryOptions`)
@@ -90,7 +89,6 @@ export const createTag = tag => {
     method: 'POST',
     body: `["${tag}"]`
   }).then(response => response.json())
-  .catch(alert)
   .then(r => updateTagsFromResponse(r)
   .filter(t => t.value === tag)[0]);
 
@@ -101,7 +99,6 @@ export const patchItem = item => {
     method: 'PATCH',
     body: JSON.stringify(item)
   }).then(response => response.json())
-  .catch(alert)
   .then(r => {
     store.dispatch(updateItem({item: r}));
     return r;
@@ -111,7 +108,6 @@ export const patchItem = item => {
 export const loadOrders = state => {
   return withAuth(`${HOST_AND_PORT}/api/orders?state=${state}`)
   .then(r => r.json())
-  .catch(alert)
 }
 
 export const patchOrder = (id, formData) => {

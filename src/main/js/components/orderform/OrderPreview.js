@@ -86,7 +86,7 @@ class OrderPreview extends React.Component {
   }
 
   createRow = (prefix, item) => {
-    return <tr key={item.id} className={`${prefix}_item_${item?.id}`}>
+    return <tr key={item.id} className={`${prefix}_item_${item?.id}`} style={{backgroundColor: item.props?.hexColor}}>
       <td><Image links={item.data.links}/></td>
       <td>{item.data.title}</td>
       <td>{item.count}</td>

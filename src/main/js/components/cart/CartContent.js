@@ -6,6 +6,8 @@ import CartContentRow from "./CartContentRow";
 import {isEmptyObj} from "../../utils/utils";
 import {ORDER_FORM_MODAL} from "../../reducers/modal";
 import {requestInStockUpdate} from "./CartUtils";
+import {getBonuses} from "../../utils/apiUtils";
+import {bonusProcessor} from "../../utils/bonusUtils";
 
 const createItem = item => {
   return {
@@ -26,10 +28,12 @@ class CartContent extends Component {
   constructor(props) {
     super(props);
     this.className = "сartContent";
+    this.state = {bonuses: null};
   }
 
   componentDidMount() {
     requestInStockUpdate(Object.keys(this.props.cartContent));
+    getBonuses().then(bonuses => this.setState({bonuses}));
   }
 
   render() {
@@ -43,10 +47,13 @@ class CartContent extends Component {
     if (isEmptyObj(cartContent)) {
       hideModal();
     }
-    const contentArray = Object.values(this.props.cartContent || {});
+    const contentArray = this.processBonuses(
+        this.countTotal(Object.values(cartContent || {})),
+        this.state.bonuses);
     const totalPrice = contentArray
-    .map(it => it.count * it.price)
+    .map(it => it.total)
     .reduce((a, b) => a + b, 0);
+    console.log(contentArray);
     const idsAndMessages = this.processTags(totalPrice, contentArray);
     this.processCount(idsAndMessages, contentArray);
     content.push(<CartContentRow key={content.length}
@@ -59,10 +66,10 @@ class CartContent extends Component {
                                    price: "Цена, руб",
                                    total: "Итого, руб"
                                  }}/>);
-    Object.entries(cartContent || {}).forEach((item, i) => {
+    contentArray.forEach((item) => {
       content.push(<CartContentRow key={content.length}
-                                   item={createItem(item)}
-                                   errorMessages={idsAndMessages[item[0]]}/>);
+                                   item={item}
+                                   errorMessages={idsAndMessages[item.id]}/>);
     });
     content.push(<CartContentRow key={content.length}
                                  item={{
@@ -130,7 +137,8 @@ class CartContent extends Component {
 
               const haveToAdd =
                   constraint.forPrice *
-                  Math.ceil(itemsInCart / constraint.count) - totalPriceWithoutThis;
+                  Math.ceil(itemsInCart / constraint.count)
+                  - totalPriceWithoutThis;
 
               let invalidItems;
               if (constraint.shareWithAll) {
@@ -195,6 +203,20 @@ class CartContent extends Component {
       }
     })
   }
+
+  countTotal = items => {
+    items.forEach(item => item.total = item.count * item.price)
+    return items;
+  }
+
+  processBonuses = (items, bonuses) => {return bonusProcessor(items, bonuses, (i, iw, items) => {
+    console.log("Item to modify: ")
+    console.log(i)
+    const wrappedCount = (i.count / iw.countToWrap) | 0
+    const notWrappedCount = i.count % iw.countToWrap;
+    i.total = notWrappedCount * i.price + wrappedCount * iw.newPriceOf*i.price;
+  })}
+
 }
 
 export default connect(

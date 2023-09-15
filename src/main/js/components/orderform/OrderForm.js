@@ -43,15 +43,18 @@ class OrderForm extends Component {
         <div className={`${className}_name`}>
           <label>Фамилия Имя Отчество</label>
           <div>
-            <input className={`${this.state.validationActive && !this.validateName()
+            <input className={`${this.state.validationActive
+            && !this.validateName()
                 ? errorClass : ''}`}
                    placeholder={'ФИО'} value={this.state.name}
                    onChange={e => this.handleChange(e, 'name')}/>
-            {this.state.validationActive && this.state.name && !this.validateName()
+            {this.state.validationActive && this.state.name
+            && !this.validateName()
                 ? <div className={`${className}_errorDescription`}>
-                  Для отправления на почте РФ обязательны все 3 реквизита - Имя Фамилия Отчество
+                  Для отправления на почте РФ обязательны все 3 реквизита - Имя
+                  Фамилия Отчество
                 </div> : null
-              }
+            }
           </div>
         </div>
         <div className={`${className}_email`}>
@@ -250,12 +253,16 @@ class OrderForm extends Component {
       }
     };
     if (typeof ym !== 'undefined') {
-      ym(90177751, 'reachGoal', 'create_order');
+      try {
+        ym(90177751, 'reachGoal', 'create_order');
+      } catch (e) {
+        //ignore
+      }
     }
-    Object.entries(this.props.cartItems).forEach(
+    Object.values(this.props.cartItems).forEach(
         (v) => order.data.items.push({
-          count: v[1].count,
-          id: Number(v[0])
+          count: v.count,
+          id: Number(v.id)
         }));
     this.setState({loading: true});
     fetch(`${HOST_AND_PORT}/api/orders`, {

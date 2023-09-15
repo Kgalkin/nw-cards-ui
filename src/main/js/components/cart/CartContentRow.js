@@ -28,10 +28,9 @@ class CartContentRow extends Component {
       data,
       count,
       price,
-      inStock
+      total
     } = this.props.item;
     const {errorMessages} = this.props
-    const total = this.props.item.total || count * price;
     const className = 'cartContentRow';
     return <div className={className}>
       <div className={`${className}_image`}>
