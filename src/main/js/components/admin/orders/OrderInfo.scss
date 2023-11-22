@@ -38,6 +38,7 @@
       border: none;
       border-left: 2px solid gray;
       border-bottom: 2px solid gray;
+      overflow: hidden;
       @include text
     }
 

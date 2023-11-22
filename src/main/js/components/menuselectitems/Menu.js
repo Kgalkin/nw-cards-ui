@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {getMenu} from "../../utils/apiUtils";
-import {connect} from 'react-redux'
 import MenuItem from "./MenuItem";
 import "./Menu.scss"
 import TagSelect from "./TagSelect";

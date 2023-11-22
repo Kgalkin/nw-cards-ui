@@ -6,7 +6,7 @@ export default function MenuItem(props) {
   const className = "menu_item"
   const navigate = useNavigate();
 
-  return <div className={className} onClick={() =>
-      navigate(`/content?tags=${props.item.tags.join(',')}&tagsMethod=and`)}>{props.item.name}</div>
+  return <div className={className} style={props.item.data?.styles} onClick={() =>
+      navigate(`/content?tags=${props.item.data.tags.join(',')}&tagsMethod=${props.item.data.tagsMethod||'and'}`)}>{props.item.name}</div>
 
 }

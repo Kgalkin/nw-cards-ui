@@ -2,7 +2,7 @@
 @import "../../styles/colors.scss";
 
 .headerInfoLine {
-  color: $brand-background;
+  color: $brand-second;
   display: flex;
   justify-content: space-between;
   @include font(16);
@@ -16,19 +16,22 @@
     white-space: nowrap;
   }
 
-  & div{
+  & div {
     padding-left: 1%;
     padding-right: 1%;
     margin-bottom: 5px;
-    border-right: 2px solid white;
     cursor: pointer;
     text-align: left;
+
+    &:not(:last-child) {
+      border-right: 2px solid $brand-second;
+    }
   }
 
   &_delivery{
     text-align: left;
   }
   & svg {
-    fill: $brand-background;
+    fill: $brand-second;
   }
 }

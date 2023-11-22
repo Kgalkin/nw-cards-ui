@@ -18,17 +18,21 @@
   }
 
   &_descriptionBlock {
-    display: flex;
+   /* display: flex;
     justify-content: space-between;
     @media (-webkit-min-device-pixel-ratio: 1.5) {
       display: flex;
       flex-wrap: wrap-reverse;
-    }
+    }*/
 
     & p {
       margin-top: 0.5em;
       margin-bottom: 0;
       @include text
+    }
+
+    & .item_inStock{
+      text-align: center;
     }
   }
 
@@ -46,10 +50,10 @@
 
   &_addButton {
     @include text;
+    width: 100%;
     height: 60%;
     background-color: $brand-background;
     color: $brand-main;
-    border-radius: 20%;
     border: 1px solid $brand-main;
     transition-duration: 0.1s;
     -webkit-transition-duration: 0.1s;
@@ -57,13 +61,13 @@
     margin-top: 5px;
 
     &:hover {
-      box-shadow: 0 0 2px 2px $brand-main;
+      box-shadow: 0 0 2px 2px $brand-second;
       transition: all 200ms;
     }
 
     &:active {
-      transition: all 200ms;
-      box-shadow: 0 0 10px 10px $brand-main;
+      transition: all 50ms;
+      box-shadow: 0 0 10px 10px $brand-second;
     }
 
     & svg {

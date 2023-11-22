@@ -6,6 +6,7 @@ import Image from "../image/Image";
 import {cartSvg} from "../cart/CartUtils";
 import {IMAGE_PREVIEW} from "../../reducers/modal";
 import TextWithMore from "./TextWithMore";
+import Description from "./Description";
 
 const className = "item";
 function VendorItem(props){
@@ -17,20 +18,20 @@ function VendorItem(props){
                  onClick={()=> props.showModal({modalType: IMAGE_PREVIEW, data: {links: links}})}>
                 <Image links={links}/>
             </div>
+          <button className={`${className}_addButton`}
+                  onClick={() => {
+                    props.addToCart({...props.item, count:1})
+                  }}
+                  disabled={!inStock}>
+            В корзину
+            {inStock ? <span>{cartSvg()}</span> : null}
+            {inStock ? buildPrice(oldPrice, price) : null}
+          </button>
             <div className={`${className}_descriptionBlock`}>
                 <div>
-                    <TextWithMore text={description} cutAfter={50} className={`${className}_description`}/>
                     <p className={`${className}_inStock`}>{`В наличии: ${inStock}`}</p>
+                    <Description text={description} className={`${className}_description`}/>
                 </div>
-                <button className={`${className}_addButton`}
-                        onClick={() => {
-                            props.addToCart({...props.item, count:1})
-                        }}
-                disabled={!inStock}>
-                    {inStock ? <span>{cartSvg()}</span> : null}
-                    {inStock ? buildPrice(oldPrice, price) : null}
-                </button>
-
             </div>
         </div>
 }

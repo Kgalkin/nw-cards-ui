@@ -1,0 +1,15 @@
+@import "../../styles/_fonts.scss";
+@import "../../styles/colors.scss";
+
+.description {
+  cursor: pointer;
+  @include subHeader;
+  font-size: 18px;
+  color: $brand-second;
+  text-align: center;
+
+  &_open {
+    cursor: pointer;
+    @include text;
+  }
+}
