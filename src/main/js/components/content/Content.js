@@ -39,7 +39,7 @@ function Content(props) {
     if (((props.items.items.length < props.items.totalCount)
         && document.scrollingElement.scrollHeight
         / (document.scrollingElement.scrollTop
-            + document.scrollingElement.scrollWidth) < 1.2
+            + document.scrollingElement.scrollWidth) < 1.3
         && props.items.state !== LOADING)) {
       loadItems();
     }
