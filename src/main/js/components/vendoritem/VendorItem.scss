@@ -2,11 +2,13 @@
 @import "../../styles/colors.scss";
 
 .item {
-  height: 100%;
-  width: 20%;
+  height: 400px;
+  width: 21%;
   margin-left: 3%;
+  margin-top: 2.5%;
   @media (-webkit-min-device-pixel-ratio: 1.5) {
-    width: 30%;
+    height: 600px;
+    width: 29%;
   }
 
   &_imageContainer {
@@ -18,51 +20,83 @@
   }
 
   &_descriptionBlock {
-   /* display: flex;
-    justify-content: space-between;
-    @media (-webkit-min-device-pixel-ratio: 1.5) {
-      display: flex;
-      flex-wrap: wrap-reverse;
-    }*/
-
-    & p {
-      margin-top: 0.5em;
-      margin-bottom: 0;
-      @include text
-    }
+    padding-top: 2.5%;
 
     & .item_inStock{
+      margin: 0;
       text-align: center;
+      @include text
     }
   }
 
   & h3 {
-    @include font(20);
+    @include font(16);
     font-weight: bold;
-    margin-bottom: 2.5%;
+    padding-top: 5%;
+    padding-bottom: 2.5%;
+    margin: 0;
+    height: 10%;
+    @media (-webkit-min-device-pixel-ratio: 1.5) {
+      height: 15%;
+    }
+    text-align: center;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
   }
 
-  & img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  &_imageContainer {
+    height: 60%;
+    @media (-webkit-min-device-pixel-ratio: 1.5) {
+      height: 50%;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
+
 
   &_addButton {
     @include text;
+    padding: 0;
+    overflow: hidden;
     width: 100%;
-    height: 60%;
+    height: 15%;
+    @media (-webkit-min-device-pixel-ratio: 1.5) {
+      height: 15%;
+    }
     background-color: $brand-background;
     color: $brand-main;
     border: 1px solid $brand-main;
     transition-duration: 0.1s;
     -webkit-transition-duration: 0.1s;
-    margin-bottom: 5px;
-    margin-top: 5px;
 
     &:hover {
       box-shadow: 0 0 2px 2px $brand-second;
       transition: all 200ms;
+    }
+
+
+    & .oldPrice {
+      position: relative;
+      opacity: 50%;
+
+      &::before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 50%;
+        right: 0;
+        border-top: 2px solid;
+        border-color: black;
+
+
+        -ms-transform: rotate(-5deg);
+
+        transform: rotate(-5deg);
+      }
     }
 
     &:active {
@@ -80,24 +114,4 @@
       padding-left: 5px;
     }
   }
-}
-
-.oldPrice {
-  position: relative;
-  opacity: 50%;
-}
-
-.oldPrice::before {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 50%;
-  right: 0;
-  border-top: 2px solid;
-  border-color: black;
-
-
-  -ms-transform: rotate(-5deg);
-
-  transform: rotate(-5deg);
 }

@@ -7,9 +7,4 @@
   font-size: 18px;
   color: $brand-second;
   text-align: center;
-
-  &_open {
-    cursor: pointer;
-    @include text;
-  }
 }

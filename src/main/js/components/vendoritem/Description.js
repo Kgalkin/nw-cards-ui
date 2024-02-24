@@ -1,19 +1,15 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import "./Description.scss"
+import PopUp from "../popup/PopUp";
 
+const className = 'description'
 export default function Description(props) {
-  const [open, setOpen] = useState(null)
+  const ref = useRef();
+  const [open, setOpen] = useState(null);
   const {text} = props;
 
-  const className = () => {
-    let name = 'description';
-    if (open){
-      name += '_open';
-    }
-    return name;
-  }
-
-  return <div className={className()} onClick={() => setOpen(!open)}>
-    {open ? text : "Описание"}
+  return <div ref = {ref} className={className} onClick={() => setOpen(!open)}>
+    Описание
+    {open && <PopUp content={text} visible={true} signal={() => setOpen(false)} openerRef={ref}/>}
   </div>
 }
