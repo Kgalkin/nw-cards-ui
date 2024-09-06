@@ -51,42 +51,51 @@ class OrderPreview extends React.Component {
       <div className={`${className}_description`}>
         {`Вы оформили заказ в магазине NorthwindCards. 
                 Здесь вы можете еще раз просмотреть ваш заказ и оплатить его. 
-                Заказ, не оплаченный в течение трех дней, будет расформирован.` + (order.state.includes("email_sent") ?
-                    " На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу." : "")
-                }
-            </div>
-            <div className={`${className}_button_container`}>
-                {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
-            </div>
-            <table className={`${className}_table`}>
-                <thead>
-                <tr>
-                    <th>Превью</th>
-                    <th>Название</th>
-                    <th>Количество</th>
-                    <th>Стоимость</th>
-                    <th>Итого</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Доставка</td>
-                    <td colSpan={2}>{order.data.deliveryOption.description}</td>
-                    <td>{this.canBePayed(order) ? order.data.deliveryOption.price : "?"}</td>
-                    <td>{this.canBePayed(order) ? order.data.deliveryOption.price : "?"}</td>
-                </tr>
-                {order.data.items.map(item => this.createRow(`${className}_row_${order.id}`, item))}
-                </tbody>
-            </table>
-        </div>
-    }
+                Заказ, не оплаченный в течение трех дней, будет расформирован.`
+        }
+        <p>На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу.</p>
+        <br/><br/><p  className={`${className}_description_info`}>
+        Внимание, мы отправляемся в отпуск на 10 дней (6-17 сентября).<br/>
+        Ваш заказ будет собран и отправлен после 17 сентября.<br/>Приносим извинения
+        за доставленные неудобства.<br/>
+        Спасибо за заказ!</p>
+      </div>
+      <div className={`${className}_button_container`}>
+        {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
+      </div>
+      <table className={`${className}_table`}>
+        <thead>
+        <tr>
+          <th>Превью</th>
+          <th>Название</th>
+          <th>Количество</th>
+          <th>Стоимость</th>
+          <th>Итого</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Доставка</td>
+          <td colSpan={2}>{order.data.deliveryOption.description}</td>
+          <td>{this.canBePayed(order) ? order.data.deliveryOption.price
+              : "?"}</td>
+          <td>{this.canBePayed(order) ? order.data.deliveryOption.price
+              : "?"}</td>
+        </tr>
+        {order.data.items.map(
+            item => this.createRow(`${className}_row_${order.id}`, item))}
+        </tbody>
+      </table>
+    </div>
+  }
 
   canBePayed = (order) => {
     return order.state === 'created' && order.data.deliveryOption.price >= 0
   }
 
   createRow = (prefix, item) => {
-    return <tr key={item.id} className={`${prefix}_item_${item?.id}`} style={{backgroundColor: item.props?.hexColor}}>
+    return <tr key={item.id} className={`${prefix}_item_${item?.id}`}
+               style={{backgroundColor: item.props?.hexColor}}>
       <td><Image links={item.data.links}/></td>
       <td>{item.data.title}</td>
       <td>{item.count}</td>

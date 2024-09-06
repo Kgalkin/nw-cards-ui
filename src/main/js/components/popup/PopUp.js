@@ -4,11 +4,6 @@ import './PopUp.scss'
 const className = "popup"
 export default function PopUp(props) {
   const ref = useRef();
-  const [visible, setVisible] = useState({...props.visible});
-
-  useEffect(() => {
-    setVisible(props.visible);
-  }, [props.visible])
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -23,5 +18,5 @@ export default function PopUp(props) {
     };
   }, [ref]);
 
-  return visible ? <div ref={ref} className={className}>{props.content}</div> : null
+  return <div ref={ref} className={className}>{props.content}</div>
 }

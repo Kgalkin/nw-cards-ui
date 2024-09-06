@@ -10,6 +10,6 @@ export default function Description(props) {
 
   return <div ref = {ref} className={className} onClick={() => setOpen(!open)}>
     Описание
-    {open && <PopUp content={text} visible={true} signal={() => setOpen(false)} openerRef={ref}/>}
+    {open && <PopUp content={text} signal={() => setOpen(false)} openerRef={ref}/>}
   </div>
 }
