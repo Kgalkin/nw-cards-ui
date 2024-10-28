@@ -79,4 +79,12 @@
     text-align: center;
     margin-bottom: 2%;
   }
+
+  &_address {
+    font-weight: bold;
+    @include font(16);
+    & p {
+      margin: 1%;
+    }
+  }
 }

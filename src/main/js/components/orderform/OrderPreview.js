@@ -50,18 +50,20 @@ class OrderPreview extends React.Component {
     return <div className={className}>
       <div className={`${className}_description`}>
         {`Вы оформили заказ в магазине NorthwindCards. 
+                Пожалуйста, проверьте правильность указанного адреса.
                 Здесь вы можете еще раз просмотреть ваш заказ и оплатить его. 
                 Заказ, не оплаченный в течение трех дней, будет расформирован.`
         }
         <p>На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу.</p>
-        <br/><br/><p  className={`${className}_description_info`}>
-        Внимание, мы отправляемся в отпуск на 10 дней (6-17 сентября).<br/>
-        Ваш заказ будет собран и отправлен после 17 сентября.<br/>Приносим извинения
-        за доставленные неудобства.<br/>
-        Спасибо за заказ!</p>
       </div>
       <div className={`${className}_button_container`}>
         {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
+      </div>
+      <div className={`${className}_address`}>
+        <p>{`Адрес доставки: ${order.data.address}`}</p>
+        <p>{`Индекс: ${order.data.index}`}</p>
+        <p>{`Ф.И.О.: ${order.data.name}`}</p>
+        <p>{`email: ${order.data.email}`}</p>
       </div>
       <table className={`${className}_table`}>
         <thead>

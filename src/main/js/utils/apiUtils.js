@@ -105,9 +105,11 @@ export const patchItem = item => {
   })
 }
 
-export const loadOrders = state => {
-  return withAuth(`${HOST_AND_PORT}/api/orders?state=${state}`)
-  .then(r => r.json())
+export const loadOrders = (size = 200,state, name) => {
+  return withAuth(`${HOST_AND_PORT}/api/orders?size=${size}`
+      + (name ? `&name=${name}`: '')
+      + (state ? `&state=${state}`: ''))
+  .then(r => r.json());
 }
 
 export const patchOrder = (id, formData) => {
