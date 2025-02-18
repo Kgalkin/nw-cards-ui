@@ -22,7 +22,7 @@ class Footer extends Component {
             {modalType: USER_AGREEMENT_MODAL})}>Пользовательское соглашение
         </div>
       </div>
-      <div className={`${className}_copyright`}>©NorthWindCards (2024)</div>
+      <div className={`${className}_copyright`}>©NorthWindCards (2025)</div>
     </>
   }
 }

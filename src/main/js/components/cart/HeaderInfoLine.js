@@ -35,8 +35,8 @@ class HeaderInfoLine extends Component {
       onClick={() => showModal({modalType: ABOUT_US_MODAL})}>О нас</div>
       <div className={`${className}_vk`}
            onClick={() => showModal({modalType: VK_MODAL})}>Мы вконтакте</div>
-      <div className={`${className}_ozon`}
-           onClick={() => showModal({modalType: OZON_MODAL})}>Магазин на OZON</div>
+      {/*<div className={`${className}_ozon`}
+           onClick={() => showModal({modalType: OZON_MODAL})}>Магазин на OZON</div>*/}
       <div
           onClick={() => {
               if (itemsCount) showModal({modalType: CART_MODAL});

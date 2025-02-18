@@ -14,21 +14,29 @@ class OrderPreview extends React.Component {
       order: null,
       link: null
     }
-    this.handlePayment = () => {
-      requestPayment(this.state.order.id)
-      .then(r => {
-        if (r.status === 200) {
-          r.json().then(json => {
-            this.setState({link: json.link})
-            window.location.href = json.link
-          })
-        } else {
-          alert(
-              "Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
-        }
-      })
+    this.handlePayment = this.handlePayment.bind(this);
+  }
 
+  handlePayment = () => {
+    debugger;
+    const link = this.state.order?.data?.payment_link;
+    if (link) {
+      this.setState({link});
+      window.location.href = link;
+      return;
     }
+    requestPayment(this.state.order.id)
+    .then(r => {
+      if (r.status === 200) {
+        r.json().then(json => {
+          this.setState({link: json.link})
+          window.location.href = json.link
+        })
+      } else {
+        alert(
+            "Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
+      }
+    })
   }
 
   componentDidMount() {
@@ -54,7 +62,8 @@ class OrderPreview extends React.Component {
                 Здесь вы можете еще раз просмотреть ваш заказ и оплатить его. 
                 Заказ, не оплаченный в течение трех дней, будет расформирован.`
         }
-        <p>На вашу почту было отправлено письмо с информацией по заказу. В письме есть ссылка для возврата на эту страницу.</p>
+        <p>На вашу почту было отправлено письмо с информацией по заказу. В
+          письме есть ссылка для возврата на эту страницу.</p>
       </div>
       <div className={`${className}_button_container`}>
         {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
