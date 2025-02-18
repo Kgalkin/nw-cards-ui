@@ -18,7 +18,6 @@ class OrderPreview extends React.Component {
   }
 
   handlePayment = () => {
-    debugger;
     const link = this.state.order?.data?.payment_link;
     if (link) {
       this.setState({link});
