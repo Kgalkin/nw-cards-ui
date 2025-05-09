@@ -66,7 +66,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    loader: () => redirect('/content?tags=1')
+    loader: () => redirect('/content')
   }
 ]);
 
@@ -76,36 +76,4 @@ export default function App(props) {
     <RouterProvider router={router}/>
     <Modal/>
   </>
-  /*   return <>
-       <div className='app'>
-         <Switch>
-           <PrivateRoute path='/admin/items'>
-             <StoreItems/>
-           </PrivateRoute>
-           <PrivateRoute path='/admin/orders'>
-             <OrdersList/>
-           </PrivateRoute>
-           <PrivateRoute path='/admin'>
-             <AdminBoard/>
-           </PrivateRoute>
-           <Route path='/login' render={props => <LoginForm {...props}/>}/>
-           <Route path='/orders/:uuid' render={props =>
-               <OrderPreview uuid={props.match.params.uuid}/>
-           }/>
-           <Route path='/paymentreceived'><PaymentReceived/> </Route>
-           <Route path='/'>
-             <StickyCartHeader stickyContent={
-               <>
-                 <HeaderInfoLine/>
-                 <Menu/>
-               </>}
-                               mainContent={<>
-                                 <Content/>
-                                 <Footer/>
-                               </>}/>
-           </Route>
-         </Switch>
-       </div>
-       <Modal/>
-     </>;*/
 }
