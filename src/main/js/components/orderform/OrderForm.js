@@ -22,6 +22,7 @@ class OrderForm extends Component {
       email: localStorage.getItem('email') || '',
       address: localStorage.getItem('address') || '',
       index: localStorage.getItem('index') || '',
+      phoneNumber: localStorage.getItem('phoneNumber') || '',
       validationActive: false,
       country: '',
       deliveryOption: null,
@@ -33,7 +34,7 @@ class OrderForm extends Component {
 
   componentDidMount() {
     loadDeliveryOptions()
-    .then(r => this.setState({deliveryOptions: r}))
+        .then(r => this.setState({deliveryOptions: r}))
   }
 
   render() {
@@ -128,7 +129,40 @@ class OrderForm extends Component {
     return this.state.country?.id && <>{this.buildDeliveryOptions()}</>;
   }
 
-  radioInput(label, value, disabled, text) {
+  deliveryOption(deliveryOption, disabled) {
+    return this.radioInput(
+        `${deliveryOption.description} - ${deliveryOption.price} руб.`,
+        deliveryOption.id,
+        disabled,
+        deliveryOption.data?.description,
+        deliveryOption.data?.additionalRequirements
+            ?.map(it => this.constructAdditionalInput(it, deliveryOption.id))
+            ?.filter(it => it != null)
+    );
+  }
+
+  constructAdditionalInput(additionalType, id) {
+    return this.state.deliveryOption === id.toString() ? (
+        <input style={{width: '40%'}}
+               className={`${this.state.validationActive
+               && !this.validateAdditionalReq(additionalType) ? errorClass : ''}`}
+               placeholder={'Номер мобильного, 10 цифр'}
+               value={this.state[additionalType]}
+               onChange={e => this.handleChange(e, additionalType)}/>) : null;
+  }
+
+  validateAdditionalReq(type) {
+    switch (type) {
+      case 'phoneNumber':
+        return this.state[type] && Number(this.state[type].replace(/\s/g, ''))
+            ?.toString()
+            ?.length === 10;
+      default:
+        return !!this.state[type];
+    }
+  }
+
+  radioInput(label, value, disabled, text, additionalInlineBlock) {
     return <div key={value} className={`${className}_deliveryChoice`}>
       <label
           className={`${this.state.validationActive
@@ -137,7 +171,7 @@ class OrderForm extends Component {
                value={value}
                checked={Number(this.state.deliveryOption) === value}
                onChange={this.handleDeliveryOptionSelect}/>{label}
-      </label>
+      </label> {additionalInlineBlock}
       {text ? <div
           className={`${className}_optionDescription`}>{text}</div> : null}
     </div>
@@ -152,38 +186,38 @@ class OrderForm extends Component {
     let options = [];
     //if there is priority on option it is counted as UNIQUE
     const sortedByPriority = Object.values(this.state.deliveryOptions || [])
-    .sort((a, b) => {
-      const apriority = a.data?.constraints?.map(it => it.priority)
-      .reduce((f, s) => f > s ? f : s);
-      const bpriority = b.data?.constraints?.map(it => it.priority)
-      .reduce((f, s) => f > s ? f : s);
-      return (bpriority || 0) - (apriority || 0);
-    })
-    .sort((a, b) => a.price > b.price ? 1 : -1);
+        .sort((a, b) => {
+          const apriority = a.data?.constraints?.map(it => it.priority)
+              .reduce((f, s) => f > s ? f : s);
+          const bpriority = b.data?.constraints?.map(it => it.priority)
+              .reduce((f, s) => f > s ? f : s);
+          return (bpriority || 0) - (apriority || 0);
+        })
+        .sort((a, b) => a.price > b.price ? 1 : -1);
 
     for (let number in sortedByPriority) {
-      const option = sortedByPriority[number];
-      const test = this.constraintsMatches(option.data?.constraints || []);
-      if (test.matches) {
-        if (option.data?.constraints?.map(it => it.priority)
-        .reduce((f, s) => f > s ? f : s)) {
-          return [this.radioInput(
-              `${option.description} - ${option.price} руб.`,
-              option.id,
-              false,
-              option.data.description)]
-        } else {
-          options.push(this.radioInput(
-              `${option.description} - ${option.price} руб.`,
-              option.id,
-              false,
-              option.data.description))
+      let option = sortedByPriority[number];
+      let disabled = false;
+      const failed = this.constraintsMatches(option.data?.constraints || []);
+      if (failed) {
+        if (!failed.text) {
+          continue;
         }
-      } else if (test.text) {
-        options.push(this.radioInput(
-            `${option.description} - ${option.price} руб.`, option.id,
-            true, test.text))
+        option = {
+          ...option,
+          data: {
+            ...option.data,
+            description: failed.text
+          }
+        }
+        disabled = true;
+      } else {
+        if (option.data?.constraints?.map(it => it.priority)
+            .reduce((f, s) => f > s ? f : s)) {
+          return [this.deliveryOption(option, disabled)];
+        }
       }
+      options.push(this.deliveryOption(option, disabled));
     }
     return options;
   }
@@ -192,10 +226,10 @@ class OrderForm extends Component {
     for (let i in constraints) {
       const constraint = constraints[i]
       if (!this.testConstraint(constraint)) {
-        return {matches: false, text: constraint.text}
+        return constraint
       }
     }
-    return {matches: true}
+    return null;
   }
 
   testConstraint = (constraint) => {
@@ -205,21 +239,21 @@ class OrderForm extends Component {
             === this.state.country.id
       case "totalPrice":
         return Object.entries(this.props.cartItems)
-        .map(it => it[1])
-        .map(it => (it.count || 0) * (it.price || 0))
-        .reduce((a, b) => a + b) >= constraint.min
+            .map(it => it[1])
+            .map(it => (it.count || 0) * (it.price || 0))
+            .reduce((a, b) => a + b) >= constraint.min
       case "tagData":
         let map = new Map();
         this.props.tags.values
-        .filter(tag => tag.data && tag.data[`${constraint.fieldName}`])
-        .forEach(it => map.set(it.id, it.data[`${constraint.fieldName}`]))
+            .filter(tag => tag.data && tag.data[`${constraint.fieldName}`])
+            .forEach(it => map.set(it.id, it.data[`${constraint.fieldName}`]))
         const items = Object.entries(this.props.cartItems);
         let sum = 0;
         for (let i in items) {
           let it = items[i]
           let tags = it[1].tags;
           const itemWight = tags.map(tag => map.has(tag) && map.get(tag))
-          .reduce((a, b) => a > b ? a : b);
+              .reduce((a, b) => a > b ? a : b);
           if (!itemWight && constraint.failOnAbsent) {
             return false;
           }
@@ -239,7 +273,7 @@ class OrderForm extends Component {
 
   newOrder() {
     const {
-      name, email, address, index, deliveryOption, comments
+      name, email, address, index, deliveryOption, phoneNumber, comments
     } = this.state;
     let order = {
       data: {
@@ -248,6 +282,7 @@ class OrderForm extends Component {
         address,
         index,
         comments,
+        phoneNumber,
         deliveryOption: {id: Number(deliveryOption)},
         items: []
       }
@@ -269,34 +304,34 @@ class OrderForm extends Component {
       method: 'POST',
       body: JSON.stringify(order)
     })
-    .then(response => {
-          this.setState({loading: false});
-          if (response.status === 201) {
-            return response.json();
-          } else {
-            alert(
-                "Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
-          }
-        },
-        error => {
-          this.setState({loading: false});
-          alert(
-              "Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
+        .then(response => {
+              this.setState({loading: false});
+              if (response.status === 201) {
+                return response.json();
+              } else {
+                alert(
+                    "Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
+              }
+            },
+            error => {
+              this.setState({loading: false});
+              alert(
+                  "Чтото пошло не так при создании заказа. Пожалуйста попробуйте позже.")
+            })
+        .then(json => {
+          window.location.replace(`/orders/${json.uuid}`)
+          this.props.clearCart();
         })
-    .then(json => {
-      window.location.replace(`/orders/${json.uuid}`)
-      this.props.clearCart();
-    })
   }
 
   validateForm() {
     this.setState({validationActive: true});
-    return this.validateName() &&
+    return this.validateDeliveryOption() &&
+        this.validateName() &&
         this.validateEmail() &&
         this.state.address &&
         this.state.index &&
-        this.state.country &&
-        this.state.deliveryOption;
+        this.state.country;
   }
 
   handleDeliveryOptionSelect(e) {
@@ -312,6 +347,19 @@ class OrderForm extends Component {
 
   validateName() {
     return this.state.name?.trim().split(' ').length >= 3;
+  }
+
+  validateDeliveryOption() {
+    const selectedOption = this.getSelectedDeliveryOption();
+    return selectedOption
+        && selectedOption?.data?.additionalRequirements
+            ?.map(it => this.validateAdditionalReq(it))
+            ?.reduce((a,b) => a && b);
+  }
+
+  getSelectedDeliveryOption() {
+    return this.state.deliveryOptions
+        .filter(o => o.id.toString() === this.state.deliveryOption)[0] || null;
   }
 }
 

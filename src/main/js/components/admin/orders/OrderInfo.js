@@ -27,6 +27,7 @@ export class OrderInfo extends React.Component {
       <div className={`${className}_description`}>
         {this.createDescriptionItem('Имя:', order.data.name)}
         {this.createDescriptionItem('Почта:', order.data.email)}
+        {this.createDescriptionItem('Телефон:', order.data.phoneNumber)}
         {this.createDescriptionItem('Адрес:', order.data.address)}
         {this.createDescriptionItem('Индекс:', order.data.index)}
         {this.createDescriptionItem('Комментарии:', order.data.comments)}
