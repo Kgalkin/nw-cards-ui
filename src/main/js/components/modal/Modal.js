@@ -67,15 +67,18 @@ class Modal extends Component {
           В заказе только открытки, до 15 штук.<br/>
           При доставке простым письмом высылается пруф - фото упакованного
           заказа с адресом и марками.<br/>
-          Стоимость <strong>80</strong> рублей<br/><br/>
+          Стоимость <strong>100</strong> рублей<br/><br/>
 
           Магазин не несет ответственности за утерю простого письма Почтой
           России. Мы не занимаемся розыском таких писем.<br/><br/>
 
           <strong>Заказная бандероль</strong> с трекером отслеживания<br/>
-          Стоимость <strong>145</strong> рублей<br/><br/>
+          Стоимость <strong>225</strong> рублей<br/><br/>
 
-          Заказ от 2000 руб доставляется по РФ за счет магазина<br/><br/>
+          <strong>Яндекс доставка</strong><br/>
+          стоимость рассчитывается индивидуально, при выборе ПВЗ<br/><br/>
+
+          При заказе от 2000 руб. скидка на доставку 50%<br/><br/>
 
           Доставка в другую страну:<br/>
           Обсуждается индивидуально.
@@ -123,15 +126,6 @@ class Modal extends Component {
           <br/>
           <a target="_blank"
              href="https://vk.com/topic-182017496_46570052">Отзывы</a>
-        </div>
-      case OZON_MODAL:
-        return <div className={`textModal`}>
-          Для экономии вашего времени и удобства доставки вы можете приобрести
-          наборы наших открыток на &nbsp;
-          <a target="_blank"
-             href="https://www.ozon.ru/seller/north-wind-cards-830240/products/?miniapp=seller_830240">
-            <strong>OZON</strong>
-          </a>
         </div>
       case IMAGE_PREVIEW:
         return <div className="imageContainer">

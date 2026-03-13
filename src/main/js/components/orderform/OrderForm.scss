@@ -18,12 +18,16 @@
     }
   }
 
+  &_deliveryChoice_additional {
+    margin-top: 1%;
+  }
+
   &_optionDescription {
-    @include font(14)
+    @include font(14);
   }
 
   & label, & select, & option {
-    @include text
+    @include text;
   }
 
   input:not([type=radio]), textarea {
@@ -35,7 +39,7 @@
     margin-top: 20px;
   }
 
-  & button {
+  & button:not(.ya_widget_show) {
     @include text;
     margin-top: 20px;
   }

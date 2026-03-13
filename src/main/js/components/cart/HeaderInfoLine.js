@@ -4,7 +4,7 @@ import {showModal} from "../../reducers/actions";
 import {
   ABOUT_US_MODAL,
   CART_MODAL,
-  DELIVERY_INFO_MODAL, OZON_MODAL, VK_MODAL
+  DELIVERY_INFO_MODAL, VK_MODAL
 } from "../../reducers/modal";
 import {cartSvg} from "./CartUtils";
 import {connect} from "react-redux";

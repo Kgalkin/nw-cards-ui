@@ -5,6 +5,7 @@ import {patchOrder} from "../../../utils/apiUtils";
 import {isFinalState} from "./OrderUtils";
 import {isNumber} from "../../../utils/utils";
 import {ButtonFileUpload} from "./ButtonFileUpload";
+import {constructDataFields} from "../../utils/OrderViewUtils";
 
 const className = "order_info"
 
@@ -25,17 +26,11 @@ export class OrderInfo extends React.Component {
         {this.createSendToCustomerActionImage()}
       </div>
       <div className={`${className}_description`}>
-        {this.createDescriptionItem('Имя:', order.data.name)}
-        {this.createDescriptionItem('Почта:', order.data.email)}
-        {this.createDescriptionItem('Телефон:', order.data.phoneNumber)}
-        {this.createDescriptionItem('Адрес:', order.data.address)}
-        {this.createDescriptionItem('Индекс:', order.data.index)}
-        {this.createDescriptionItem('Комментарии:', order.data.comments)}
-        {this.createDescriptionItem('Доставка:', order.data.deliveryOption.price)}
-        {order.data.adminComments ?
-            this.createDescriptionItem("Комментарий администратора:",
-                order.data.adminComments)
-            : null}
+        {constructDataFields(order, new Map([
+            ["deliveryOption.description", "Тип доставки"],
+            ["deliveryPrice", "Цена доставки"],
+            ["adminComments", "Комментарий администратора"]
+            ]))}
       </div>
       <table className={`${className}_table`}>
         <thead>
@@ -56,14 +51,6 @@ export class OrderInfo extends React.Component {
     </div>
   }
 
-  createDescriptionItem = (label, value) => {
-   return <div className={`${className}_description_item`}>
-      <div className={`${className}_description_item_label`}>{label}</div>
-      <div
-          className={`${className}_description_item_value`}>{value}</div>
-    </div>
-  }
-
   createRow = (prefix, item) => {
     return <tr key ={`${prefix}_${item?.id}`} className={`${prefix}_item_${item?.id}`} style={{backgroundColor: item.props?.hexColor}}>
       <td><Image links={item.data.links}/></td>
@@ -76,7 +63,7 @@ export class OrderInfo extends React.Component {
   }
 
   createSetDeliveryPriceAction = () => {
-    return this.props.order.data.deliveryOption.price >= 0 || isFinalState(
+    return (this.props.order.data.deliveryPrice || this.props.order.data.deliveryOption.price) >= 0 || isFinalState(
         this.props.order.state) ? null :
         <button className={`${className}_actions_setdeliveryprice`}
                 onClick={() => {

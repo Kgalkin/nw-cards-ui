@@ -85,6 +85,10 @@
     @include font(16);
     & p {
       margin: 1%;
+      & span {
+        font-weight: normal;
+        margin-left: 2%;
+      }
     }
   }
 }

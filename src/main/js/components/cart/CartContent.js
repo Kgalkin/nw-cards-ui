@@ -53,7 +53,6 @@ class CartContent extends Component {
     const totalPrice = contentArray
     .map(it => it.total)
     .reduce((a, b) => a + b, 0);
-    console.log(contentArray);
     const idsAndMessages = this.processTags(totalPrice, contentArray);
     this.processCount(idsAndMessages, contentArray);
     content.push(<CartContentRow key={content.length}
@@ -210,8 +209,6 @@ class CartContent extends Component {
   }
 
   processBonuses = (items, bonuses) => {return bonusProcessor(items, bonuses, (i, iw, items) => {
-    console.log("Item to modify: ")
-    console.log(i)
     const wrappedCount = (i.count / iw.countToWrap) | 0
     const notWrappedCount = i.count % iw.countToWrap;
     i.total = notWrappedCount * i.price + wrappedCount * iw.newPriceOf*i.price;

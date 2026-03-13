@@ -4,6 +4,7 @@ import {loadOrderByUuid, requestPayment} from "../../utils/apiUtils";
 import "./OrderPreview.scss"
 import {Loading} from "../loading/Loading";
 import withRouter from "../../utils/withRouter";
+import {constructDataFields} from "../utils/OrderViewUtils";
 
 const className = "order_preview"
 
@@ -25,26 +26,26 @@ class OrderPreview extends React.Component {
       return;
     }
     requestPayment(this.state.order.id)
-    .then(r => {
-      if (r.status === 200) {
-        r.json().then(json => {
-          this.setState({link: json.link})
-          window.location.href = json.link
+        .then(r => {
+          if (r.status === 200) {
+            r.json().then(json => {
+              this.setState({link: json.link})
+              window.location.href = json.link
+            })
+          } else {
+            alert(
+                "Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
+          }
         })
-      } else {
-        alert(
-            "Чтото пошло не так с генерацией платежной формы,\nсвяжитесь с нами пожалуйста.")
-      }
-    })
   }
 
   componentDidMount() {
     loadOrderByUuid(this.props.params.uuid)
-    .then(r => r.json())
-    .then(r => {
-          this.setState({order: r});
-        }
-    )
+        .then(r => r.json())
+        .then(r => {
+              this.setState({order: r});
+            }
+        )
   }
 
   render() {
@@ -52,12 +53,14 @@ class OrderPreview extends React.Component {
     if (!order) {
       return <Loading/>
     }
+    const delPrice = order.data.deliveryPrice || order.data.deliveryOption.price
+    const canBePayed = this.canBePayed(order, delPrice);
     const totalPrice = order.data.items.map(i => i.count * i.price)
-    .reduce((a, b) => a + b) + order.data.deliveryOption.price
+        .reduce((a, b) => a + b) + delPrice
     return <div className={className}>
       <div className={`${className}_description`}>
         {`Вы оформили заказ в магазине NorthwindCards. 
-                Пожалуйста, проверьте правильность указанного адреса.
+                Пожалуйста, проверьте правильность введённых данных.
                 Здесь вы можете еще раз просмотреть ваш заказ и оплатить его. 
                 Заказ, не оплаченный в течение трех дней, будет расформирован.`
         }
@@ -65,13 +68,10 @@ class OrderPreview extends React.Component {
           письме есть ссылка для возврата на эту страницу.</p>
       </div>
       <div className={`${className}_button_container`}>
-        {this.canBePayed(order) ? this.buttonOrLink(totalPrice) : null}
+        {canBePayed ? this.buttonOrLink(totalPrice) : null}
       </div>
       <div className={`${className}_address`}>
-        <p>{`Адрес доставки: ${order.data.address}`}</p>
-        <p>{`Индекс: ${order.data.index}`}</p>
-        <p>{`Ф.И.О.: ${order.data.name}`}</p>
-        <p>{`email: ${order.data.email}`}</p>
+        {constructDataFields(order)}
       </div>
       <table className={`${className}_table`}>
         <thead>
@@ -87,10 +87,8 @@ class OrderPreview extends React.Component {
         <tr>
           <td>Доставка</td>
           <td colSpan={2}>{order.data.deliveryOption.description}</td>
-          <td>{this.canBePayed(order) ? order.data.deliveryOption.price
-              : "?"}</td>
-          <td>{this.canBePayed(order) ? order.data.deliveryOption.price
-              : "?"}</td>
+          <td>{canBePayed ? delPrice : "?"}</td>
+          <td>{canBePayed ? delPrice : "?"}</td>
         </tr>
         {order.data.items.map(
             item => this.createRow(`${className}_row_${order.id}`, item))}
@@ -99,8 +97,8 @@ class OrderPreview extends React.Component {
     </div>
   }
 
-  canBePayed = (order) => {
-    return order.state === 'created' && order.data.deliveryOption.price >= 0
+  canBePayed = (order, delPrice) => {
+    return order.state === 'created' && delPrice >= 0
   }
 
   createRow = (prefix, item) => {
