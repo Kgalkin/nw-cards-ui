@@ -386,7 +386,7 @@ function OrderForm(props) {
               "height": height,              // Высота
               "width": "100%"                 // Ширина
             },
-            source_platform_station: "0f755bb7-a9cb-4b11-8287-f008d400a367", // Станция отгрузки
+            source_platform_station: "14d86ca9-142b-4232-ae77-3874f229a6ed", // Станция отгрузки
             physical_dims_weight_gross: 99,
             delivery_price: (price) => price ? '~ ' + Math.ceil(
                     price + pricePlus)
@@ -417,9 +417,9 @@ function OrderForm(props) {
     if (!yaWidgetStarted) {
       const handleClick = (data) => {
         setYaWidgetActive(false)
-        setPvzId(data.detail.id)
         setPvzAddress(data.detail.address.full_address)
         localStorage.setItem('pvzAddress', data.detail.address.full_address)
+        setPvzId(data.detail.id)
       }
       document.addEventListener('YaNddWidgetPointSelected', handleClick);
     }

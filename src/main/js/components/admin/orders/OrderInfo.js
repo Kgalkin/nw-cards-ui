@@ -29,6 +29,7 @@ export class OrderInfo extends React.Component {
         {constructDataFields(order, new Map([
             ["deliveryOption.description", "Тип доставки"],
             ["deliveryPrice", "Цена доставки"],
+            ["comments", "Комментарий покупателя"],
             ["adminComments", "Комментарий администратора"]
             ]))}
       </div>
