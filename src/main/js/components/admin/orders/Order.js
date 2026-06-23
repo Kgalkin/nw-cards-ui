@@ -26,7 +26,7 @@ export default class Order extends Component {
                     {order.data.items
                     .map(order => order.price * order.count)
                     .reduce((a, b) => a + b) +
-                    (order.data.deliveryOption.price > 0 ? order.data.deliveryOption.price : 0)}
+                    (order.data.deliveryOption.price > 0 ? order.data.deliveryPrice : 0)}
                 </td>
             </tr>
             {this.state.expanded ? <tr>
