@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 
 const className = 'orderForm';
 const errorClass = 'error';
+const YA_WIDGET_TYPE = "ya_widget"
 
 function OrderForm(props) {
   const [name, setName] = useState(localStorage.getItem('name') || '')
@@ -38,7 +39,7 @@ function OrderForm(props) {
   useEffect(() => {
     const selectedDelivery = getSelectedDeliveryOption()
     setYaWidgetActive(selectedDelivery?.data?.additionalRequirements?.some(
-        it => it.type === "ya_widget") && !pvzId)
+        it => it.type === YA_WIDGET_TYPE) && !pvzId)
   }, [deliveryOption]);
 
   useEffect(() => {
@@ -100,7 +101,7 @@ function OrderForm(props) {
                       value={eval(singleValue)}
                       onChange={e => handleChange(e, singleValue)}/>
           </div>
-        case "ya_widget":
+        case YA_WIDGET_TYPE:
           return <>
             {pvzId && deliveryPrice ?
                 <div>Выбран ПВЗ: <strong>{pvzAddress}</strong>, цена
@@ -367,13 +368,14 @@ function OrderForm(props) {
   }
 
   const createYaPvzWidget = () => {
-    const pricePlus = Number(deliveryOptions
-        ?.filter(dopt => dopt.id === 7)[0]
+    const yaDeliveryOption = deliveryOptions?.filter(dopt => dopt.id === 7)[0]
+    const pricePlus = Number(yaDeliveryOption
         ?.data
         ?.priceModifiers
         ?.filter(pm => pm.type === 'plus')[0]
         ?.value);
 
+    const sourcePvzId = extractSourcePvzId(yaDeliveryOption);
     const height = Number(600 / (window.devicePixelRatio || 1)) + "px";
 
     (function (w) {
@@ -386,11 +388,10 @@ function OrderForm(props) {
               "height": height,              // Высота
               "width": "100%"                 // Ширина
             },
-            source_platform_station: "14d86ca9-142b-4232-ae77-3874f229a6ed", // Станция отгрузки
-            physical_dims_weight_gross: 99,
-            delivery_price: (price) => price ? '~ ' + Math.ceil(
-                    price + pricePlus)
-                + " руб." : 'загружается...',
+            source_platform_station: sourcePvzId, // Станция отгрузки
+            physical_dims_weight_gross: 300,
+            delivery_price: (price) => "Цену посчитаем после подтверждения"
+            ,
             delivery_term: 5,          // Срок доставки
             show_select_button: true,           // Отображение кнопки выбора ПВЗ (false — скрыть кнопку, true — показать кнопку)
             filter: {
@@ -425,6 +426,13 @@ function OrderForm(props) {
     }
     setYaWidgetStarted(true)
   }
+
+  const extractSourcePvzId = deliveryOption => deliveryOption
+      ?.data
+      ?.additionalRequirements
+      ?.filter(it => it.type===YA_WIDGET_TYPE)[0]
+      ?.identifiers
+      ?.sourcePvzId;
 
   return (
       <div className={className}>
