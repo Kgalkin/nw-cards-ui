@@ -53,7 +53,7 @@ function OrderForm(props) {
 
   }, [yaWidgetActive])
 
-  useEffect(() => pvzId && checkYaPrice(), [pvzId]);
+  useEffect(() => {pvzId && checkYaPrice()}, [pvzId]);
 
   const handleCountry = () => country?.id && <>{buildDeliveryOptions()}</>;
 
