@@ -14,66 +14,72 @@ import StoreItems from "../admin/storeitems/StoreItems";
 import {loadAllTags} from "../../utils/apiUtils";
 import OrderPreview from "../orderform/OrderPreview";
 import {PaymentReceived} from "../pymentreceived/PaymentReceived";
+import VKlogin from "../auth/VKlogin";
 
 const privateRouteLoader = () => {
-  if (localStorage.getItem("auth")) {
-    return null
-  }
-  return redirect('/login');
+    if (localStorage.getItem("auth")) {
+        return null
+    }
+    return redirect('/login');
 }
 
 const router = createBrowserRouter([
-  {
-    path: "admin",
-    loader: privateRouteLoader,
-    element: <AdminBoard/>,
-    children: [
-      {
-        path: "orders",
-        element: <OrdersList/>
-      },
-      {
-        path: "items",
-        element: <StoreItems/>
-      }
-    ]
-  },
-  {
-    path: "login",
-    element: <LoginForm/>
-  },
-  {
-    path: "/content",
-    element: (
-        <StickyCartHeader
-            stickyContent={<>
-              <HeaderInfoLine/>
-              <Menu/>
-            </>}
-            mainContent={<>
-              <Content/>
-              <Footer/>
-            </>}/>
-    )
-  },
-  {
-    path: "/orders/:uuid",
-    element: <OrderPreview/>
-  },
-  {
-    path: "/paymentreceived",
-    element: <PaymentReceived/>
-  },
-  {
-    path: "*",
-    loader: () => redirect('/content')
-  }
+    {
+        path: "admin",
+        loader: privateRouteLoader,
+        element: <AdminBoard/>,
+        children: [
+            {
+                path: "orders",
+                element: <OrdersList/>
+            },
+            {
+                path: "items",
+                element: <StoreItems/>
+            }
+        ]
+    },
+    {
+        path: "login",
+        element: <LoginForm/>
+    },
+    {
+        path: "/content",
+        element: (
+            <StickyCartHeader
+                stickyContent={<>
+                    <HeaderInfoLine/>
+                    <Menu/>
+                </>}
+                mainContent={<>
+                    <Content/>
+                    <Footer/>
+                </>}/>
+        )
+    },
+    {
+        path: "/orders/:uuid",
+        element: <OrderPreview/>
+    },
+    {
+        path: "/paymentreceived",
+        element: <PaymentReceived/>
+    },
+    {
+        path: "/testVKlogin",
+        element: (<VKlogin>
+        </VKlogin>)
+    },
+    {
+        path: "*",
+        loader: () => redirect('/content')
+    }
 ]);
 
 export default function App(props) {
-  loadAllTags();
-  return <>
-    <RouterProvider router={router}/>
-    <Modal/>
-  </>
+    loadAllTags();
+    return <>
+        <RouterProvider router={router}/>
+        <Modal/>
+    </>
 }

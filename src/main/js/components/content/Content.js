@@ -12,7 +12,7 @@ export const PAGE_SIZE = 20;
 function Content(props) {
   const [searchParams] = useSearchParams();
 
-  useEffect(() => props.clearItems(), [searchParams])
+  useEffect(() => {props.clearItems()}, [searchParams])
 
   const loadItems = () => {
     loadItemsPage(props.items.nextOffset, PAGE_SIZE,
