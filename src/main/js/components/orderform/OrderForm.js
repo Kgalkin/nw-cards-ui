@@ -225,7 +225,7 @@ function OrderForm(props) {
         return Object.entries(props.cartItems)
             .map(it => it[1])
             .map(it => (it.count || 0) * (it.price || 0))
-            .reduce((a, b) => a + b) >= constraint.min
+            .reduce((a, b) => a + b, 0) >= constraint.min
       case "tagData":
         let map = new Map();
         props.tags.values
